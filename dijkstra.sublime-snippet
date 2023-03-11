@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[
-vector<int> dist(n, (int)1e15), parent(n, -1);
+vector<int> dist(n, INF), parent(n, -1);
 
 auto dijkstra = [&] (int source) {//non negative weight
     dist[source] = 0;
