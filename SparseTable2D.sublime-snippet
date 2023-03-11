@@ -1,0 +1,83 @@
+<snippet>
+	<content><![CDATA[
+class SparseTable2D {
+public:
+    int n, m; vector<int> lg;
+    vector<vector<vector<vector<int>>>> table;
+
+    SparseTable2D(const vector<vector<int>> &v) {
+        n = static_cast<int>(v.size());
+        m = static_cast<int>(v.front().size());
+
+        lg.resize(max(n, m) + 1); lg[1] = 0;
+
+        for (int i = 2; i <= max(n, m); i++)
+            lg[i] = lg[i / 2] + 1;
+
+        table.resize(lg[n] + 1, vector<vector<vector<int>>>(lg[m] + 1));
+        table[0][0] = v;
+
+        if (m > 1) {
+            for (int b = 1; b <= lg[m]; b++) {
+                table[0][b].resize(n, vector<int>(m - (1 << b) + 1));
+                for (int c = 0; c < n; c++) {
+                    for (int d = 0; d + (1 << b) - 1 < m; d++) {
+                        int left = table[0][b - 1][c][d];
+                        int right = table[0][b - 1][c][d + (1 << (b - 1))];
+                        table[0][b][c][d] = min(left, right);
+                    }
+                }
+            }
+        }
+
+        if (n > 1) {
+            for (int a = 1; a <= lg[n]; a++) {
+                table[a][0].resize(n - (1 << a) + 1, vector<int>(m));
+                for (int c = 0; c + (1 << a) - 1 < n; c++) {
+                    for (int d = 0; d < m; d++) {
+                        int up = table[a - 1][0][c][d];
+                        int down = table[a - 1][0][c + (1 << (a - 1))][d];
+                        table[a][0][c][d] = min(up, down);
+                    }
+                }
+            }
+        }
+
+        for (int a = 1; a <= lg[n]; a++) {
+            for (int b = 1; b <= lg[m]; b++) {
+                table[a][b].resize(n - (1 << a) + 1, vector<int>(m - (1 << b) + 1));
+                for (int c = 0; c + (1 << a) - 1 < n; c++) {
+                    for (int d = 0; d + (1 << b) - 1 < m; d++) {
+                        int upper_left = table[a - 1][b - 1][c][d];
+                        int upper_right = table[a - 1][b - 1][c][d + (1 << (b - 1))];
+                        int bottom_left = table[a - 1][b - 1][c + (1 << (a - 1))][d];
+                        int bottom_right = table[a - 1][b - 1][c + (1 << (a - 1))][d + (1 << (b - 1))];
+                        table[a][b][c][d] = min({upper_left, upper_right, bottom_left, bottom_right});
+                    }
+                }
+            }
+        }
+    }
+
+    int query(int i1, int j1, int x, int y) {//upper corner, row , col
+        int lg1 = lg[x], lg2 = lg[y];
+        int i2 = i1 + x - (1 << lg1);
+        int j2 = j1 + y - (1 << lg2);
+
+        assert(i1 >= 0 and i1 + x <= n);
+        assert(j1 >= 0 and j1 + y <= m);
+
+        int a = table[lg1][lg2][i1][j1];
+        int b = table[lg1][lg2][i1][j2];
+        int c = table[lg1][lg2][i2][j1];
+        int d = table[lg1][lg2][i2][j2];
+
+        return min({a, b, c, d});
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>SparseTable2D</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

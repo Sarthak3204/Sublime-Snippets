@@ -1,0 +1,84 @@
+<snippet>
+	<content><![CDATA[
+class Dynamic {
+public:
+    int n, IDENTITY_ELEMENT = 0;
+    Dynamic(int _n) {n = _n;}//upper bound of value
+
+    class Bird {
+    public:
+        int Value;
+        Bird *LeftChild, *RightChild;
+
+        Bird() {
+            Value = 0;
+            LeftChild = NULL;
+            RightChild = NULL;
+        }
+        /*
+        Don't forget to call delete st.root prevents memory leakage
+        if TLE take risk by not calling it
+        */
+        ~Bird() {
+            delete LeftChild;
+            delete RightChild;
+            LeftChild = NULL;
+            RightChild = NULL;
+        }
+    };
+
+    Bird* root = new Bird();
+    int query(int l, int r, Bird* node, int lo, int hi) {
+        if (l <= lo and hi <= r) return (*node).Value;
+        else if (lo > r or hi < l) return IDENTITY_ELEMENT;
+
+        int mid = lo + (hi - lo) / 2;
+
+        int left = 0, right = 0;
+        if ((*node).LeftChild != NULL) left = query(l, r, (*node).LeftChild, lo, mid);
+        if ((*node).RightChild != NULL) right = query(l, r, (*node).RightChild, mid + 1, hi);
+
+        return left + right;
+    }
+
+    void update(int index, int newValue, Bird* node, int lo, int hi) {
+        if (lo > index or hi < index) return;
+        if (lo == hi) {
+            (*node).Value += newValue;//remember to change this
+            return;
+        }
+
+        int mid = lo + (hi - lo) / 2;
+        if (index <= mid) {
+            if ((*node).LeftChild == NULL) (*node).LeftChild = new Bird();
+            update(index, newValue, (*node).LeftChild, lo, mid);
+        }
+        else {
+            if ((*node).RightChild == NULL) (*node).RightChild = new Bird();
+            update(index, newValue, (*node).RightChild, mid + 1, hi);
+        }
+
+        int res = 0;
+        Bird* p1 = (*node).LeftChild;
+        Bird* p2 = (*node).RightChild;
+
+        if (p1 != NULL) res += (*p1).Value;
+        if (p2 != NULL) res += (*p2).Value;
+
+        (*node).Value = res;
+    }
+
+    int query(int l, int r) {//make sure to check ranges
+        return query(l, r, root, 1, n);
+    }
+
+    void update(int index, int val) {
+        update(index, val, root, 1, n);
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Dynamic</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,86 @@
+<snippet>
+	<content><![CDATA[
+class BinaryLifting {
+public:
+    int LOG, timer = 0;
+    vector<int> depth, tin, tout, parent;
+    vector<vector<int>> up;
+
+    BinaryLifting(int root, int n, vector<int> adj[]) {
+        LOG = 32 - __builtin_clz(n);
+        tin.resize(n);
+        tout.resize(n);
+        depth.resize(n);
+        parent.resize(n);
+        up.resize(n, vector<int>(LOG, root));
+        dfs(root, -1, adj);
+    }
+
+    void dfs(int v, int p, vector<int> adj[]) {
+        tin[v] = ++timer;
+        parent[v] = p;
+        for (auto &u : adj[v]) {
+            if (u == p) continue;
+            depth[u] = depth[v] + 1;
+            up[u][0] = v;
+            for (int i = 1; i < LOG; i++) {
+                up[u][i] = up[up[u][i - 1]][i - 1];
+            }
+            dfs(u, v, adj);
+        }
+        tout[v] = ++timer;
+    }
+
+    int kthAncestor(int k, int v) {
+        for (int i = LOG - 1; i >= 0; i--) {
+            if ((k >> i) & 1) {
+                v = up[v][i];
+            }
+        }
+        return v;
+    }
+
+    int getLCA(int a, int b) {
+        if (depth[a] < depth[b]) swap(a, b);
+
+        int k = depth[a] - depth[b];
+        a = kthAncestor(k, a);
+        if (a == b) return a;
+
+        for (int i = LOG - 1; i >= 0; i--) {
+            if (up[a][i] != up[b][i]) {
+                a = up[a][i];
+                b = up[b][i];
+            }
+        }
+
+        return up[a][0];
+    }
+
+    inline int getDistance(int a, int b) {
+        return depth[a] + depth[b] - 2 * depth[getLCA(a, b)];
+    }
+
+    inline bool isAncestor(int a, int b) {//whether a is ancestor of b
+        return (tin[a] <= tin[b] and tout[b] <= tout[a]);
+    }
+
+    inline bool onPath(int x, int a, int b) { //whether x is on path from a to b
+        return ((isAncestor(x, a) or isAncestor(x, b)) and isAncestor(getLCA(a, b), x));
+    }
+    
+    int kthNodeOnPath(int k, int a, int b) {
+        int lca = getLCA(a, b);
+        int left = depth[a] - depth[lca];
+        int right = depth[b] - depth[lca];
+        assert(0 <= k and k <= left + right);
+        if (k < left) return kthAncestor(k, a);
+        else return kthAncestor(left + right - k, b);
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>BinaryLifting</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

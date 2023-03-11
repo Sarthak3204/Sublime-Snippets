@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+const int N = (int)2e5;
+
+vector<int> mob(N + 1, 0);
+void mobius() {//nlog(n)
+    mob[1] = 1;
+    for (int i = 2; i <= N; i++) {
+        mob[i]--;
+        for (int j = 2 * i; j <= N; j += i) {
+            mob[j] -= mob[i];
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>mobius_1_to_N</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

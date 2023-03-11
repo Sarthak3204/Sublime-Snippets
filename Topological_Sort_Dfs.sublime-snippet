@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+function<vector<int>()> Topological_Sort_Dfs = [&]() {
+	vector<int> topo, vis(n, 0);
+
+	function<void(int)> Dfs_Topo = [&](int v) {
+		vis[v] = 1;
+		for (auto &u : adj[v]) {
+			if (vis[u]) continue;
+			Dfs_Topo(u);
+		}
+		topo.pb(v);
+	};
+
+	for (int i = 0; i < n; i++) {
+		if (!vis[i]) Dfs_Topo(i);
+	}
+
+	reverse(all(topo));
+	return topo;
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Topological_Sort_Dfs</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

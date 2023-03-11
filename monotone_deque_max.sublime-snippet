@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+//Maximum of subarray of size k
+template<typename T>
+struct monotone_deque {
+	deque<T> q;
+	void insert(int x) {
+		while (sz(q) and q.back() < x) {
+			q.pob();
+		}
+		q.pb(x);
+	}
+	void remove(int x) {
+		if (sz(q) and q.front() == x) {
+			q.pof();
+		}
+	}
+	T getmax() {
+		return (sz(q) ? q.front() : INT_MIN);
+	}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>monotone_deque_max</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

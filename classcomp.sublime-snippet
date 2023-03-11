@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+struct classcomp {
+	bool operator() (const pii& a, const pii& b) const {
+		if (a.ff != b.ff) return a.ff >= b.ff;
+		else return a.ss <= b.ss;
+	}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>classcomp</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

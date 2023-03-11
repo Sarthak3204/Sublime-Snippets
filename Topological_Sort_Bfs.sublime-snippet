@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+function<vector<int>()> Topological_Sort_Bfs = [&]() {
+	vector<int> topo, In_Degree(n, 0);
+	
+	for (int v = 0; v < n; v++)
+		for (auto &u : adj[v])
+			In_Degree[u]++;
+	
+	queue<int> q;
+	
+	for (int i = 0; i < n; i++)
+		if (!In_Degree[i])
+			q.push(i);
+	
+	while (!q.empty()) {
+		int v = q.front(); q.pop();
+		topo.pb(v);
+		for (auto &u : adj[v]) {
+			In_Degree[u]--;
+			if (!In_Degree[u])
+				q.push(u);
+		}
+	}
+	
+	return topo;
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Topological_Sort_Bfs</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

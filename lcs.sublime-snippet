@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+int lcs(string &s, string &t, vector<vector<int>> &dp) {
+	int n = sz(s);
+	int m = sz(t);
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (s[i - 1] == t[j - 1]) dp[i][j] = 1 + dp[i - 1][j - 1];
+			else dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+		}
+	}
+	return dp[n][m];
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>lcs</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

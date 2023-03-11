@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+ll GCD(ll a, ll b) {
+    if (a == 0) return b;
+    return GCD(b % a, a);
+}
+
+ll LCM(ll a, ll b) {
+    return (a / GCD(a, b)) * b;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LCM</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

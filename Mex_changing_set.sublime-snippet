@@ -1,0 +1,38 @@
+<snippet>
+	<content><![CDATA[
+class MEX {
+public:
+    vector<int> cnt;
+    set<int> mex, complement;
+
+    MEX(int n) {
+        cnt.resize(n);
+        for (int i = 0; i < n; i++) {
+            complement.insert(i);
+        }
+    }
+
+    void add(int x) {
+        if (!cnt[x]++) {
+            mex.insert(x);
+            complement.erase(x);
+        }
+    }
+
+    void del(int x) {
+        if (!--cnt[x]) {
+            mex.erase(x);
+            complement.insert(x);
+        }
+    }
+
+    int find() {
+        return *complement.begin();
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Mex_changing_set</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

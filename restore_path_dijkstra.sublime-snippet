@@ -1,0 +1,17 @@
+<snippet>
+	<content><![CDATA[
+vector<int> path;
+auto restore_path = [&](int source, int v) {
+    while (true) {
+        path.push_back(v);
+        if (v == source) break;
+        v = parent[v];
+    }
+    reverse(path.begin(), path.end());
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>restore_path_dijkstra</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

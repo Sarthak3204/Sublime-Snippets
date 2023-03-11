@@ -1,0 +1,147 @@
+<snippet>
+	<content><![CDATA[
+class SparseTable {
+public:
+    int n; vector<int> lg;
+    vector<vector<int>> table;
+
+    void build(vector<int> &euler, vector<int> &depth) {
+        n = sz(euler); lg.resize(n + 1); lg[1] = 0;
+
+        for (int i = 2; i <= n; i++) lg[i] = lg[i / 2] + 1;
+
+        table.resize(lg[n] + 1);
+        table[0] = euler;
+
+        for (int j = 1; j <= lg[n]; j++) {
+            table[j].resize(n - (1 << j) + 1);
+            for (int i = 0; i + (1 << j) - 1 < n; i++) {
+                int x = i, y = i + (1 << (j - 1));
+                int left = table[j - 1][x];
+                int right = table[j - 1][y];
+                table[j][i] = (depth[left] < depth[right] ? left : right);
+            }
+        }
+    }
+
+    int query(int l, int r, vector<int> &depth) {
+        int j = lg[r - l + 1];
+        int x = l, y = r - (1 << j) + 1;
+        int left = table[j][l];
+        int right = table[j][r - (1 << j) + 1];
+        return (depth[left] < depth[right] ? left : right);
+    }
+};
+
+class LCA {
+public:
+    int tour = 0, timer = 0;
+    vector<int> subtree, depth, tin, tout, parent;
+    vector<int> euler, first_occurrence, heavyRoot;
+    vector<int> tourList, tourStart;
+    SparseTable st;
+
+    LCA(int root, int n, vector<int> adj[]) {
+        tin.resize(n);
+        tout.resize(n);
+        depth.resize(n);
+        parent.resize(n);
+        subtree.resize(n);
+        tourList.resize(n);
+        tourStart.resize(n);
+        heavyRoot.resize(n);
+        first_occurrence.resize(n);
+
+        dfs(root, -1, adj);
+        dfsTour(root, false, adj);
+        st.build(euler, depth);
+    }
+
+    void dfs(int v, int p, vector<int> adj[]) {
+        tin[v] = ++timer;
+
+        parent[v] = p; subtree[v] = 1;
+        depth[v] = p < 0 ? 0 : depth[p] + 1;
+
+        for (auto &u : adj[v]) {
+            if (u == p) continue;
+            dfs(u, v, adj);
+
+            subtree[v] += subtree[u];
+        }
+
+        tout[v] = ++timer;
+        // Heavy-light subtree reordering.
+        sort(all(adj[v]), [&](int a, int b) {
+            return subtree[a] > subtree[b];
+        });
+    }
+
+    void dfsTour(int v, bool heavy, vector<int> adj[]) {
+        heavyRoot[v] = heavy ? heavyRoot[parent[v]] : v;
+
+        tourList[tour] = v;
+        tourStart[v] = tour++;
+
+        euler.pb(v);
+        first_occurrence[v] = sz(euler) - 1;
+
+        bool heavyChild = true;
+        for (auto &u : adj[v]) {
+            if (u == parent[v]) continue;
+            dfsTour(u, heavyChild, adj);
+
+            euler.pb(v);
+            heavyChild = false;
+        }
+    }
+
+
+    inline int getLCA(int a, int b) {
+        int l = first_occurrence[a], r = first_occurrence[b];
+        if (l > r) swap(l, r);
+        return st.query(l, r, depth);
+    }
+
+    inline int getDistance(int a, int b) {
+        return depth[a] + depth[b] - 2 * depth[getLCA(a, b)];
+    }
+
+    inline bool isAncestor(int a, int b) {//whether a is ancestor of b
+        return (tin[a] <= tin[b] and tout[b] <= tout[a]);
+    }
+
+    inline bool onPath(int x, int a, int b) { //whether x is on path from a to b
+        return ((isAncestor(x, a) or isAncestor(x, b)) and isAncestor(getLCA(a, b), x));
+    }
+
+    int kthAncestor(int k, int a) {
+        if (k > depth[a]) return -1;
+        while (a >= 0) {
+            int root = heavyRoot[a];
+            if (depth[root] <= depth[a] - k) {
+                return tourList[tourStart[a] - k];
+            }
+            else {
+                k -= depth[a] - depth[root] + 1;
+                a = parent[root];
+            }
+        }
+        return a;
+    }
+
+    int kthNodeOnPath(int k, int a, int b) {
+        int lca = getLCA(a, b);
+        int left = depth[a] - depth[lca];
+        int right = depth[b] - depth[lca];
+        assert(0 <= k and k <= left + right);
+        if (k < left) return kthAncestor(k, a);
+        else return kthAncestor(left + right - k, b);
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LCA_HLD_snippet</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

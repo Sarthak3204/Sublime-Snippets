@@ -1,0 +1,8 @@
+[
+	{ "keys": ["alt+`"], "command": "toggle_terminus_panel" },
+	{
+        "keys": ["ctrl+alt+t"], "command": "terminus_open", "args": {
+            "cwd": "${file_path:${folder}}"
+        }
+    },
+]

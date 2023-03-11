@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+const int ch_MAX = 26;
+string RandomString(int ch)
+{
+    char alpha[ch_MAX] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+                          'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                          'o', 'p', 'q', 'r', 's', 't', 'u',
+                          'v', 'w', 'x', 'y', 'z' };
+    string result = "";
+    for (int i = 0; i<ch; i++)
+        result = result + alpha[uid(1, 25)];
+
+    return result;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>RandomString</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

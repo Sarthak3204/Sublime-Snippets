@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+void update(int i, int val) {
+	apply(s + i, val);
+	for (int j = (s + i) / 2; j >= 1; j /= 2) {
+		tree[j] = merge(tree[2 * j], tree[2 * j + 1]);
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>iterative_update</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

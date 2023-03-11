@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+int min_wt = 0;
+vector<pair<int, int>> mst;
+
+auto prims = [&]() -> void {
+    vector<int> vis(n, 0);
+
+    set<array<int, 3>> s;
+    s.insert({0, 0, -1});
+
+    while (!s.empty() and sz(mst) < n - 1) {
+        auto [wt, v, p] = *s.begin();
+        s.erase(s.begin());
+
+        if (vis[v]) continue;
+        vis[v] = 1, min_wt += wt;
+        if (p != -1) mst.push_back({v, p});
+
+        for (auto &[u, w] : adj[v]) {
+            if (vis[u]) continue;
+            s.insert({w, u, v});
+        }
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>prims</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+vector<int> generate_divisors(vector<pii> &factor) {
+    vector<int> divisors;
+    int n = sz(factor);
+
+    function <void(int, int)> rec = [&](int i, int val) {
+        if (i == n) {
+            divisors.push_back(val);
+            return;
+        }
+        int base = 1; auto &[a, b] = factor[i];
+        for (int power = 0; power <= b; power++) {
+            if (power) base *= a;
+            rec(i + 1, val * base);
+        }
+    };
+
+    rec(0, 1);
+    return divisors;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>generate_divisors</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

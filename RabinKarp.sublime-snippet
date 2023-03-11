@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+vector<int> occurences;
+auto RabinKarp = [&]() {
+    HashedString H(s);
+    HashedString T(t);
+
+    for (int i = 0; i < n - m + 1; i++) {
+        pair<int, int> now = H.getHash(i, i + m - 1);
+        if (T.hash[m - 1].first == now.first and T.hash[m - 1].second == now.second) {
+            occurences.push_back(i);
+        }
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>RabinKarp</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

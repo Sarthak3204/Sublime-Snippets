@@ -1,0 +1,57 @@
+<snippet>
+	<content><![CDATA[
+vector<int> suffix_array(string &s) { //O(n*log^2(n))
+	s.pb('$');
+	int n = sz(s);
+	vector<int> order(n), classes(n);
+	// k = 0
+	vector<pair<char, int>> a(n);
+	for (int i = 0; i < n; i++) {
+		a[i] = {s[i], i};
+	}
+	sort(all(a));
+
+	for (int i = 0; i < n; i++) {
+		order[i] = a[i].ss;
+	}
+	classes[order[0]] = 0;
+	for (int i = 1; i < n; i++) {
+		if (a[i].ff == a[i - 1].ff) {
+			classes[order[i]] = classes[order[i - 1]];
+		}
+		else {
+			classes[order[i]] = classes[order[i - 1]] + 1;
+		}
+	}
+
+	int k = 0;
+	while ((1 << k) < n) {
+		// k -> k + 1
+		vector<pair<pii, int>> a(n);
+		for (int i = 0; i < n; i++) {
+			a[i] = {{classes[i], classes[(i + (1 << k)) % n]}, i};
+		}
+		sort(all(a));
+
+		for (int i = 0; i < n; i++) {
+			order[i] = a[i].ss;
+		}
+		classes[order[0]] = 0;
+		for (int i = 1; i < n; i++) {
+			if (a[i].ff == a[i - 1].ff) {
+				classes[order[i]] = classes[order[i - 1]];
+			}
+			else {
+				classes[order[i]] = classes[order[i - 1]] + 1;
+			}
+		}
+		k++;
+	}
+	return order;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>suffix_automation</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

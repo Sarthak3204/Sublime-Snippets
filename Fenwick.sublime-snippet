@@ -1,0 +1,32 @@
+<snippet>
+  <content><![CDATA[
+template<typename T>
+struct Fenwick {
+	vector<T> tree;
+	Fenwick(int n) {
+		tree.resize(n);
+	}
+
+	T query(int i) {
+		int sum = 0;
+		i++;
+		while (i) {
+			sum += tree[i];
+			i -= i & (-i);
+		}
+		return sum;
+	}
+	void update(int i, int n, T val) {
+		i++;
+		while (i <= n) {
+			BIT[i] += val;
+			i += i & (-i);
+		}
+	}
+};
+]]></content>
+  <tabTrigger>fenwick</tabTrigger>
+  <description>Fenwick</description>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <!-- <scope >source.python</scope > -->
+</snippet>

@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+function <vector<pii>()> find_bridges = [&]() {
+	int timer = 0;
+	vector<pii> bridge;
+	vector<int> vis(n, 0), tin(n, -1), low(n, -1);
+
+	function <void(int, int)> dfs = [&](int v, int p) {
+		vis[v] = 1;
+		tin[v] = low[v] = timer++;
+		for (auto &u : adj[v]) {
+			if (u == p) continue;
+			if (vis[u]) low[v] = min(low[v], low[u]);
+			else {
+				dfs(u, v);
+				low[v] = min(low[v], low[u]);
+				if (low[u] > tin[v]) 
+					bridge.pb({u, v});
+			}
+		}
+	};
+
+	for (int v = 0; v < n; v++)
+		if (!vis[v]) dfs(v, -1);
+
+	return bridge;
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>find_bridges</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+//coordinate compression
+sort(all(coordinate));
+coordinate.erase(unique(all(coordinate)), coordinate.end());
+
+int m = coordinate.size();
+map<int, int> mp;
+for (int i = 0; i < m; i++)
+    mp[coordinate[i]] = i;
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>coordinate_compression</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

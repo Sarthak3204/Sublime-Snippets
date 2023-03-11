@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+vector<int> adj[n];
+for (int i = 1; i < n; i++) {
+    int u, v;
+    cin >> u >> v;
+    u--; v--;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>input_tree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

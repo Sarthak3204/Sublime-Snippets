@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+vector<int> dist(n, (int)1e15), parent(n, -1);
+
+auto dijkstra = [&] (int source) {//non negative weight
+    dist[source] = 0;
+    set<pair<int, int>> s;//dist,node
+    s.insert({0, source});
+
+    while (!s.empty()) {
+        auto [d, v] = *s.begin();
+        s.erase(s.begin());
+
+        for (auto &[u, wt] : adj[v]) {
+            if (dist[v] + wt < dist[u]) {
+                s.erase({dist[u], u});
+
+                dist[u] = dist[v] + wt;
+                parent[u] = v;
+
+                s.insert({dist[u], u});
+            }
+        }
+    }//O(V+Elog(V))
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dijkstra</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

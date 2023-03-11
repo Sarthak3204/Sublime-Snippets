@@ -1,0 +1,68 @@
+<snippet>
+	<content><![CDATA[
+const int N = (int)1e6;
+
+int ip1, ip2;
+const int p1 = 137;
+const int p2 = 277;
+const int mod1 = 127657753;
+const int mod2 = 987654319;
+
+int bexp(int a, int b, int m) {
+    int ans = 1;
+    while (b) {
+        if (b & 1) ans = (ll)ans * a % m;
+        a = (ll)a * a % m;
+        b >>= 1;
+    }
+    return ans % m;
+}
+
+pair<int, int> pw[N], ipw[N];
+
+void precompute() {
+    pw[0] = {1, 1}, ipw[0] = {1, 1};
+    ip1 = bexp(p1, mod1 - 2, mod1);
+    ip2 = bexp(p2, mod2 - 2, mod2);
+
+    for (int i = 1; i < N; i++) {
+        pw[i].first = (ll)pw[i - 1].first * p1 % mod1;
+        pw[i].second = (ll)pw[i - 1].second * p2 % mod2;
+
+        ipw[i].first = (ll)ipw[i - 1].first * ip1 % mod1;
+        ipw[i].second = (ll)ipw[i - 1].second * ip2 % mod2;
+    }
+}
+
+class HashedString {
+public:
+    int n;
+    vector<pair<int, int>> hash;
+    HashedString(string &s) {
+        int _n = static_cast<int>(s.size());
+        n = _n, hash.resize(n);
+
+        hash[0] = {s[0], s[0]};
+        for (int i = 1; i < n; i++) {
+            hash[i].first = (hash[i - 1].first + (ll)pw[i].first * s[i] % mod1) % mod1;
+            hash[i].second = (hash[i - 1].second + (ll)pw[i].second * s[i] % mod2) % mod2;
+        }
+    }
+
+    pair<int, int> getHash(int l, int r) {
+        assert(0 <= l and l <= r and r < n);
+        if (!l) return hash[r];
+
+        pair<int, int> ans;
+        ans.first = (hash[r].first - hash[l - 1].first + mod1) * (ll)ipw[l].first % mod1;
+        ans.second = (hash[r].second - hash[l - 1].second + mod2) * (ll)ipw[l].second % mod2;
+
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>StringHashing</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,52 @@
+<snippet>
+	<content><![CDATA[
+#include<bits/stdc++.h>
+#define int            long long
+#define sz(x)          (ll)(x.size())
+#define all(x)         x.begin(), x.end()
+
+using namespace std;
+using ll = long long;
+
+#ifndef ONLINE_JUDGE
+#include "debug.h"
+#else
+#define deb(x...)
+#endif
+
+const int mod = (int)1e9 + 7;
+
+void solve() {
+    $0
+}
+
+signed main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+#ifdef NCR
+    initiate();
+#endif
+
+#ifdef Sieve
+    initiate();
+#endif
+
+#ifdef LinearSieve
+    initiate();
+#endif
+
+    int TESTS = 1; cin >> TESTS;
+    for (int T = 1; T <= TESTS; T++) {
+        solve();
+    }
+
+    return 0;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Tboilerplate</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

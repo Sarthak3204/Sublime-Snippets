@@ -1,0 +1,34 @@
+<snippet>
+	<content><![CDATA[
+template <typename T, class F = function<T(const T&, const T&)>>
+class SparseTable {
+public:
+    int n; vector<int> lg;
+    vector<vector<T>> table;
+    F func;
+
+    SparseTable(const vector<T> &a, const F &f) : func(f) {
+        n = static_cast<int>(a.size()); lg.resize(n + 1); lg[1] = 0;
+
+        for (int i = 2; i <= n; i++) lg[i] = lg[i / 2] + 1;
+
+        table.resize(lg[n] + 1); table[0] = a;
+        for (int j = 1; j <= lg[n]; j++) {
+            table[j].resize(n - (1 << j) + 1);
+            for (int i = 0; i + (1 << j) - 1 < n; i++) {
+                table[j][i] = func(table[j - 1][i], table[j - 1][i + (1 << (j - 1))]);
+            }
+        }
+    }
+
+    T query(int l, int r) const {
+        int j = lg[r - l + 1];
+        return func(table[j][l], table[j][r - (1 << j) + 1]);
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>SparseTable</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

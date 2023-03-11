@@ -1,0 +1,142 @@
+{
+    // the default config, either a single config name or a platform
+    // specific dict
+    "default_config": {
+        "linux": null,    // login shell
+        "osx": null,      // login shell
+        "windows": "WSL Login Shell"
+    },
+    // a list of available shells to execute
+    "shell_configs": [
+        {
+            "name": "Bash",
+            "cmd": ["bash", "-i", "-l"],
+            "env": {},
+            "enable": true,
+            "platforms": ["linux", "osx"]
+        },
+        {
+            "name": "Zsh",
+            "cmd": ["zsh", "-i", "-l"],
+            "env": {},
+            "enable": true,
+            "platforms": ["linux", "osx"]
+        },
+        {
+            "name": "Command Prompt",
+            "cmd": "cmd.exe",
+            "env": {},
+            "enable": true,
+            "platforms": ["windows"]
+        },
+        {
+            "name": "PowerShell Core",
+            "cmd": "pwsh.exe",
+            "env": {},
+            "enable": true,
+            "platforms": ["windows"]
+        },
+        {
+            "name": "PowerShell",
+            "cmd": "powershell.exe",
+            "env": {},
+            "enable": true,
+            "platforms": ["windows"]
+        },
+        {
+            "name": "Cmder",
+            "cmd": ["cmd.exe", "/k", "%CMDER_ROOT%\\vendor\\init.bat"],
+            "env": {},
+            "enable": false,
+            "platforms": ["windows"]
+        },
+        {
+            "name": "WSL Login Shell",
+            "cmd": "wsl.exe",
+            "env": {},
+            "enable": true,
+            "platforms": ["windows"]
+        }
+    ],
+
+    // Note: for unix users, you will get better 256 color experience
+    // if you also set "unix_term" to "xterm-256color"
+    // 256 color is not working on Windows because of upstream winpty's issue
+    // https://github.com/rprichard/winpty/issues/108
+    "256color": false,
+
+    // brighten bold text
+    "brighten_bold_text": true,
+
+    // the default TERM variable of unix system. Possible values are
+    // "linux", "xterm" and "xterm-256color".
+    // However, please aware that not all xterm features are supported.
+    "unix_term": "linux",
+
+    // the default LANG variable of unix system.
+    "unix_lang": "en_US.UTF-8",
+
+    // number of lines kept in scrollback history
+    // decreasing this value may improve performance
+    "scrollback_history_size": 10000,
+
+    // set a minimum or maximum terminal width in characters
+    "min_columns": 20,
+    "max_columns": 500,
+
+    // Windows and Linux only
+    // use ctrl+c to copy
+    // use ctrl+v to paste  (use ctrl+alt+v to send ctrl+v instead)
+    // use ctrl+pagedown/pageup to change tabs
+    "natural_keyboard": true,
+
+    // Terminus sends all keybinds of the form `ctrl+[a-z]` to the terminal process
+    // directly. Windows and Linux users sometimes may want to preserve some of such
+    // keybinds. (only keybinds listed below are supported, open an issue for a specific
+    // keybind if it is not in the list)
+    "preserve_keys" : [
+        // "ctrl+k"   // there are a number of shortcuts with "ctrl+k" prefix.
+        // "ctrl+p"   // to show Go to Anything
+    ],
+
+    // the name of the theme
+    // the theme could be either "classic", "adaptive", "user" or any predefined themes
+    // listed in the command `Terminus Utilities: Select Theme`.
+    // For Sublime Text before 4096, the adaptive theme will fallback to the classic theme.
+    "theme": "adaptive",
+
+    // change `theme` to "user" if you want to use customized theme
+    // see https://www.sublimetext.com/docs/3/color_schemes.html#colors for the
+    // available colors
+    "user_theme_colors": {
+        // "background": "#262626",
+        // "foreground": "#ffffff",
+        // "caret": "white",
+        // "block_caret": "white",
+        // "selection": "#444444",
+        // "selection_foreground": "#ffffff"
+        // "black": "#000000",
+        // "red": "#cd0000",
+        // "green": "#00cd00",
+        // "brown": "#cdcd00",
+        // "blue": "#0000ee",
+        // "magenta": "#cd00cd",
+        // "cyan": "#00cdcd",
+        // "white": "#e5e5e5",
+        // "light_black": "#7f7f7f",
+        // "light_red": "#ff0000",
+        // "light_green": "#00ff00",
+        // "light_brown": "#ffff00",
+        // "light_blue": "#5c5cff",
+        // "light_magenta": "#ff00ff",
+        // "light_cyan": "#00ffff",
+        // "light_white": "#ffffff"
+    },
+
+    "view_settings": {
+        // these are extra view settings which are passed to the terminus_view,
+        // you could change settings like "font_face", "font_size" and paddings.
+    },
+
+    "debug": false
+}

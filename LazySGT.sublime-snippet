@@ -1,0 +1,88 @@
+<snippet>
+	<content><![CDATA[
+struct LazySGT {
+	vector<int> tree, updates, lazy;
+	int s = 1, IDENTITY_ELEMENT = 0, IDENTITY_UPDATE = 0;
+
+	LazySGT(vector<int> &a) {
+		int n = static_cast<int>(a.size());
+		while (s < n) s *= 2;
+
+		tree.resize(2 * s, IDENTITY_ELEMENT);
+		lazy.resize(2 * s, 0);
+		updates.resize(2 * s);
+
+		for (int i = 0; i < n; i++)
+			tree[s + i] = a[i];
+
+		for (int i = s - 1; i >= 1; i--)
+			tree[i] = merge(tree[2 * i], tree[2 * i + 1]);
+	}
+
+	void pushdown(int node, int lo, int hi) {
+		if (lazy[node]) {
+			combine(node, lo, hi, updates[node]);
+			if (lo != hi) {
+				apply(2 * node, updates[node]);
+				apply(2 * node + 1, updates[node]);
+			} 
+			lazy[node] = 0;
+			updates[node] = IDENTITY_UPDATE;
+		}
+	}
+
+	int query(int l, int r, int node, int lo, int hi) {
+		pushdown(node, lo, hi);
+		if (l <= lo and hi <= r) return tree[node];
+		else if (lo > r or hi < l) return IDENTITY_ELEMENT;
+
+		int mid = (lo + hi) / 2;
+		int left = query(l, r, 2 * node, lo , mid);
+		int right = query(l, r, 2 * node + 1, mid + 1, hi);
+
+		return merge(left, right);
+	}
+
+	void update(int l, int r, int node, int lo, int hi, int val) {
+		pushdown(node, lo, hi);
+		if (l <= lo and hi <= r) {
+			apply(node, val);
+			pushdown(node, lo, hi);
+			return;
+		}
+		else if (lo > r or hi < l) return;
+
+		int mid = (lo + hi) / 2;
+		update(l, r, 2 * node, lo , mid, val);
+		update(l, r, 2 * node + 1, mid + 1, hi, val);
+
+		tree[node] = merge(tree[2 * node], tree[2 * node + 1]);
+	}
+
+	int query(int l, int r) {
+		return query(l, r, 1, 0, s - 1);
+	}
+
+	void update(int l, int r, int val) {
+		update(l, r, 1, 0, s - 1, val);
+	}
+
+	int merge(int left, int right) {
+		return (left + right);
+	}
+
+	void combine(int node, int lo, int hi, int upd) {
+        tree[node] += (hi - lo + 1) * upd;
+    }
+
+	void apply(int node, int val) {
+		lazy[node] = 1;
+		updates[node] += val;
+	}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LazySGT</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
