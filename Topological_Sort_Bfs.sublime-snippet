@@ -15,7 +15,7 @@ function<vector<int>()> Topological_Sort_Bfs = [&]() {
 	
 	while (!q.empty()) {
 		int v = q.front(); q.pop();
-		topo.pb(v);
+		topo.push_back(v);
 		for (auto &u : adj[v]) {
 			In_Degree[u]--;
 			if (!In_Degree[u])

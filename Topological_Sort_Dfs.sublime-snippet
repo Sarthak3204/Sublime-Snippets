@@ -9,7 +9,7 @@ function<vector<int>()> Topological_Sort_Dfs = [&]() {
 			if (vis[u]) continue;
 			Dfs_Topo(u);
 		}
-		topo.pb(v);
+		topo.push_back(v);
 	};
 
 	for (int i = 0; i < n; i++) {
