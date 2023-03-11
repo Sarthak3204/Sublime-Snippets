@@ -21,7 +21,7 @@ auto dijkstra = [&] (int source) {//non negative weight
                 s.insert({dist[u], u});
             }
         }
-    }//O(V+Elog(V))
+    }//O((V+E)log(V))
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
