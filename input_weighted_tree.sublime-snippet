@@ -1,12 +1,12 @@
 <snippet>
 	<content><![CDATA[
-vector<pii> adj[n];
+vector<pair<int, int>> adj[n];
 for (int i = 1; i < n; i++) {
     int u, v, wt;
     cin >> u >> v >> wt;
     u--; v--;
-    adj[u].pb({v, wt});
-    adj[v].pb({u, wt});
+    adj[u].push_back({v, wt});
+    adj[v].push_back({u, wt});
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
