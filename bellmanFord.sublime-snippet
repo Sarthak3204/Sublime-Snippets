@@ -1,0 +1,41 @@
+<snippet>
+	<content><![CDATA[
+int changed = -1;
+vector<int> dist(n, INF), parent(n, -1);
+//if just find neg cycle initialize dist with 0, else with INF
+auto bellman = [&](int source) {
+    dist[source] = 0;
+    for (int i = 0; i < n; i++) {
+        changed = -1;
+        for (auto &[u, v, wt] : edges) {
+            if (dist[u] == INF) continue;
+            if (dist[u] + wt < dist[v]) {
+                dist[v] = dist[u] + wt;
+                changed = v;
+                parent[v] = u;
+            }
+        }
+        if (changed == -1) return;
+    }
+};
+
+bellman(0);
+
+if (changed != -1) {
+    for (int i = 0; i < n; i++)
+        changed = parent[changed];
+
+    vector<int> cycle;
+    for (int v = changed; ; v = parent[v]) {
+        cycle.push_back(v);
+        if (v == changed and (int)cycle.size() > 1) break;
+    }
+
+    reverse(cycle.begin(), cycle.end());
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bellmanFord</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
