@@ -14,7 +14,6 @@ using ll = long long;
 #define deb(x...)
 #endif
 
-const ll INF = (ll)1e18;
 const int mod = (int)1e9 + 7;
 
 void solve() {
