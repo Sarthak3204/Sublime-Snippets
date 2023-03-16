@@ -2,12 +2,12 @@
 	<content><![CDATA[
 class differenceArray {
 public:
-    int m;
+    int n;
     vector<int> d, final;
 
     differenceArray(vector<int> &a) {
-        int n = static_cast<int>(a.size());
-        d.resize(n + 1), final.resize(n), m = n;
+        int _n = static_cast<int>(a.size());
+        n = _n, d.resize(n + 1), final.resize(n);
 
         d[0] = a[0], d[n] = 0;
         for (int i = 1; i < n; i++) {
@@ -21,7 +21,7 @@ public:
 
     vector<int> resultant() {
         final[0] = d[0];
-        for (int i = 1; i < m; i++)
+        for (int i = 1; i < n; i++)
             final[i] = final[i - 1] + d[i];
         return final;
     }

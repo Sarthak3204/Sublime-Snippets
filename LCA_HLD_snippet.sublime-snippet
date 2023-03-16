@@ -83,7 +83,7 @@ public:
         tourList[tour] = v;
         tourStart[v] = tour++;
 
-        euler.pb(v);
+        euler.push_back(v);
         first_occurrence[v] = sz(euler) - 1;
 
         bool heavyChild = true;
@@ -91,7 +91,7 @@ public:
             if (u == parent[v]) continue;
             dfsTour(u, heavyChild, adj);
 
-            euler.pb(v);
+            euler.push_back(v);
             heavyChild = false;
         }
     }
