@@ -3,21 +3,19 @@
 //Minimum of subarray of size k
 template<typename T>
 struct monotone_deque {
-	deque<T> q;
-	void insert(int x) {
-		while (sz(q) and q.back() > x) {
-			q.pob();
-		}
-		q.pb(x);
-	}
-	void remove(int x) {
-		if (sz(q) and q.front() == x) {
-			q.pof();
-		}
-	}
-	T getmin() {
-		return (sz(q) ? q.front() : INT_MAX);
-	}
+    deque<T> q;
+    void insert(int x) {
+        while (!q.empty() and q.back() > x)
+            q.pop_back();
+        q.push_back(x);
+    }
+    void remove(int x) {
+        if (!q.empty() and q.front() == x)
+            q.pop_front();
+    }
+    T getmin() {
+        return (!q.empty() ? q.front() : INT_MAX);
+    }
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
