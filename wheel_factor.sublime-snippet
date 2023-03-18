@@ -8,7 +8,7 @@ vector<pair<ll, ll>> wheel_factor(ll n) {
 			cnt++;
 			n /= d;
 		}
-		if (cnt) factor.pb({d, cnt});
+		if (cnt) factor.push_back({d, cnt});
 	}
 
 	static array<int, 8> increments = {4, 2, 4, 2, 4, 6, 2, 6};
@@ -19,11 +19,11 @@ vector<pair<ll, ll>> wheel_factor(ll n) {
 			cnt++;
 			n /= d;
 		}
-		if (cnt) factor.pb({d, cnt});
+		if (cnt) factor.push_back({d, cnt});
 		if (i == 8) i = 0;
 	}
 
-	if (n > 1) factor.pb({n, 1});
+	if (n > 1) factor.push_back({n, 1});
 	return factor;
 }
 ]]></content>
