@@ -39,8 +39,8 @@ public:
         }
     }
 
-    array<int, 4> query(int l, int r) {
-        return query(l, r, 1, 0, s - 1);
+    int query(int l, int r) {
+        return query(l, r, 1, 0, s - 1)[3];
     }
 
     array<int, 4> merge(array<int, 4> left, array<int, 4> right) {

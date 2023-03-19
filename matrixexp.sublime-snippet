@@ -7,7 +7,7 @@ void mul(vector<vector<int>>&A, vector<vector<int>>&B, int d)
     for (int k = 0; k < d; k++)
         for (int i = 0; i < d; i++)
             for (int j = 0; j < d; j++)
-                ans[i][j] = (ans[i][j] + (A[i][k] * B[k][j]) % mod)) % mod;
+                ans[i][j] = (ans[i][j] + (A[i][k] * B[k][j]) % mod) % mod;
 
     A = ans;
 }
