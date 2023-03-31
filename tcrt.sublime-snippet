@@ -37,9 +37,9 @@ pair<ll, ll> crt(vector<pair<ll, ll>> &an) {
     }
     auto &[a, n] = an.front();
 
-    for (int i = 1; i < sz(an); i++) {
-        auto now = crt(a, n, an[i].ff, an[i].ss);
-        a = now.ff, n = now.ss;
+    for (int i = 1; i < (int)an.size(); i++) {
+        auto now = crt(a, n, an[i].first, an[i].second);
+        a = now.first, n = now.second;
         if (a == -1) return { -1, -1};
     }
     return {a, n};

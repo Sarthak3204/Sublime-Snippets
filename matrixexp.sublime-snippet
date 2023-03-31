@@ -1,28 +1,24 @@
 <snippet>
 	<content><![CDATA[
-void mul(vector<vector<int>>&A, vector<vector<int>>&B, int d)
-{
-    vector<vector<int>> ans(d, vector<int>(d));
+void mul(vector<vector<int>> &A, vector<vector<int>> &B, int d) {
+    vector ans(d, vector<int>(d));
 
     for (int k = 0; k < d; k++)
         for (int i = 0; i < d; i++)
             for (int j = 0; j < d; j++)
-                ans[i][j] = (ans[i][j] + (A[i][k] * B[k][j]) % mod) % mod;
-
+                ans[i][j] = (ans[i][j] + (ll)(A[i][k] + mod) * (B[k][j] + mod) % mod) % mod;
     A = ans;
 }
 
-void matrixexp(vector<vector<int>>&A, int n, int d)
-{
-    vector<vector<int>> I(d, vector<int>(d));
+void matrixexp(vector<vector<int>> &A, ll n, int d) {
+    vector I(d, vector<int>(d));
+
     for (int i = 0; i < d; i++) I[i][i] = 1;
-
-    while (n)
-    {
-        if (n % 2) mul(I, A, d), n--;
-        else mul(A, A, d), n /= 2;
+    while (n) {
+        if (n & 1) mul(I, A, d);
+        mul(A, A, d);
+        n >>= 1ll;
     }
-
     A = I;
 }
 ]]></content>
