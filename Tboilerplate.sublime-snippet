@@ -15,6 +15,7 @@ using ll = long long;
 #endif
 
 const int mod = (int)1e9 + 7;
+const ll INF = (ll)1e18;
 
 void solve() {
     $0
