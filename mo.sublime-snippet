@@ -1,0 +1,34 @@
+<snippet>
+	<content><![CDATA[
+vector<array<int, 3>> query(q);
+
+for (int i = 0; i < q; i++) {
+    cin >> query[i][0] >> query[i][1];
+    query[i][0]--, query[i][1]--;
+    query[i][2] = i;
+}
+
+sort(all(query), [&](const auto & x, const auto & y) {
+    int L = x[0] / BLOCK;
+    int R = y[0] / BLOCK;
+
+    if (L != R) return L < R;
+    else return x[1] < y[1];
+});
+
+int i = 0, j = -1;
+for (auto &[l, r, ind] : query) {
+    while (j < r) add(++j);
+    while (i > l) add(--i);
+    
+    while (i < l) remove(i++);
+    while (j > r) remove(j--);
+
+    ans[ind] = res;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>mo</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
