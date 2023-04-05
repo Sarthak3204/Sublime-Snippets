@@ -83,12 +83,12 @@ void initiate() {
 }
 
 mint ncr(int n, int r) {
-    if (r < 0 || r > n) return 0;
+    if (n < 0 || r < 0 || r > n) return 0;
     return fact[n] * inv_fact[n - r] * inv_fact[r];
 }
 
 mint ncr_linear(int n, int r) {
-    if (r < 0 || r > n) return 0;
+    if (n < 0 || r < 0 || r > n) return 0;
     mint ans = 1;
     for (int i = n - r + 1; i <= n; i++)
         ans *= i;
