@@ -16,6 +16,8 @@ sort(all(query), [&](const auto & x, const auto & y) {
     else return x[1] < y[1];
 });
 
+vector<int> ans(q);
+
 int i = 0, j = -1;
 for (auto &[l, r, ind] : query) {
     while (j < r) add(++j);

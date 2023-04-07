@@ -30,14 +30,13 @@ public:
 
 class LCA {
 public:
-    int timer = 0;
-    vector<int> depth, euler, first_occurrence, tin, tout, parent;
+    int timer = -1;
+    vector<int> depth, euler, tin, tout, parent;
     SparseTable st;
 
     LCA(int root, int n, vector<int> adj[]) {
         tin.resize(n), tout.resize(n);
         depth.resize(n), parent.resize(n);
-        first_occurrence.resize(n);
         
         dfs(root, -1, adj, 0);
         st.build(euler, depth);
@@ -48,7 +47,6 @@ public:
 
         euler.push_back(v);
         depth[v] = d, parent[v] = p;
-        first_occurrence[v] = sz(euler) - 1;
 
         for (auto &u : adj[v]) {
             if (u == p) continue;
@@ -60,7 +58,7 @@ public:
     }
 
     inline int getLCA(int a, int b) {
-        int l = first_occurrence[a], r = first_occurrence[b];
+        int l = tin[a], r = tin[b];
         if (l > r) swap(l, r);
         return st.query(l, r, depth);
     }
