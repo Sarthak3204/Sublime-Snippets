@@ -1,10 +1,10 @@
 <snippet>
 	<content><![CDATA[
 struct classcomp {
-	bool operator() (const pii& a, const pii& b) const {
-		if (a.ff != b.ff) return a.ff >= b.ff;
-		else return a.ss <= b.ss;
-	}
+    bool operator() (const pair<int, int> & a, const pair<int, int> & b) const {
+        if (a.first != b.first) return a.first < b.first;
+        else return a.second > b.second;
+    }
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
