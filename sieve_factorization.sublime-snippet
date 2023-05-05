@@ -1,7 +1,7 @@
 <snippet>
 	<content><![CDATA[
 const int N = (int)2e5;
-vector<int> isPrime(N + 1), primes;
+vector<int> isPrime(N + 1), prime;
 
 void initiate() {
     for (int i = 0; i <= N; ++i) {
@@ -17,21 +17,19 @@ void initiate() {
         }
     }
     for (int i = 0; i <= N; i++) {
-        if (isPrime[i]) primes.pb(i);
+        if (isPrime[i]) prime.push_back(i);
     }
 }
 
-vector<pii> factorize(int x) {//set N to sqrt of upper bound 
-    vector<pii> factor;
-    for (auto &i : primes)  {
+vector<pair<int, int>> factorize(int x) {//set N to sqrt of upper bound 
+    vector<pair<int, int>> factor;
+    for (auto &p : prime) {
+        if (p > x) break;
         int cnt = 0;
-        while (x % i == 0) {
-            x /= i;
-            cnt++;
-        }
-        if (cnt) factor.pb({i, cnt});
+        while (x % p == 0) x /= p, cnt++;
+        if (cnt) factor.push_back({p, cnt});
     }
-    if (x > 1) factor.pb({x, 1});
+    if (x > 1) factor.push_back({x, 1});
     return factor;
 }
 ]]></content>

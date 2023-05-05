@@ -1,29 +1,34 @@
 <snippet>
 	<content><![CDATA[
 int timer = 0;
-vector<pair<int, int>> bridges;
-vector<int> vis(n), tin(n), low(n);
+vector<int> vis(n), tin(n), low(n), cutpoint(n);
 
 function<void(int, int)> dfs = [&](int v, int p) {//Tarjan's algo
     vis[v] = 1;
     tin[v] = low[v] = timer++;
+
+    int child = 0;
     for (auto &u : adj[v]) {
         if (u == p) continue;
-        if (vis[u]) low[v] = min(low[v], low[u]);
+        if (vis[u]) low[v] = min(low[v], tin[u]);
         else {
             dfs(u, v);
             low[v] = min(low[v], low[u]);
-            if (low[u] > tin[v])
-                bridges.push_back({u, v});
+            if (p != -1 and low[u] >= tin[v])
+                cutpoint[v] = 1;
+            child++;
         }
     }
+
+    if (p == -1 and child > 1)
+        cutpoint[v] = 1;
 };
 
 for (int v = 0; v < n; v++)
     if (!vis[v]) dfs(v, -1);
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>find_bridges</tabTrigger>
+	<tabTrigger>find_articulation_point</tabTrigger>
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
 	<!-- <scope>source.python</scope> -->
 </snippet>

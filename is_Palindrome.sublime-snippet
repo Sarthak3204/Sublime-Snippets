@@ -4,10 +4,7 @@ bool is_Palindrome(string &s) {
 	int i = 0, j = sz(s) - 1;
 	while (i < j) {
 		if (s[i] != s[j]) return false;
-		else {
-			i++;
-			j--;
-		}
+		else i++, j--;
 	}
 	return true;
 }
