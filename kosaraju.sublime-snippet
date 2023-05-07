@@ -1,68 +1,55 @@
 <snippet>
 	<content><![CDATA[
 int scc = 0;
-
-vector<int> vis(n, 0), adjT[n], order;
+vector<int> vis(n), adjT[n], order;
 vector<int> root_nodes, root(n), adj_scc[n];
 
-auto kosaraju = [&]() ->void{
-
-    function <void(int)> dfs1 = [&](int v) {
-        vis[v] = 1;
-        for (auto &u : adj[v]) {
-            if (vis[u]) continue;
-            dfs1(u);
-        }
-        order.push_back(v);
-    };
-
-    for (int v = 0; v < n; v++) {
-        if (!vis[v]) {
-            dfs1(v);
-        }
+function <void(int)> dfs1 = [&](int v) {
+    vis[v] = 1;
+    for (auto &u : adj[v]) {
+        if (vis[u]) continue;
+        dfs1(u);
     }
+    order.push_back(v);
+};
 
-    reverse(order.begin(), order.end());
-    vis.assign(n, 0);
+for (int v = 0; v < n; v++)
+    if (!vis[v]) dfs1(v);
 
-    for (int v = 0; v < n; v++) {
-        for (auto &u : adj[v]) {
-            adjT[u].push_back(v);
-        }
-    }
+reverse(all(order));//decreasing order of finishing time scc1 -> scc2 -> scc3
+vis.assign(n, 0);
 
-    vector<int> components;
+for (int v = 0; v < n; v++)
+    for (auto &u : adj[v])
+        adjT[u].push_back(v);
 
-    function <void(int)> dfs2 = [&](int v) {
-        vis[v] = 1;
-        components.push_back(v);
+vector<int> components;
 
-        for (auto &u : adjT[v]) {
-            if (vis[u]) continue;
-            dfs2(u);
-        }
-    };
-
-    for (auto &v : order) {
-        if (!vis[v]) {
-            scc++;
-            dfs2(v);
-
-            root_nodes.push_back(components.front());
-            for (auto &u : components) {
-                root[u] = components.front();
-            }
-            components.clear();
-        }
-    }
-
-    for (int v = 0; v < n; v++) {
-        for (auto &u : adj[v]) {
-            if (root[v] == root[u]) continue;
-            adj_scc[root[v]].push_back(root[u]);
-        }
+function <void(int)> dfs2 = [&](int v) {
+    vis[v] = 1;
+    components.push_back(v);
+    for (auto &u : adjT[v]) {
+        if (vis[u]) continue;
+        dfs2(u);
     }
 };
+
+for (auto &v : order) {
+    if (vis[v]) continue;
+    scc++, dfs2(v);
+    
+    root_nodes.push_back(components.front());
+    for (auto &u : components) 
+        root[u] = components.front();
+    components.clear();
+}
+
+for (int v = 0; v < n; v++) {
+    for (auto &u : adj[v]) {
+        if (root[v] == root[u]) continue;
+        adj_scc[root[v]].push_back(root[u]);
+    }
+}
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>kosaraju</tabTrigger>
