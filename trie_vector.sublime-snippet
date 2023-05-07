@@ -1,0 +1,171 @@
+<snippet>
+	<content><![CDATA[
+const int N = 10;
+
+struct node {
+    node *next[N];//array of pointers which stores the address for next node
+    int WordsHere[N];//tell count of word starting having some prefix
+    int EndOfWord;
+
+    node() {
+        for (int i = 0; i < N; i++) {
+            next[i] = NULL;
+            WordsHere[i] = 0;
+        }
+
+        EndOfWord = 0;
+    }
+};
+
+class trie {
+public:
+    node *root;
+    int wordCount = 0;
+
+    trie() {
+        root = new node();//return type of new is pointer
+    }
+
+    ~trie() {
+        for (int i = 0; i < N; i++)
+            delete (*root).next[i];
+    }
+
+    void insert(vector<int> &s) {
+        wordCount++;
+
+        node *crawl = root;
+        int n = (int)s.size();
+
+        for (int i = 0; i < n; i++) {
+            int index = s[i];
+            (*crawl).WordsHere[index]++;
+
+            if ((*crawl).next[index] == NULL)
+                (*crawl).next[index] = new node();
+
+            crawl = (*crawl).next[index];
+        }
+
+        (*crawl).EndOfWord++;
+    }
+
+    int find(vector<int> &s) {
+        node *crawl = root;
+        int n = (int)s.size();
+
+        for (int i = 0; i < n; i++) {
+            int index = s[i];
+
+            if ((*crawl).next[index] == NULL)
+                return false;
+
+            crawl = (*crawl).next[index];
+        }
+
+        return (*crawl).EndOfWord;
+    }
+
+    void erase(vector<int> &s, bool allOccurence = false) {
+        node *crawl = root;
+        int n = (int)s.size();
+
+        stack<node*> st;
+        for (int i = 0; i < n; i++) {
+            st.push(crawl);
+            int index = s[i];
+
+            if ((*crawl).next[index] == NULL)
+                return;
+
+            crawl = (*crawl).next[index];
+        }
+
+        if ((*crawl).EndOfWord == 0) return;
+
+        int del = (allOccurence ? (*crawl).EndOfWord : 1);
+
+        wordCount -= del;
+        (*crawl).EndOfWord -= del;
+
+        int i = n - 1;
+        while (!st.empty()) {
+            crawl = st.top();
+            st.pop();
+
+            int index = s[i--];
+            (*crawl).WordsHere[index] -= del;
+        }
+    }
+
+    //count occurence of full vector<int> / prefix among given words
+    int count(vector<int> &s, bool prefix = false) {
+        node *crawl = root;
+        int n = (int)s.size();
+
+        for (int i = 0; i < n; i++) {
+            int index = s[i];
+
+            if ((*crawl).next[index] == NULL)
+                return 0;
+
+            if (prefix and i == n - 1)
+                return (*crawl).WordsHere[index];
+
+            crawl = (*crawl).next[index];
+        }
+
+        return (*crawl).EndOfWord;
+    }
+
+    //count words which are prefix of the given vector<int>
+    int countPrefixWord(vector<int> &s) {
+        node *crawl = root;
+        int n = (int)s.size();
+
+        int cnt = wordCount;
+        for (int i = 0; i < n; i++) {
+            int index = s[i];
+
+            for (int i = 0; i < N; i++) {
+                if (i == index) continue;
+                cnt -= (*crawl).WordsHere[i];
+            }
+
+            if ((*crawl).next[index] == NULL)
+                return cnt;
+
+            crawl = (*crawl).next[index];
+        }
+
+        for (int i = 0; i < N; i++)
+            cnt -= (*crawl).WordsHere[i];
+
+        return cnt;
+    }
+
+    //tell max length PrefixWord present among given words
+    int maxPrefixWord(vector<int> &s) {
+        node *crawl = root;
+        int n = (int)s.size();
+
+        int len = 0;
+        for (int i = 0; i < n; i++) {
+            int index = s[i];
+
+            if ((*crawl).next[index] == NULL)
+                break;
+
+            len++;
+            crawl = (*crawl).next[index];
+        }
+
+        return len;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>trie_vector</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

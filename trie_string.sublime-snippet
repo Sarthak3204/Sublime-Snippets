@@ -4,7 +4,7 @@ const int ALPHABET_SIZE = 26;
 
 struct node {
     node *next[ALPHABET_SIZE];//array of pointers which stores the address for next node
-    int WordsHere[ALPHABET_SIZE];//tell count of word starting having some prefix
+    int WordsHere[ALPHABET_SIZE];//tells count of word starting having some prefix
     int EndOfWord;
 
     node() {
@@ -12,7 +12,6 @@ struct node {
             next[i] = NULL;
             WordsHere[i] = 0;
         }
-
         EndOfWord = 0;
     }
 };
@@ -98,7 +97,7 @@ public:
         }
     }
 
-    //count occurence of full string / prefix in given words
+    //count occurence of full string / prefix among given words
     int count(string &s, bool prefix = false) {
         node *crawl = root;
         int n = (int)s.size();
@@ -143,10 +142,29 @@ public:
 
         return cnt;
     }
+
+    //tells max length PrefixWord present among given words
+    int maxPrefixWord(string &s) {
+        node *crawl = root;
+        int n = (int)s.size();
+
+        int len = 0;
+        for (int i = 0; i < n; i++) {
+            int index = s[i] - 'a';
+
+            if ((*crawl).next[index] == NULL)
+                break;
+
+            len++;
+            crawl = (*crawl).next[index];
+        }
+
+        return len;
+    }
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>trie_pointer</tabTrigger>
+	<tabTrigger>trie_string</tabTrigger>
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
 	<!-- <scope>source.python</scope> -->
 </snippet>
