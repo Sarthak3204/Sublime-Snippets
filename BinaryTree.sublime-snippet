@@ -1,0 +1,90 @@
+<snippet>
+	<content><![CDATA[
+struct node {
+    int val;
+    node *left, *right;
+    node(int data) : val(val), left(NULL), right(NULL) {}//intializer list
+};
+
+class BinaryTree {
+    node *root;
+    BinaryTree() {}
+
+    vector<int> preorder() {
+        vector<int> ans;
+
+        auto f = [&](auto && f, node * ptr) -> void {
+            if (ptr == NULL) return;
+
+            ans.push_back((*ptr).val);
+            f(f, (*ptr).left);
+            f(f, (*ptr).right);
+        };
+
+        f(f, root);
+        return ans;
+    }
+
+    vector<int> inorder() {
+        vector<int> ans;
+
+        auto f = [&](auto && f, node * ptr) -> void {
+            if (ptr == NULL) return;
+
+            f(f, (*ptr).left);
+            ans.push_back((*ptr).val);
+            f(f, (*ptr).right);
+        };
+
+        f(f, root);
+        return ans;
+    }
+
+    vector<int> postorder() {
+        vector<int> ans;
+
+        auto f = [&](auto && f, node * ptr) -> void {
+            if (ptr == NULL) return;
+
+            f(f, (*ptr).left);
+            f(f, (*ptr).right);
+            ans.push_back((*ptr).val);
+        };
+
+        f(f, root);
+        return ans;
+    }
+
+    vector<vector<int>> levelOrder(node* root) {
+        vector<vector<int>> ans;
+
+        if (root == NULL) return ans;
+
+        queue<node*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+            int siz = q.size();
+            vector<int> level;
+
+            for (int i = 0; i < siz; i++) {
+                node *v = q.front();
+                q.pop();
+
+                level.push_back((*v).val);
+                if ((*v).left != NULL) q.push((*v).left);
+                if ((*v).right != NULL) q.push((*v).right);
+            }
+
+            ans.push_back(level);
+        }
+
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>BinaryTree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
