@@ -1,0 +1,62 @@
+<snippet>
+	<content><![CDATA[
+ll floor(ll a, ll b) {
+    return a / b - ((a ^ b) < 0 && a % b);
+}
+
+bool Q;
+struct line {
+    int slope, intercept;
+    mutable int point;
+
+    line(int slope, int intercept, int point) :
+        slope(slope), intercept(intercept), point(point) {}
+
+    bool operator < (const line &rhs) const {
+        return (Q ? point < rhs.point : slope < rhs.slope);
+    }
+};
+
+class LineContainer : public line {
+public:
+    multiset<line> s;
+
+    bool check(multiset<line>::iterator x, multiset<line>::iterator y) {
+        if (y == s.end()) {
+            (*x).point = INF;
+            return false;
+        }
+
+        if ((*x).slope == (*y).slope) //parallel lines
+            (*x).point = ((*x).intercept > (*y).intercept ? INF : -INF);
+        else (*x).point = floor((*y).intercept - (*x).intercept, (*x).slope - (*y).slope);
+
+        return (*x).point >= (*y).point;//y is useless
+    }
+
+    void insert(int slope, int intercept) {
+        auto cur = s.insert(line(slope, intercept, 0));
+        auto nxt = next(cur);
+
+        while (check(cur, nxt)) nxt = s.erase(nxt);
+
+        if (cur != s.begin()) {
+            auto pre = prev(cur);
+            if (check(pre, cur)) check(pre, cur = s.erase(cur));
+
+            while ((cur = pre) != s.begin() and (*--pre).point >= (*cur).point)
+                check(pre, cur = s.erase(cur));
+        }
+    }
+
+    int query(int x) {
+        Q = 1; auto l = *s.lower_bound(line(0, 0, x)); Q = 0;
+        return l.slope * x + l.intercept;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LineContainer</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
