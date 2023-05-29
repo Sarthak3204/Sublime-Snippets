@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+vector<int> compress_array(vector<int> &arr) {
+    int n = (int)arr.size();
+    vector<int> sorted = arr;
+    sort(all(sorted));
+    sorted.erase(unique(all(sorted)), sorted.end());
+    vector<int> compressed(n);
+
+    for (int i = 0; i < n; i++)
+        compressed[i] = (lower_bound(all(sorted), arr[i]) - sorted.begin());
+
+    return compressed;
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>compress_array</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

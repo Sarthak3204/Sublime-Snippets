@@ -3,10 +3,10 @@
 #define LinearSieve
 
 const int N = (int)2e5;
-vector<int> spf(N + 1);
+int spf[N + 1];
 
 void initiate() {
-	iota(spf.begin(), spf.end(), 0);
+	iota(spf, spf + N + 1, 0);
 	for (int i = 2; i * i <= N; i++) {
 		if (spf[i] == i) {
 			for (int j = i * i; j <= N; j += i) {

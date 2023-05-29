@@ -5,20 +5,20 @@ ll floor(ll a, ll b) {
 }
 
 bool Q;
-struct line {
-    int slope, intercept;
-    mutable int point;
-
-    line(int slope, int intercept, int point) :
-        slope(slope), intercept(intercept), point(point) {}
-
-    bool operator < (const line &rhs) const {
-        return (Q ? point < rhs.point : slope < rhs.slope);
-    }
-};
-
-class LineContainer : public line {
+class LineContainer {
 public:
+    struct line {
+        int slope, intercept;
+        mutable int point;
+
+        line(int slope, int intercept, int point) :
+            slope(slope), intercept(intercept), point(point) {}
+
+        bool operator < (const line &rhs) const {
+            return (Q ? point < rhs.point : slope < rhs.slope);
+        }
+    };
+    
     multiset<line> s;
 
     bool check(multiset<line>::iterator x, multiset<line>::iterator y) {
@@ -50,6 +50,7 @@ public:
     }
 
     int query(int x) {
+        assert(!s.empty());
         Q = 1; auto l = *s.lower_bound(line(0, 0, x)); Q = 0;
         return l.slope * x + l.intercept;
     }
