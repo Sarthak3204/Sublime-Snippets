@@ -2,11 +2,11 @@
 	<content><![CDATA[
 class dsu {
 public:
-    int componenets;
+    int components;
     vector<int> parent, siz;
 
     dsu(int n) {
-        componenets = n;
+        components = n;
         siz.resize(n, 1);
         parent.resize(n);
         iota(all(parent), 0);
@@ -27,7 +27,7 @@ public:
 
         parent[b] = a;
         siz[a] += siz[b];
-        componenets--;
+        components--;
 
         return true;
     }
