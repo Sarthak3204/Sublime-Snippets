@@ -1,0 +1,18 @@
+<snippet>
+	<content><![CDATA[
+auto insertionSort = [&]() -> void {//O(n^2)
+    int n = a.size();
+    for (int i = 0; i < n; i++) {
+        int temp = a[i], j = i;
+        for (j = i; j >= 1 and a[j - 1] > temp; j--) {
+            a[j] = a[j - 1];
+        }
+        a[j] = temp;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>insertionSort</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
