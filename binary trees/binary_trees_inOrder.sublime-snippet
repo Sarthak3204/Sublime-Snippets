@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+vector<int> inOrder(Node* root) {
+    vector<int> ans;
+    auto f = [&](auto && f, Node * temp) {
+        if (!temp) return;
+        f(f, temp->left);
+        ans.push_back(temp->data);
+        f(f, temp->right);
+    };
+
+    f(f, root);
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_inOrder</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

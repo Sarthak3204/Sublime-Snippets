@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+vector<int> preOrder(Node* root) {
+    vector<int> ans;
+
+    stack<Node*> s;
+    s.push(root);
+
+    while (!s.empty()) {
+        Node *node = s.top();
+        ans.push_back(node->data);
+        s.pop();
+
+        Node *l = node->left, *r = node->right;
+
+        if (r) s.push(r);
+        if (l) s.push(l);
+    }
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_preOrder_iterative</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

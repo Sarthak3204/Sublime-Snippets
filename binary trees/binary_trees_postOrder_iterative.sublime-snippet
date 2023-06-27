@@ -1,0 +1,37 @@
+<snippet>
+	<content><![CDATA[
+vector<int> postOrder(Node* root) {
+    vector<int> ans;
+
+    stack<Node*> s;
+    Node *node = root;
+
+    while (node or !s.empty()) {
+        if (node) {
+            s.push(node);
+            node = node->left;
+        }
+        else {
+            Node *temp = s.top()->right;
+            if (!temp) {
+                temp = s.top();
+                s.pop();
+                ans.push_back(temp->data);
+                while (!s.empty() and s.top()->right == temp) {
+                    temp = s.top();
+                    s.pop();
+                    ans.push_back(temp->data);
+                }
+            }
+            else node = temp;
+        }
+    }
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_postOrder_iterative</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
