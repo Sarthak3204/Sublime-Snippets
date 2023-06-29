@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+bool isSymmetric(struct Node* root) {
+    if (root == NULL) return true;
+    auto f = [&](auto && f, Node * temp1, Node * temp2) -> bool {
+        Node *l1 = temp1->left, *r1 = temp1->right;
+        Node *l2 = temp2->left, *r2 = temp2->right;
+
+        if ((l1 and !r2) or (!l1 and r2)) return false;
+        if ((r1 and !l2) or (!r1 and l2)) return false;
+
+        if (l1 and r2) {
+            if (l1->data != r2->data) return false;
+            if (!f(f, l1, r2)) return false;
+        }
+
+        if (r1 and l2) {
+            if (r1->data != l2->data) return false;
+            if (!f(f, r1, l2)) return false;
+        }
+
+        return true;
+    };
+
+    Node *temp1 = root, *temp2 = root;
+    return f(f, temp1, temp2);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_isSymmetric</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

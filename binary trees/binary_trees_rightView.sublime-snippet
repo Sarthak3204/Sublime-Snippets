@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+vector<int> rightView(Node *root) {
+    vector<int> ans;
+    if (root == NULL) return ans;
+
+    map<int, int> mp;
+    auto f = [&](auto && f, Node * temp, int d) -> void {
+        if (mp.find(d) == mp.end()) mp[d] = temp->data;
+        Node *l = temp->left, *r = temp->right;
+        if (r) f(f, r, d + 1);
+        if (l) f(f, l, d + 1);
+    };
+
+    Node *temp = root;
+    f(f, temp, 0);
+
+    for (auto &x : mp) {
+        ans.push_back(x.second);
+    }
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_rightView</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
