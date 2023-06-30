@@ -1,0 +1,28 @@
+<snippet>
+	<content><![CDATA[
+void flatten(Node *root) {
+    auto f = [&](auto && f, Node * temp) -> Node* {
+        Node *l = temp->left, *r = temp->right;
+        if (!l and !r) return temp;
+
+        Node *temp1 = NULL, *temp2 = NULL;
+
+        if (l) temp1 = f(f, l);
+        if (r) temp2 = f(f, r);
+        if (temp1) {
+            temp1->right = r;
+            temp->right = l;
+            temp->left = NULL;
+        }
+        return (temp2 ? temp2 : temp1);
+    };
+
+    Node *temp = root;
+    f(f, temp);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_flatten</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

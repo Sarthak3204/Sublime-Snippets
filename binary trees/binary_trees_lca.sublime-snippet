@@ -1,0 +1,48 @@
+<snippet>
+	<content><![CDATA[
+Node* lca(Node* root, int n1, int n2) {
+    vector<vector<Node*>> ans;
+
+    vector<Node*> path;
+    path.push_back(root);
+
+    auto f = [&](auto & f, Node * temp) -> void {
+        if (temp->data == n1 or temp->data == n2) {
+            ans.push_back(path);
+        }
+
+        Node *l = temp->left, *r = temp->right;
+
+        if (l) {
+            path.push_back(l);
+            f(f, l);
+            path.pop_back();
+        }
+        if (r) {
+            path.push_back(r);
+            f(f, r);
+            path.pop_back();
+        }
+    };
+
+    Node *temp = root;
+    f(f, temp);
+
+    assert(ans.size() <= 2);
+
+    int n = min(ans[0].size(), ans[1].size()), ind = n - 1;
+    for (int i = 1; i < n; i++) {
+        if (ans[0][i] != ans[1][i]) {
+            ind = i - 1;
+            break;
+        }
+    }
+
+    return ans[0][ind];
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_lca</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

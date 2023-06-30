@@ -1,0 +1,36 @@
+<snippet>
+	<content><![CDATA[
+vector<int> morrisPostOrder(Node* root) {
+    vector<int> ans;
+    Node *curr = root;
+    while (curr) {
+        if (curr->right) {//need to create thread with left most child
+            Node *prev = curr->right;
+            while (prev->left and prev->left != curr)
+                prev = prev->left;
+
+            if (prev->left) {
+                prev->left = NULL;
+                curr = curr->left;
+            }
+            else {
+                prev->left = curr;
+                ans.push_back(curr->data);
+                curr = curr->right;
+            }
+        }
+        else {
+            ans.push_back(curr->data);
+            curr = curr->left;
+        }
+    }
+
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_morrisPostOrder</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

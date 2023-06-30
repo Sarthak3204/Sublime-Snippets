@@ -7,14 +7,13 @@
 	[
 		"ClearCursorsCarets",
 		"CppFastOlympicCoding",
-		"Darkula Color Scheme",
-		"LSP-clangd",
-		"Monokai - Spacegray",
+		"Material Theme",
 		"Package Control",
 		"PackageResourceViewer",
 		"SublimeAStyleFormatter",
 		"Terminus",
-		"Theme - Brogrammer",
+		"Theme - Bamboo",
+		"Theme - Cobalt2",
 	],
 	"debug": true,
 }

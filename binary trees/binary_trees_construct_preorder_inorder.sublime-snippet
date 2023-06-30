@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    int n = preorder.size();
+    unordered_map<int, int> mp;
+    for (int i = 0; i < n; i++) {
+        mp[inorder[i]] = i;
+    }
+
+    auto f = [&](auto && f, int preL, int preR, int inL, int inR) -> TreeNode* {
+        int ind = mp[preorder[preL]];
+        TreeNode *temp = new TreeNode(preorder[preL]);
+
+        int L = preL + 1, R = preL + ind - inL;
+        if (L <= R) temp->left = f(f, L, R, inL, ind - 1);
+
+        L = R + 1, R = preR;
+        if (L <= R) temp->right = f(f, L, R, ind + 1, inR);
+
+        return temp;
+    };
+
+    TreeNode *root = f(f, 0, n - 1, 0, n - 1);
+    return root;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_construct_preorder_inorder</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

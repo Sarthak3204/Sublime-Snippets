@@ -1,0 +1,42 @@
+<snippet>
+	<content><![CDATA[
+vector<int> KDistanceNodes(Node* root, int target, int k) {
+    vector<int> ans;
+    unordered_map<Node*, Node*> mp;
+    mp[root] = NULL;
+
+    Node *node;
+    auto f1 = [&](auto && f1, Node * temp) -> void {
+        if (temp->data == target) node = temp;
+        Node *l = temp->left, *r = temp->right;
+
+        if (l) mp[l] = temp, f1(f1, l);
+        if (r) mp[r] = temp, f1(f1, r);
+    };
+
+    Node *temp = root;
+    f1(f1, temp);
+
+    auto f2 = [&](auto && f2, Node * temp, Node * prev, int d) -> void {
+        if (d == k) {
+            ans.push_back(temp->data);
+            return;
+        }
+        Node *l = temp->left, *r = temp->right, *p = mp[temp];
+        if (l and l != prev) f2(f2, l, temp, d + 1);
+        if (r and r != prev) f2(f2, r, temp, d + 1);
+        if (p and p != prev) f2(f2, p, temp, d + 1);
+    };
+
+    f2(f2, node, NULL, 0);
+
+    sort(ans.begin(), ans.end());
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_KDistanceNodes</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
