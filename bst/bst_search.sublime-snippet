@@ -1,0 +1,17 @@
+<snippet>
+	<content><![CDATA[
+bool search(Node* root, int x) {
+    Node *temp = root;
+    while (temp) {
+        if (temp->data == x) return true;
+        else if (temp->data < x) temp = temp->right;
+        else temp = temp->left;
+    }
+    return false;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_search</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

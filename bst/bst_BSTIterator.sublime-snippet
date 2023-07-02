@@ -1,0 +1,36 @@
+<snippet>
+	<content><![CDATA[
+class BSTIterator {
+private:
+    stack<TreeNode*> s;
+    bool reverse = false;
+    void pushAll(TreeNode *node) {
+        TreeNode *temp = node;
+        while (temp) {
+            s.push(temp);
+            temp = (reverse ? temp->right : temp->left);
+        }
+    }
+public:
+    BSTIterator(TreeNode* root, bool reverse) {
+        this->reverse = reverse;
+        pushAll(root);
+    }
+    
+    int next() {
+        TreeNode *temp = s.top();
+        s.pop();
+        pushAll((reverse ? temp->left : temp->right));
+        return temp->val;
+    }
+    
+    bool hasNext() {
+        return !s.empty();
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_BSTIterator</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

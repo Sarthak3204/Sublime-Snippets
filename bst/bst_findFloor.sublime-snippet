@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+int findFloor(Node* root, int x) {
+    int ans = -1;
+    while (root) {
+        if (root->data <= x) {
+            ans = min(ans, root->data);
+            root = root->right;
+        }
+        else root = root->left;
+    }
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_findFloor</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

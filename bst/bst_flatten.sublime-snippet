@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+pair<Node*, Node*> f(Node *temp) {
+    Node *l = temp->left, *r = temp->right;
+    Node *head = temp, *tail = temp;
+
+    if (r) {
+        auto R = f(r);
+        temp->right = R.first;
+
+        tail = R.second;
+    }
+    if (l) {
+        auto L = f(l);
+        temp->left = NULL;
+        L.second->right = temp;
+
+        head = L.first;
+    }
+    return {head, tail};
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_flatten</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

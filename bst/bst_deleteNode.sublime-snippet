@@ -1,0 +1,48 @@
+<snippet>
+	<content><![CDATA[
+Node *deleteNode(Node *root, int x) {
+    Node *temp = root;
+    
+    if (temp->data == x) {
+        Node *l = temp->left, *r = temp->right, *now = l;
+        delete(temp);
+        if (!l) return r;
+        while (now->right) now = now->right;
+        now->right = r;
+        return l;
+    }
+    
+    while (temp) {
+        Node *l = temp->left, *r = temp->right;
+        if (l and l->data == x) {
+            Node *now = l->left, *nxt = l->right;
+            delete(l);
+            if (now) {
+                temp->left = now;
+                while (now->right) now = now->right;
+                now->right = nxt;
+            }
+            else temp->left = nxt;
+        }
+        else if (r and r->data == x) {
+            Node *now = r->left, *nxt = r->right;
+            delete(r);
+            if (now) {
+                temp->right = now;
+                while (now->right) now = now->right;
+                now->right = nxt;
+            }
+            else temp->right = nxt;
+        }
+        
+        if (x < temp->data) temp = temp->left;
+        else temp = temp->right;
+    }
+    return root;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_deleteNode</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+Node* insert(Node* root, int x) {
+    Node *temp = root;
+    while (true) {
+        if (temp->data == x) break;
+        if (x < temp->data) {
+            if (temp->left) temp = temp->left;
+            else {
+                temp->left = new Node(x);
+                break;
+            }
+        }
+        else {
+            if (temp->right) temp = temp->right;
+            else {
+                temp->right = new Node(x);
+                break;
+            }
+        }
+    }
+    return root;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_insert</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

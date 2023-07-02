@@ -1,0 +1,23 @@
+<snippet>
+	<content><![CDATA[
+int KthSmallestElement(Node *root, int k) {
+    int ans = -1;
+    auto f = [&](auto && f, Node * temp, int pos) -> int {
+        if (!temp or pos < 0) return 0;
+
+        int eleL = f(f, temp->left, pos);
+        if (eleL == pos) ans = temp->data;
+        int eleR = f(f, temp->right, pos - eleL - 1);
+
+        return eleL + eleR + 1;
+    };
+
+    f(f, root, k - 1);
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_KthSmallestElement</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

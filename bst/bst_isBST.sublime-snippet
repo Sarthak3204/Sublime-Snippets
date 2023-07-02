@@ -1,0 +1,34 @@
+<snippet>
+	<content><![CDATA[
+bool isBST(Node* root) {
+    if (root == NULL) return true;
+
+    bool ans = true;
+    auto f = [&](auto && f, Node * temp) -> pair<int, int> {
+        Node *l = temp->left, *r = temp->right;
+
+        int mini = temp->data, maxi = temp->data;
+        if (l) {
+            pair<int, int> val = f(f, l);
+            ans &= val.second < temp->data;
+            mini = val.first;
+        }
+        if (r) {
+            pair<int, int> val = f(f, r);
+            ans &= temp->data < val.first;
+            maxi = val.second;
+        }
+
+        return {mini, maxi};
+    };
+
+    f(f, root);
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_isBST</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

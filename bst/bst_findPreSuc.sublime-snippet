@@ -1,0 +1,27 @@
+<snippet>
+	<content><![CDATA[
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int x) {
+    Node *temp = root;
+    while (temp) {
+        if (x > temp->key) {
+            pre = temp;
+            temp = temp->right;
+        }
+        else temp = temp->left;
+    }
+
+    temp = root;
+    while (temp) {
+        if (x < temp->key) {
+            suc = temp;
+            temp = temp->left;
+        }
+        else temp = temp->right;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_findPreSuc</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

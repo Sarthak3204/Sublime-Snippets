@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+TreeNode* bstFromPreorder(vector<int>& preorder) {
+    int i = 0, n = preorder.size();
+
+    auto f = [&](auto && f, int ub) -> TreeNode* {
+        if (i == n or preorder[i] > ub) return NULL;
+        TreeNode *root = new TreeNode(preorder[i++]);
+        root->left = f(f, root->val);
+        root->right = f(f, ub);
+        return root;
+    };
+
+    return f(f, INT_MAX);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_bstFromPreorder</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

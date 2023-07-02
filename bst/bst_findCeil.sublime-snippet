@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+int findCeil(Node* root, int x) {
+    int ans = INT_MAX;
+    while (root) {
+        if (root->data >= x) {
+            ans = min(ans, root->data);
+            root = root->left;
+        }
+        else root = root->right;
+    }
+
+    return (ans < INT_MAX ? ans : -1);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_findCeil</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

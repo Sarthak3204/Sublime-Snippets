@@ -1,0 +1,17 @@
+<snippet>
+	<content><![CDATA[
+Node* LCA(Node *root, int n1, int n2) {
+    if (n1 > n2) swap(n1, n2);
+
+    while (root) {
+        if (n2 < root->data) root = root->left;
+        else if (n1 > root->data) root = root->right;
+        else return root;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bst_LCA</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
