@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+int diameter(Node* root) {
+    int ans = 1;
+    auto f = [&] (auto && f, Node * temp) -> int {
+        if (!temp) return 0;
+        int h1 = f(f, temp->left);
+        int h2 = f(f, temp->right);
+        ans = max(ans, h1 + h2 + 1);
+        return max(h1, h2) + 1;
+    };
+
+    f(f, root);
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>binary_trees_diameter</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
