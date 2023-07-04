@@ -1,0 +1,55 @@
+<snippet>
+	<content><![CDATA[
+class node {
+public:
+    int data, row, col;
+    node(int data, int row, int col) : data(data), row(row), col(col) {}
+};
+
+class cmp {
+public:
+    bool operator() (const node *lhs, const node *rhs) const {
+        return lhs->data > rhs->data;
+    }
+};
+
+class Solution {
+public:
+    pair<int, int> findSmallestRange(int a[][N], int n, int k) {
+        pair<int, int> ans;
+        int d = INT_MAX, maxi = -1;
+
+        priority_queue<node*, vector<node*>, cmp> q;
+
+        for (int i = 0; i < k; i++) {
+            maxi = max(maxi, a[i][0]);
+            q.push(new node(a[i][0], i, 0));
+        }
+
+        while (!q.empty()) {
+            node *b = q.top();
+            q.pop();
+            int i = b->row, j = b->col;
+
+            int D = maxi - a[i][j];
+            if (D < d) {
+                d = D;
+                ans = {a[i][j], maxi};
+            }
+            j++;
+            if (j < n and a[i][j] > maxi) {
+                maxi = a[i][j];
+            }
+            if (j < n) q.push(new node(a[i][j], i, j));
+            else break;
+        }
+
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_findSmallestRange</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,48 @@
+<snippet>
+	<content><![CDATA[
+bool isMinHeap(struct Node* root) {
+    int m = 2;
+    bool ans = true, last = false;
+    queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        int n = q.size(), cnt = 0;
+        bool check = true;
+
+        for (int i = 0; i < n; i++) {
+            Node *v = q.front(); q.pop();
+            Node *l = v->left, *r = v->right;
+
+            if (l) {
+                cnt++;
+                if (!check) ans = false;
+                ans &= v->data < l->data;
+                q.push(l);
+            }
+            else check = false;
+
+            if (r) {
+                cnt++;
+                if (!check) ans = false;
+                ans &= v->data < r->data;
+                q.push(r);
+            }
+            else check = false;
+        }
+
+        if (cnt and cnt != m) {
+            if (last) ans = false;
+            else last = true;
+        }
+
+        m *= 2;
+    }
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_is_binary_tree_MinHeap</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

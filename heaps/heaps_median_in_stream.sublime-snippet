@@ -1,0 +1,47 @@
+<snippet>
+	<content><![CDATA[
+class Solution {
+public:
+    priority_queue<int> lhs;
+    priority_queue<int, vector<int>, greater<int>> rhs;
+    
+    void insertHeap(int &x) {
+        if (lhs.empty()) {
+            lhs.push(x);
+            return;
+        }
+        if (lhs.size() == rhs.size()) {
+            int mx = lhs.top();
+            int mn = rhs.top();
+            if (x < mn) lhs.push(x);
+            else {
+                rhs.pop();
+                lhs.push(mn);
+                rhs.push(x);
+            }
+        }
+        else {
+            int mx = lhs.top();
+            if (x > mx) rhs.push(x);
+            else {
+                lhs.pop();
+                rhs.push(mx);
+                lhs.push(x);
+            }
+        }
+    }
+    
+    double getMedian() {
+        double ans;
+
+        if ((lhs.size() + rhs.size()) & 1) ans = lhs.top();
+        else ans = ((double)lhs.top() + rhs.top()) / 2;
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_median_in_stream</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

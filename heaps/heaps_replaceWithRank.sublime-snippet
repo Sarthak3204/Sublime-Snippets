@@ -1,0 +1,35 @@
+<snippet>
+	<content><![CDATA[
+vector<int> replaceWithRank(vector<int> &a, int n) {
+    auto cmp = [&](const int &lhs, const int &rhs) {//comparator works revrse in priority_queue
+        if (a[lhs] != a[rhs]) return a[lhs] > a[rhs];
+        else return lhs > rhs;
+    };
+
+    priority_queue<int, vector<int>, decltype(cmp)> q(cmp);
+
+    vector<int> ans(n);
+    for (int i = 0; i < n; i++) {
+        q.push(i);
+    }
+
+    int i = 1, prev = -1;
+    while (!q.empty()) {
+        int j = q.top();
+        if (prev != -1 and a[j] == a[prev]) {
+            ans[j] = ans[prev];
+        }
+        else {
+            ans[j] = i++;
+            prev = j;
+        }
+        q.pop();
+    }
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_replaceWithRank</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

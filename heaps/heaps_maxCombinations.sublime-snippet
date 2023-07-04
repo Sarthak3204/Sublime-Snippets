@@ -1,0 +1,38 @@
+<snippet>
+	<content><![CDATA[
+vector<int> maxCombinations(int n, int k, vector<int> &a, vector<int> &b) {
+    sort(a.begin(), a.end(), greater<int>());
+    sort(b.begin(), b.end(), greater<int>());
+
+    auto cmp = [&](const auto & lhs, const auto & rhs) {
+        return a[lhs.first] + b[lhs.second] < a[rhs.first] + b[rhs.second];
+    };
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> q(cmp);
+    set<pair<int, int>> s;
+
+    s.insert({0, 0}), q.push({0, 0});
+
+    vector<int> ans;
+    while (ans.size() < k and !q.empty()) {
+        auto p = q.top();
+        int i = p.first, j = p.second;
+
+        ans.push_back(a[i] + b[j]);
+        q.pop();
+
+        if (i + 1 < n and s.find({i + 1, j}) == s.end())
+            s.insert({i + 1, j}), q.push({i + 1, j});
+
+        if (j + 1 < n and s.find({i, j + 1}) == s.end())
+            s.insert({i, j + 1}), q.push({i, j + 1});
+    }
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_maxCombinations</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
