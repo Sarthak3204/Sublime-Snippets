@@ -58,7 +58,7 @@ public:
             int index = s[i];
 
             if ((*crawl).next[index] == NULL)
-                return false;
+                return 0;
 
             crawl = (*crawl).next[index];
         }

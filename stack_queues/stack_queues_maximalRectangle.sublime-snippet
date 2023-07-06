@@ -1,0 +1,56 @@
+<snippet>
+	<content><![CDATA[
+int largestRectangleArea(vector<int>& heights) {
+    int n = heights.size();
+    vector<int> NSE1(n, n), NSE2(n, -1);
+    stack<int> s;
+
+    for (int i = 0; i < n; i++) {
+        while (!s.empty() and heights[i] < heights[s.top()]) {
+            NSE1[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    while (!s.empty()) s.pop();
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!s.empty() and heights[i] < heights[s.top()]) {
+            NSE2[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans = max(ans, heights[i] * (NSE1[i] - NSE2[i] - 1));
+    }
+    return ans;
+}
+
+int maximalRectangle(vector<vector<char>> &matrix) {
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    vector dp(n, vector<int>(m));
+    vector<int> heights(m);
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (matrix[i][j] == '1') heights[j]++;
+            else heights[j] = 0;
+        }
+        ans = max(ans, largestRectangleArea(heights));
+    }
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_maximalRectangle</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+class MyQueue {
+private:
+    int arr[100005];
+    int front;
+    int rear;
+
+public :
+    MyQueue() {front = 0; rear = 0;}
+    void push(int);
+    int pop();
+};
+
+//Function to push an element x in a queue.
+void MyQueue :: push(int x) {
+    arr[rear++] = x;
+}
+
+//Function to pop an element from queue and return that element.
+int MyQueue :: pop() {
+    return (front != rear ? arr[front++] : -1);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_queue_using_arrays</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

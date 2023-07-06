@@ -1,0 +1,41 @@
+<snippet>
+	<content><![CDATA[
+struct QueueNode {
+    int data;
+    QueueNode *next;
+    QueueNode(int a) {
+        data = a;
+        next = NULL;
+    }
+};
+
+And structure of MyQueue
+struct MyQueue {
+    QueueNode *front;
+    QueueNode *rear;
+    void push(int);
+    int pop();
+    MyQueue() {front = rear = NULL;}
+};
+
+//Function to push an element into the queue.
+void MyQueue:: push(int x) {
+    QueueNode *temp = new QueueNode(x);
+    if (!front) front = temp;
+    if (rear) rear->next = temp;
+    rear = temp;
+}
+
+//Function to pop front element from the queue.
+int MyQueue :: pop() {
+    if (!front) return -1;
+    int ans = front->data;
+    front = front->next;
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_queue_using_linked_list</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

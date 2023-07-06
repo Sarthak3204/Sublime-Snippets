@@ -1,0 +1,28 @@
+<snippet>
+	<content><![CDATA[
+bool isBalanced(string t) {
+    stack<char> s;
+    for (auto &c : t) {
+        if (c == ')') {
+            if (s.empty() or s.top() != '(') return false;
+            s.pop();
+        }
+        else if (c == '}') {
+            if (s.empty() or s.top() != '{') return false;
+            s.pop();
+        }
+        else if (c == ']') {
+            if (s.empty() or s.top() != '[') return false;
+            s.pop();
+        }
+        else s.push(c);
+    }
+
+    return s.empty();
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_isBalanced</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
