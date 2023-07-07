@@ -1,0 +1,85 @@
+<snippet>
+	<content><![CDATA[
+class LRUCache {
+public:
+    //Constructor for initializing the cache capacity with the given value.
+    class Node {
+    public:
+        int key, data;
+        Node *prev, *next;
+
+        Node() :
+            key(-1), data(-1), prev(NULL), next(NULL) {}
+
+        Node(int key, int data) :
+            key(key), data(data), prev(NULL), next(NULL) {}
+    };
+
+    int capacity;
+    Node *head = new Node();
+    Node *tail = new Node();
+
+    unordered_map<int, Node*> mp;
+    LRUCache(int capacity) : capacity(capacity) {
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int GET(int key) {
+        auto it = mp.find(key);
+        if (it != mp.end()) {
+            Node *p = it->second;
+
+            Node *left = p->prev;
+            Node *right = p->next;
+
+            left->next = right;
+            right->prev = left;
+
+            Node *nxt = head->next;
+
+            head->next = p;
+            nxt->prev = p;
+
+            p->next = nxt;
+            p->prev = head;
+
+            return p->data;
+        }
+        return -1;
+    }
+
+    void SET(int key, int value) {
+        auto it = mp.find(key);
+        if (it != mp.end()) {
+            GET(key);
+            head->next->data = value;
+        }
+        else {
+            if (mp.size() == capacity) {
+                Node *pre = tail->prev;
+                tail->prev = pre->prev;
+                pre->prev->next = tail;
+                mp.erase(pre->key);
+                delete(pre);
+            }
+
+            Node *p = new Node(key, value);
+            Node *nxt = head->next;
+
+            head->next = p;
+            nxt->prev = p;
+
+            p->next = nxt;
+            p->prev = head;
+
+            mp[key] = p;
+        }
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>linked_list_LRUCache</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

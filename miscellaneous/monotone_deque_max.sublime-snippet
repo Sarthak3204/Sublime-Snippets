@@ -13,7 +13,7 @@ struct monotone_deque {
         if (!q.empty() and q.front() == x)
             q.pop_front();
     }
-    T getmin() {
+    T getmax() {
         return (!q.empty() ? q.front() : INT_MIN);
     }
 };
