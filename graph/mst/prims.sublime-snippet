@@ -1,0 +1,31 @@
+<snippet>
+    <content><![CDATA[
+vector<pair<int, int>> mst;
+auto prims = [&]() -> int {
+    int ans = 0;
+    vector<int> vis(n);
+
+    set<array<int, 3>> s;
+    s.insert({0, 0, -1});
+
+    while (!s.empty() and (int)mst.size() < n - 1) {
+        auto [wt, v, p] = *s.begin();
+        s.erase(s.begin());
+
+        if (vis[v]) continue;
+        vis[v] = 1, ans += wt;
+        if (p != -1) mst.push_back({v, p});
+
+        for (auto &[u, w] : adj[v]) {
+            if (vis[u]) continue;
+            s.insert({w, u, v});
+        }
+    }
+    return ans;
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>shortest_path_prims</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
