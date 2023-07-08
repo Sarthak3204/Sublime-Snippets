@@ -1,10 +1,9 @@
 <snippet>
 	<content><![CDATA[
 vector<int> dist(n, INF), parent(n, -1);
-
-auto dijkstra = [&] (int source) {//non negative weight
+auto dijkstra = [&](int source) {
     dist[source] = 0;
-    set<pair<int, int>> s;//dist,node
+    set<pair<int, int>> s;
     s.insert({0, source});
 
     while (!s.empty()) {
@@ -21,11 +20,11 @@ auto dijkstra = [&] (int source) {//non negative weight
                 s.insert({dist[u], u});
             }
         }
-    }//O((V+E)log(V))
+    }
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>dijkstra</tabTrigger>
+	<tabTrigger>shortest_path_dijkstra_set</tabTrigger>
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
 	<!-- <scope>source.python</scope> -->
 </snippet>

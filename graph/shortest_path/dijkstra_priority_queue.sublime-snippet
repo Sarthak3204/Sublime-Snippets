@@ -1,0 +1,29 @@
+<snippet>
+    <content><![CDATA[
+vector<int> dist(n, INF), parent(n, -1);
+auto dijkstra = [&] (int source) {
+    dist[source] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+    q.push({0, source});
+
+    while (!q.empty()) {
+        auto [d, v] = q.top();
+        q.pop();
+
+        if (d > dist[v]) continue;
+        for (auto &[u, wt] : adj[v]) {
+            if (dist[v] + wt < dist[u]) {
+                dist[u] = dist[v] + wt;
+                parent[u] = v;
+
+                q.push({dist[u], u});
+            }
+        }
+    }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>shortest_path_dijkstra_priority_queue</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
