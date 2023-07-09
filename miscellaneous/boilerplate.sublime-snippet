@@ -2,7 +2,7 @@
 	<content><![CDATA[
 #include<bits/stdc++.h>
 #define int            long long
-#define sz(x)          (ll)(x.size())
+#define sz(x)          (int)(x.size())
 #define all(x)         x.begin(), x.end()
 
 using namespace std;
