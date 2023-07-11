@@ -11,10 +11,10 @@ auto dijkstra = [&](int source) {
         s.erase(s.begin());
 
         for (auto &[u, wt] : adj[v]) {
-            if (dist[v] + wt < dist[u]) {
+            if (d + wt < dist[u]) {
                 s.erase({dist[u], u});
 
-                dist[u] = dist[v] + wt;
+                dist[u] = d + wt;
                 parent[u] = v;
 
                 s.insert({dist[u], u});

@@ -12,8 +12,8 @@ auto dijkstra = [&] (int source) {
 
         if (d > dist[v]) continue;
         for (auto &[u, wt] : adj[v]) {
-            if (dist[v] + wt < dist[u]) {
-                dist[u] = dist[v] + wt;
+            if (d + wt < dist[u]) {
+                dist[u] = d + wt;
                 parent[u] = v;
 
                 q.push({dist[u], u});

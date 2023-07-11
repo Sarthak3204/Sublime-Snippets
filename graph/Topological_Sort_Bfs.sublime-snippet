@@ -1,25 +1,30 @@
 <snippet>
 	<content><![CDATA[
 function<vector<int>()> Topological_Sort_Bfs = [&]() {
-	vector<int> topo, In_Degree(n, 0);
+	vector<int> topo, inDegree(n);
 	
-	for (int v = 0; v < n; v++)
-		for (auto &u : adj[v])
-			In_Degree[u]++;
+	for (int v = 0; v < n; v++) {
+		for (auto &u : adj[v]) {
+			inDegree[u]++;
+		}
+	}
 	
 	queue<int> q;
 	
-	for (int i = 0; i < n; i++)
-		if (!In_Degree[i])
+	for (int i = 0; i < n; i++) {
+		if (!inDegree[i]) {
 			q.push(i);
+		}
+	}
 	
 	while (!q.empty()) {
 		int v = q.front(); q.pop();
 		topo.push_back(v);
 		for (auto &u : adj[v]) {
-			In_Degree[u]--;
-			if (!In_Degree[u])
+			inDegree[u]--;
+			if (!inDegree[u]) {
 				q.push(u);
+			}
 		}
 	}
 	
