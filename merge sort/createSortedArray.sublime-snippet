@@ -1,0 +1,54 @@
+<snippet>
+    <content><![CDATA[
+int createSortedArray(vector<int> &nums) {
+    const int mod = (int)1e9 + 7;
+
+    int n = nums.size();
+    vector<int> ind(n), mini(n), maxi(n);
+    iota(ind.begin(), ind.end(), 0);
+
+    auto merge = [&](int lo, int mid, int hi) {
+        for (int j = mid + 1, L = lo, R = lo; j <= hi; j++) {
+            while (L <= mid and nums[ind[L]] < nums[ind[j]]) L++;
+            while (R <= mid and nums[ind[R]] <= nums[ind[j]]) R++;
+            mini[ind[j]] += L - lo;
+            maxi[ind[j]] += mid - R + 1;
+        }
+
+        int i = lo, j = mid + 1, k = 0;
+        int arr[hi - lo + 1];
+        while (i <= mid and j <= hi) {
+            if (nums[ind[i]] <= nums[ind[j]]) arr[k++] = ind[i++];
+            else arr[k++] = ind[j++];
+        }
+
+        while (i <= mid) arr[k++] = ind[i++];
+        while (j <= hi) arr[k++] = ind[j++];
+
+        for (int k = lo; k <= hi; k++) {
+            ind[k] = arr[k - lo];
+        }
+    };
+
+    auto f = [&](auto && f, int lo, int hi) {
+        if (lo >= hi) return;
+        int mid = (lo + hi) / 2;
+        f(f, lo, mid);
+        f(f, mid + 1, hi);
+        merge(lo, mid, hi);
+    };
+
+    f(f, 0, n - 1);
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans += min(mini[i], maxi[i]);
+        ans %= mod;
+    }
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>merge_sort_createSortedArray</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

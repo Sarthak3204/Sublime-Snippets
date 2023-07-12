@@ -1,0 +1,50 @@
+<snippet>
+    <content><![CDATA[
+//https://leetcode.com/problems/number-of-pairs-satisfying-inequality/description/
+long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
+    int n = nums1.size();
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) {
+        nums[i] = nums1[i] - nums2[i];
+    }
+
+    long long ans = 0;
+    auto merge = [&](int lo, int mid, int hi) {
+        for (int i = lo, j = mid + 1; j <= hi; j++) {
+            while (i <= mid and nums[i] <= nums[j] + diff) i++;
+            ans += i - lo;
+        }
+
+        int i = lo, j = mid + 1, k = 0;
+        int a[hi - lo + 1];
+        while (i <= mid and j <= hi) {
+            if (nums[i] <= nums[j]) a[k++] = nums[i++];
+            else a[k++] = nums[j++];
+        }
+
+        while (i <= mid) a[k++] = nums[i++];
+        while (j <= hi) a[k++] = nums[j++];
+
+        for (int i = lo; i <= hi; i++) {
+            nums[i] = a[i - lo];
+        }
+    };
+
+    auto f = [&](auto && f, int lo, int hi) {
+        if (lo >= hi) return;
+        int mid = (lo + hi) / 2;
+        f(f, lo, mid);
+        f(f, mid + 1, hi);
+        merge(lo, mid, hi);
+    };
+
+    f(f, 0, n - 1);
+
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>merge_sort_numberOfPairs</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

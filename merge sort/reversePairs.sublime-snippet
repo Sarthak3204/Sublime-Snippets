@@ -1,0 +1,52 @@
+<snippet>
+    <content><![CDATA[
+//https://leetcode.com/problems/reverse-pairs/
+int reversePairs(vector<int>& nums) {
+    int n = nums.size();
+    int ans = 0;
+
+    auto merge = [&](int lo, int mid, int hi) {
+        vector<int> a;
+        int i = lo, j = mid + 1;
+
+        while (j <= hi) {
+            while (i <= mid and nums[i] <= 2ll * nums[j]) i++;
+            ans += mid - i + 1, j++;
+        }
+
+        i = lo, j = mid + 1;
+        while (i <= mid and j <= hi) {
+            if (nums[i] <= nums[j]) {
+                a.push_back(nums[i++]);
+            }
+            else {
+                a.push_back(nums[j++]);
+            }
+        }
+
+        while (i <= mid) a.push_back(nums[i++]);
+        while (j <= hi) a.push_back(nums[j++]);
+
+        for (int i = lo; i <= hi; i++) {
+            nums[i] = a[i - lo];
+        }
+    };
+
+    auto f = [&](auto && f, int lo, int hi) {
+        if (lo >= hi) return;
+        int mid = (lo + hi) / 2;
+        f(f, lo, mid);
+        f(f, mid + 1, hi);
+        merge(lo, mid, hi);
+    };
+
+    f(f , 0, n - 1);
+
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>merge_sort_reversePairs</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
