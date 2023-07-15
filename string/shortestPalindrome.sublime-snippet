@@ -1,0 +1,38 @@
+<snippet>
+    <content><![CDATA[
+//https://leetcode.com/problems/shortest-palindrome/submissions/994490835/
+vector<int> prefix_function(string &s) {
+    int n = s.size();
+    vector<int> pi(n);
+    for (int i = 1; i < n; i++) {
+        int j = pi[i - 1];
+        while (j and s[i] != s[j]) j = pi[j - 1];
+        if (s[i] == s[j]) j++;
+        pi[i] = j;
+    }
+    return pi;
+}
+
+string shortestPalindrome(string s) {
+    int n = s.size();
+    if (!n) return "";
+
+    string t = s + '?';//to avoid edges case aabba by inserting 1 out of bound character
+    reverse(s.begin(), s.end());
+    t += s;
+
+    vector<int> pi = prefix_function(t);
+
+    reverse(s.begin(), s.end());
+    t = s.substr(min(n, pi.back()));
+    reverse(t.begin(), t.end());
+
+    t += s;
+    return t;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>string_shortestPalindrome</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

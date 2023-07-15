@@ -1,52 +1,51 @@
 <snippet>
 	<content><![CDATA[
 ListNode* sortList(ListNode* head) {
-    if (head == NULL) return NULL;
+    if (head == NULL) return head;
 
-    ListNode* temp = head;
-    vector<ListNode*> a;
+    auto merge = [&](ListNode * i, ListNode * j) {
+        ListNode *head = NULL, *temp = head;
 
-    int n = 0;
-    while (temp) {
-        n++;
-        a.push_back(temp);
-        temp = temp->next;
-    }
-
-    auto merge = [&] (int lo, int mid, int hi) {
-        vector<ListNode*> b;
-
-        int i = lo, j = mid + 1;
-        while (i <= mid and j <= hi) {
-            if (a[i]->val <= a[j]->val) b.push_back(a[i++]);
-            else b.push_back(a[j++]);
+        while (i and j) {
+            if (i->val <= j->val) {
+                if (!head) head = i;
+                else temp->next = i;
+                temp = i, i = i->next;
+            }
+            else {
+                if (!head) head = j;
+                else temp->next = j;
+                temp = j, j = j->next;
+            }
         }
 
-        while (i <= mid) b.push_back(a[i++]);
-        while (j <= hi) b.push_back(a[j++]);
+        if (i) temp->next = i;
+        if (j) temp->next = j;
 
-        assert(b.size() == hi - lo + 1);
-        for (int k = lo; k <= hi; k++) {
-            a[k] = b[k - lo];
+        return head;
+    };
+
+    function<ListNode*(ListNode*)> mergeSort = [&](ListNode * head) {
+        if (head->next == NULL) return head;
+
+        ListNode *slow = head, *fast = head;
+        while (fast->next and fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
+
+        ListNode *nxt = slow->next, *temp;
+        slow->next = NULL;
+
+        ListNode *h1 = mergeSort(head);
+        ListNode *h2 = mergeSort(nxt);
+
+        ListNode *got = merge(h1, h2);
+
+        return got;
     };
 
-    function<void(int, int)> mergeSort = [&] (int lo, int hi) {
-        if (lo >= hi) return;
-        int mid = (lo + hi) / 2;
-
-        mergeSort(lo, mid);
-        mergeSort(mid + 1, hi);
-
-        merge(lo, mid, hi);
-    };
-
-    mergeSort(0, n - 1);
-    for (int i = 0; i < n; i++) {
-        a[i]->next = (i < n - 1 ? a[i + 1] : NULL);
-    }
-
-    return a[0];
+    return mergeSort(head);
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
