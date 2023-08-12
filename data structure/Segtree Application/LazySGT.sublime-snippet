@@ -1,6 +1,7 @@
 <snippet>
 	<content><![CDATA[
-struct LazySGT {
+class LazySGT {
+public:
 	vector<int> tree, updates, lazy;
 	int s = 1, IDENTITY_ELEMENT = 0, IDENTITY_UPDATE = 0;
 
@@ -10,7 +11,7 @@ struct LazySGT {
 
 		tree.resize(2 * s, IDENTITY_ELEMENT);
 		lazy.resize(2 * s, 0);
-		updates.resize(2 * s);
+		updates.resize(2 * s, IDENTITY_UPDATE);
 
 		for (int i = 0; i < n; i++)
 			tree[s + i] = a[i];
@@ -34,7 +35,7 @@ struct LazySGT {
 	int query(int l, int r, int node, int lo, int hi) {
 		pushdown(node, lo, hi);
 		if (l <= lo and hi <= r) return tree[node];
-		else if (lo > r or hi < l) return IDENTITY_ELEMENT;
+		if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
 		int mid = (lo + hi) / 2;
 		int left = query(l, r, 2 * node, lo , mid);
@@ -43,18 +44,18 @@ struct LazySGT {
 		return merge(left, right);
 	}
 
-	void update(int l, int r, int node, int lo, int hi, int val) {
+	void update(int l, int r, int node, int lo, int hi, int upd) {
 		pushdown(node, lo, hi);
 		if (l <= lo and hi <= r) {
-			apply(node, val);
+			apply(node, upd);
 			pushdown(node, lo, hi);
 			return;
 		}
-		else if (lo > r or hi < l) return;
+		if (lo > r or hi < l) return;
 
 		int mid = (lo + hi) / 2;
-		update(l, r, 2 * node, lo , mid, val);
-		update(l, r, 2 * node + 1, mid + 1, hi, val);
+		update(l, r, 2 * node, lo , mid, upd);
+		update(l, r, 2 * node + 1, mid + 1, hi, upd);
 
 		tree[node] = merge(tree[2 * node], tree[2 * node + 1]);
 	}
@@ -63,8 +64,8 @@ struct LazySGT {
 		return query(l, r, 1, 0, s - 1);
 	}
 
-	void update(int l, int r, int val) {
-		update(l, r, 1, 0, s - 1, val);
+	void update(int l, int r, int upd) {
+		update(l, r, 1, 0, s - 1, upd);
 	}
 
 	int merge(int left, int right) {
@@ -75,9 +76,9 @@ struct LazySGT {
         tree[node] += (hi - lo + 1) * upd;
     }
 
-	void apply(int node, int val) {
+	void apply(int node, int upd) {
 		lazy[node] = 1;
-		updates[node] += val;
+		updates[node] += upd;
 	}
 };
 ]]></content>

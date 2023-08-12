@@ -1,13 +1,12 @@
 <snippet>
 	<content><![CDATA[
-//coordinate compression
-sort(all(coordinate));
-coordinate.erase(unique(all(coordinate)), coordinate.end());
+sort(all(coord));
+coord.erase(unique(all(coord)), coord.end());
 
-int m = coordinate.size();
+int m = coord.size();
 map<int, int> mp;
 for (int i = 0; i < m; i++)
-    mp[coordinate[i]] = i;
+    mp[coord[i]] = i;
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>coordinate_compression</tabTrigger>

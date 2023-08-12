@@ -19,7 +19,7 @@ public:
 
     int query(int l, int r, int node, int lo, int hi) {
         if (l <= lo and hi <= r) return tree[node];
-        else if (lo > r or hi < l) return IDENTITY_ELEMENT;
+        if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
         int mid = (lo + hi) / 2;
         int left = query(l, r, 2 * node, lo , mid);
@@ -33,7 +33,7 @@ public:
             apply(node, val);
             return;
         }
-        else if (lo > r or hi < l) return;
+        if (lo > r or hi < l) return;
 
         int mid = (lo + hi) / 2;
         update(l, r, val, 2 * node, lo , mid);

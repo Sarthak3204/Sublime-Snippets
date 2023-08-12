@@ -2,16 +2,16 @@
 	<content><![CDATA[
 class BinaryLifting {
 public:
-    int LOG, timer = 0;
+    int LOG, timer = -1;
     vector<int> depth, tin, tout, parent;
     vector<vector<int>> up;
 
     BinaryLifting(int root, int n, vector<int> adj[]) {
         LOG = 32 - __builtin_clz(n);
-        tin.resize(n);
-        tout.resize(n);
-        depth.resize(n);
-        parent.resize(n);
+        
+        tin.resize(n), tout.resize(n);
+        depth.resize(n), parent.resize(n);
+        
         up.resize(n, vector<int>(LOG, root));
         dfs(root, -1, adj);
     }
@@ -57,15 +57,15 @@ public:
         return up[a][0];
     }
 
-    inline int getDistance(int a, int b) {
+    int getDistance(int a, int b) {
         return depth[a] + depth[b] - 2 * depth[getLCA(a, b)];
     }
 
-    inline bool isAncestor(int a, int b) {//whether a is ancestor of b
+    bool isAncestor(int a, int b) {//whether a is ancestor of b
         return (tin[a] <= tin[b] and tout[b] <= tout[a]);
     }
 
-    inline bool onPath(int x, int a, int b) { //whether x is on path from a to b
+    bool onPath(int x, int a, int b) { //whether x is on path from a to b
         return ((isAncestor(x, a) or isAncestor(x, b)) and isAncestor(getLCA(a, b), x));
     }
     

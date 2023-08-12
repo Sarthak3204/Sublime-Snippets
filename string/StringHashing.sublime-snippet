@@ -20,7 +20,7 @@ int bexp(int a, int b, int m) {
 
 pair<int, int> pw[N], ipw[N];
 
-void precompute() {
+void precompute() {//Dont forget to call it
     pw[0] = {1, 1}, ipw[0] = {1, 1};
     ip1 = bexp(p1, mod1 - 2, mod1);
     ip2 = bexp(p2, mod2 - 2, mod2);
@@ -39,8 +39,8 @@ public:
     int n;
     vector<pair<int, int>> hash;
     HashedString(string &s) {
-        int _n = static_cast<int>(s.size());
-        n = _n, hash.resize(n);
+        this->n = static_cast<int>(s.size());
+        hash.resize(n);
 
         hash[0] = {s[0], s[0]};
         for (int i = 1; i < n; i++) {
