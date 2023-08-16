@@ -21,7 +21,7 @@ public:
         if (l <= lo and hi <= r) return tree[node];
         if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
-        int mid = (lo + hi) / 2;
+        int mid = midpoint(lo, hi);
         int left = query(l, r, 2 * node, lo , mid);
         int right = query(l, r, 2 * node + 1, mid + 1, hi);
 
@@ -35,7 +35,7 @@ public:
         }
         if (lo > r or hi < l) return;
 
-        int mid = (lo + hi) / 2;
+        int mid = midpoint(lo, hi);
         update(l, r, val, 2 * node, lo , mid);
         update(l, r, val, 2 * node + 1, mid + 1, hi);
 

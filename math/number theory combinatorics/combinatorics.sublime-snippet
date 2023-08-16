@@ -1,32 +1,30 @@
 <snippet>
 	<content><![CDATA[
-#define NCR
-
 const int N = (int)2e5;
 int inv[N + 1], fact[N + 1], inv_fact[N + 1];
 
 void initiate() {
-	inv[1] = fact[0] = inv_fact[0] = 1;
-	for (int i = 2; i <= N; i++) {
-		inv[i] = ((ll)(mod - mod / i) * inv[mod % i]) % mod;
-	}
-	for (int i = 1; i <= N; i++) {
-		fact[i] = ((ll)fact[i - 1] * i) % mod;
-		inv_fact[i] = ((ll)inv_fact[i - 1] * inv[i]) % mod;
-	}
+    inv[1] = fact[0] = inv_fact[0] = 1;
+    for (int i = 2; i <= N; i++)
+        inv[i] = ((long long)(mod - mod / i) * inv[mod % i]) % mod;
+
+    for (int i = 1; i <= N; i++) {
+        fact[i] = ((ll)fact[i - 1] * i) % mod;
+        inv_fact[i] = ((long long)inv_fact[i - 1] * inv[i]) % mod;
+    }
 }
 
 int ncr(int n, int r) {
-	if (n < 0 || r < 0 || r > n) return 0;
-	return ((ll)fact[n] * inv_fact[n - r] % mod) * inv_fact[r] % mod;
+    if (n < 0 || r < 0 || r > n) return 0;
+    return ((long long)fact[n] * inv_fact[n - r] % mod) * inv_fact[r] % mod;
 }
 
 int ncr_linear(int n, int r) {
-	if (n < 0 || r < 0 || r > n) return 0;
-	ll ans = 1;
-	for (int i = n - r + 1; i <= n; i++) 
-		ans = ((ll)ans * (i % mod)) % mod;
-	return (ll)ans * inv_fact[r] % mod;
+    if (n < 0 || r < 0 || r > n) return 0;
+    ll ans = 1;
+    for (int i = n - r + 1; i <= n; i++)
+        ans = (ans * (i % mod)) % mod;
+    return ans * inv_fact[r] % mod;
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

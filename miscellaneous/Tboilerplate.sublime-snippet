@@ -14,34 +14,20 @@ using ll = long long;
 #define deb(x...)
 #endif
 
-const int mod = (int)1e9 + 7;
 const ll INF = (ll)1e18;
+const int mod = (int)1e9 + 7;
 
 void solve() {
     $0
 }
 
-signed main() {
+int32_t main() {
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-#ifdef NCR
-    initiate();
-#endif
-
-#ifdef Sieve
-    initiate();
-#endif
-
-#ifdef LinearSieve
-    initiate();
-#endif
-
-    int TESTS = 1; cin >> TESTS;
-    for (int T = 1; T <= TESTS; T++) {
-        solve();
-    }
+    int t = 1; cin >> t;
+    while (t--) solve();
 
     return 0;
 }

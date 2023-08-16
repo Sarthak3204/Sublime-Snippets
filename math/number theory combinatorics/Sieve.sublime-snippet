@@ -1,30 +1,24 @@
 <snippet>
 	<content><![CDATA[
-#define Sieve
-
 const int N = (int)2e5;
 
 int isPrime[N + 1];
 vector<int> prime;
 
 void initiate(bool store = false) {
-    for (int i = 0; i <= N; ++i) {
-        if (i & 1) isPrime[i] = 1;
-        else isPrime[i] = 0;
-    }
-    isPrime[0] = 0, isPrime[1] = 0, isPrime[2] = 1;
+    for (int i = 0; i <= N; ++i)
+        isPrime[i] = (i & 1);
+
+    isPrime[1] = 0, isPrime[2] = 1;
     for (int i = 3; i * i <= N; i += 2) {
-        if (isPrime[i]) {
-            for (int j = i * i; j <= N; j += (2 * i)) {
-                isPrime[j] = 0;
-            }
-        }
+        if (!isPrime[i]) continue;
+        for (int j = i * i; j <= N; j += 2 * i)
+            isPrime[j] = 0;
     }
-    if (store) {
-        for (int i = 2; i <= N; i++) {
-            if (isPrime[i]) prime.push_back(i);
-        }
-    }
+
+    if (!store) return;
+    for (int i = 2; i <= N; i++)
+        if (isPrime[i]) prime.push_back(i);
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
