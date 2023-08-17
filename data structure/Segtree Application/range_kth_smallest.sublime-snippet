@@ -1,0 +1,106 @@
+<snippet>
+    <content><![CDATA[
+//https://judge.yosupo.jp/problem/range_kth_smallest
+#include<bits/stdc++.h>
+#define sz(x)          (int)(x.size())
+#define all(x)         x.begin(), x.end()
+
+using namespace std;
+
+class SegTree {
+public:
+    vector<vector<int>> tree;
+    int s = 1;
+
+    SegTree(vector<int> &a) {
+        int n = static_cast<int>(a.size());
+        while (s < n) s *= 2;
+        tree.resize(2 * s);
+
+        for (int i = 0; i < n; i++)
+            tree[s + i] = {a[i]};
+
+        for (int i = s - 1; i >= 1; i--)
+            tree[i] = merge(tree[2 * i], tree[2 * i + 1]);
+    }
+
+    int query(int l, int r, int node, int lo, int hi, int k) {
+        if (lo == hi) return tree[node][0];
+
+        int mid = midpoint(lo, hi);
+        int p = upper_bound(all(tree[2 * node]), r) - lower_bound(all(tree[2 * node]), l);
+
+        if (p >= k) return query(l, r, 2 * node, lo , mid, k);
+        return query(l, r, 2 * node + 1, mid + 1, hi, k - p);
+    }
+
+    void update(int i, int val) {
+        apply(s + i, val);
+        for (int j = (s + i) / 2; j >= 1; j /= 2) {
+            tree[j] = merge(tree[2 * j], tree[2 * j + 1]);
+        }
+    }
+
+    int query(int l, int r, int k) {
+        return query(l, r, 1, 0, s - 1, k);
+    }
+
+    void apply(int node, int val) {
+        tree[node] = {val};
+        return;
+    }
+
+    vector<int> merge(vector<int> &left, vector<int> &right) {
+        int N = left.size(), M = right.size();
+
+        vector<int> v(N + M);
+        int i = 0, j = 0, p = 0;
+        while (i < N and j < M) {
+            if (left[i] <= right[j]) v[p] = left[i++];
+            else v[p] = right[j++];
+            p++;
+        }
+
+        while (i < N) v[p++] = left[i++];
+        while (j < M) v[p++] = right[j++];
+
+        assert(p == N + M);
+        return v;
+    }
+};
+
+int32_t main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int N, Q;
+    cin >> N >> Q;
+
+    vector<int> A(N);
+    for (auto &x : A) cin >> x;
+
+    vector<int> order(N);
+    iota(all(order), 0);
+
+    sort(all(order), [&](const auto & lhs, const auto & rhs) {
+        if (A[lhs] != A[rhs]) return A[lhs] < A[rhs];
+        return lhs < rhs;
+    });
+
+    SegTree st(order);
+
+    while (Q--) {
+        int l, r, k;
+        cin >> l >> r >> k;
+        cout << A[st.query(l, --r, k + 1)] << "\n";
+    }
+
+    return 0;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>range_kth_smallest</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

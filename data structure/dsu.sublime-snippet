@@ -18,13 +18,15 @@ public:
     }
 
     bool unite(int a, int b) {
-        a = find(a), b = find(b);
+        a = find(a);
+        b = find(b);
         if (a == b) return false;
-
+        
         if (siz[a] < siz[b]) swap(a, b);
 
-        parent[b] = a, siz[a] += siz[b];
         components--;
+        parent[b] = a;
+        siz[a] += siz[b];
 
         return true;
     }

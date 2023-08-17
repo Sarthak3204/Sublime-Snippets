@@ -1,0 +1,54 @@
+<snippet>
+    <content><![CDATA[
+class dsu_rollback {
+public:
+    int components;
+    vector<int> rank, parent;
+    stack<array<int, 4>> op;//a, b, rankA, rankB
+
+    dsu_rollback() {}
+    dsu_rollback(int n) {
+        components = n;
+        rank.resize(n);
+        parent.resize(n);
+        iota(all(parent), 0);
+    }
+
+    int find(int v) {
+        return (v == parent[v] ? v : find(parent[v]));
+    }
+
+    bool unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return false;
+
+        if (rank[a] < rank[b]) swap(a, b);
+        op.push({a, b, rank[a], rank[b]});
+
+        components--;
+        parent[b] = a;
+        rank[a] += rank[a] == rank[b];
+
+        return true;
+    }
+
+    void rollback() {
+        if (op.empty()) return;
+
+        auto [a, b, rankA, rankB] = op.top();
+        op.pop();
+
+        components++;
+        parent[a] = a;
+        parent[b] = b;
+        rank[a] = rankA;
+        rank[b] = rankB;
+    }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>dsu_rollback</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
