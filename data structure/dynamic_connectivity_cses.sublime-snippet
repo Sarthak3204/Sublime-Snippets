@@ -1,41 +1,19 @@
 <snippet>
     <content><![CDATA[
+//https://cses.fi/problemset/task/2133/
 #include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-
+ 
 #define sz(x)          (int)(x.size())
 #define all(x)         x.begin(), x.end()
-
+ 
 using namespace std;
-using namespace __gnu_pbds;
-
-struct custom_hash {
-    static uint64_t splitmix64(uint64_t x) {
-        // http://xorshift.di.unimi.it/splitmix64.c
-        x += 0x9e3779b97f4a7c15;
-        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
-        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
-        return x ^ (x >> 31);
-    }
-
-    size_t operator()(uint64_t x) const {
-        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
-        return splitmix64(x + FIXED_RANDOM);
-    }
-
-    template<typename L, typename R>
-    size_t operator()(pair<L, R> const& Y) const {
-        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
-        return splitmix64(Y.first * 31ull + Y.second + FIXED_RANDOM);
-    }
-};
-
+ 
 class dsu_rollback {
 public:
     int components;
     vector<int> rank, parent;
     stack<array<int, 4>> op;//a, b, rankA, rankB
-
+ 
     dsu_rollback() {}
     dsu_rollback(int n) {
         components = n;
@@ -43,32 +21,32 @@ public:
         parent.resize(n);
         iota(all(parent), 0);
     }
-
+ 
     int find(int v) {
         return (v == parent[v] ? v : find(parent[v]));
     }
-
+ 
     bool unite(int a, int b) {
         a = find(a);
         b = find(b);
         if (a == b) return false;
-
+ 
         if (rank[a] < rank[b]) swap(a, b);
         op.push({a, b, rank[a], rank[b]});
-
+ 
         components--;
         parent[b] = a;
         rank[a] += rank[a] == rank[b];
-
+ 
         return true;
     }
-
+ 
     void rollback() {
         if (op.empty()) return;
-
+ 
         auto [a, b, rankA, rankB] = op.top();
         op.pop();
-
+ 
         components++;
         parent[a] = a;
         parent[b] = b;
@@ -76,112 +54,112 @@ public:
         rank[b] = rankB;
     }
 };
-
+ 
 class Dynamic_Connectivity {
 public:
     dsu_rollback d;
     vector<int> ans;
     vector<vector<array<int, 3>>> tree;//a, b, united
     int s = 1;
-
+ 
     Dynamic_Connectivity(int q, int n) {
         while (s < q) s *= 2;
         ans.resize(s);
         tree.resize(2 * s);
         d = dsu_rollback(n);
     }
-
+ 
     void update(int a, int b, int l, int r, int node, int lo, int hi) {
         if (l <= lo and hi <= r) {
             tree[node].push_back({a, b, 0});
             return;
         }
         if (lo > r or hi < l) return;
-
+ 
         int mid = midpoint(lo, hi);
         update(a, b, l, r, 2 * node, lo, mid);
         update(a, b, l, r, 2 * node + 1, mid + 1, hi);
     }
-
+ 
     void update(int a, int b, int l, int r) {//[l, r] -> active
         update(a, b, l, r, 1, 0, s - 1);
     }
-
+ 
     void dfs(int node, int lo, int hi) {
         for (auto &[a, b, united] : tree[node])
             united = d.unite(a, b);
-
+ 
         if (lo != hi) {
             int mid = midpoint(lo, hi);
             dfs(2 * node, lo, mid);
             dfs(2 * node + 1, mid + 1, hi);
         }
         else ans[lo] = d.components;
-
+ 
         for (auto &[a, b, united] : tree[node])
             if (united) d.rollback();
     }
-
+ 
     void dfs() {
         dfs(1, 0, s - 1);
     }
 };
-
+ 
 int32_t main() {
-
+ 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
+ 
     int n, m, q;
     cin >> n >> m >> q;
-
-    gp_hash_table<pair<int, int>, int, custom_hash> mp;
+ 
+    vector<map<int, int>> mp(n);
     vector<pair<int, int>> edges;
-
+ 
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
         if (a > b) swap(a, b);
-
-        pair<int, int> p = make_pair(--a, --b);
-        edges.push_back(p);
-        mp[p] = 0;
+        a--, b--;
+ 
+        edges.emplace_back(a, b);
+        mp[a][b] = 0;
     }
-
+ 
     Dynamic_Connectivity dc(q + 1, n);
     for (int i = 1; i <= q; i++) {
         int op, a, b;
         cin >> op >> a >> b;
         if (a > b) swap(a, b);
-
-        pair<int, int> p = make_pair(--a, --b);
+        a--, b--;
+ 
         if (--op) {
-            auto it = mp.find(p);
+            auto it = mp[a].find(b);
             dc.update(a, b, it->second, i - 1);
             it->second = -1;
         }
         else {
-            edges.push_back(p);
-            mp[p] = i;
+            edges.emplace_back(a, b);
+            mp[a][b] = i;
         }
     }
-
-    for (auto &p : edges) {
-        int val = mp[p];
+ 
+    for (auto &[a, b] : edges) {
+        int val = mp[a][b];
         if (val != -1) {
-            dc.update(p.first, p.second, val, q);
+            dc.update(a, b, val, q);
         }
     }
-
+ 
     dc.dfs();
     for (int i = 0; i <= q; i++)
         cout << dc.ans[i] << " ";
-
+ 
     return 0;
 }
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>Dynamic_Connectivity</tabTrigger>
+    <tabTrigger>Dynamic_Connectivity_cses</tabTrigger>
     <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <!-- <scope>source.python</scope> -->
 </snippet>

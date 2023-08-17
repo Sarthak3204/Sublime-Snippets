@@ -1,0 +1,163 @@
+<snippet>
+    <content><![CDATA[
+//https://codeforces.com/gym/100551/problem/A
+#include<bits/stdc++.h>
+ 
+#define sz(x)          (int)(x.size())
+#define all(x)         x.begin(), x.end()
+ 
+using namespace std;
+ 
+class dsu_rollback {
+public:
+    int components;
+    vector<int> rank, parent;
+    stack<array<int, 4>> op;//a, b, rankA, rankB
+ 
+    dsu_rollback() {}
+    dsu_rollback(int n) {
+        components = n;
+        rank.resize(n);
+        parent.resize(n);
+        iota(all(parent), 0);
+    }
+ 
+    int find(int v) {
+        return (v == parent[v] ? v : find(parent[v]));
+    }
+ 
+    bool unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return false;
+ 
+        if (rank[a] < rank[b]) swap(a, b);
+        op.push({a, b, rank[a], rank[b]});
+ 
+        components--;
+        parent[b] = a;
+        rank[a] += rank[a] == rank[b];
+ 
+        return true;
+    }
+ 
+    void rollback() {
+        if (op.empty()) return;
+ 
+        auto [a, b, rankA, rankB] = op.top();
+        op.pop();
+ 
+        components++;
+        parent[a] = a;
+        parent[b] = b;
+        rank[a] = rankA;
+        rank[b] = rankB;
+    }
+};
+ 
+class Dynamic_Connectivity {
+public:
+    dsu_rollback d;
+    vector<int> ans;
+    vector<vector<array<int, 3>>> tree;//a, b, united
+    int s = 1;
+ 
+    Dynamic_Connectivity(int q, int n) {
+        while (s < q) s *= 2;
+        ans.resize(s);
+        tree.resize(2 * s);
+        d = dsu_rollback(n);
+    }
+ 
+    void update(int a, int b, int l, int r, int node, int lo, int hi) {
+        if (l <= lo and hi <= r) {
+            tree[node].push_back({a, b, 0});
+            return;
+        }
+        if (lo > r or hi < l) return;
+ 
+        int mid = midpoint(lo, hi);
+        update(a, b, l, r, 2 * node, lo, mid);
+        update(a, b, l, r, 2 * node + 1, mid + 1, hi);
+    }
+ 
+    void update(int a, int b, int l, int r) {//[l, r] -> active
+        update(a, b, l, r, 1, 0, s - 1);
+    }
+ 
+    void dfs(int node, int lo, int hi) {
+        for (auto &[a, b, united] : tree[node])
+            united = d.unite(a, b);
+ 
+        if (lo != hi) {
+            int mid = midpoint(lo, hi);
+            dfs(2 * node, lo, mid);
+            dfs(2 * node + 1, mid + 1, hi);
+        }
+        else ans[lo] = d.components;
+ 
+        for (auto &[a, b, united] : tree[node])
+            if (united) d.rollback();
+    }
+ 
+    void dfs() {
+        dfs(1, 0, s - 1);
+    }
+};
+ 
+int32_t main() {
+ 
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+    int n, q;
+    cin >> n >> q;
+ 
+    vector<map<int, int>> mp(n);
+    vector<pair<int, int>> edges;
+ 
+    vector<int> query;
+    Dynamic_Connectivity dc(q, n);
+ 
+    for (int i = 0; i < q; i++) {
+        char cmd;
+        cin >> cmd;
+ 
+        int a, b;
+        if (cmd != '?') {
+            cin >> a >> b;
+            if (a > b) swap(a, b);
+            a--, b--;
+        }
+ 
+        if (cmd == '+') {
+            edges.emplace_back(a, b);
+            mp[a][b] = i;
+        }
+        else if (cmd == '-') {
+            auto it = mp[a].find(b);
+            dc.update(a, b, it->second, i - 1);
+            it->second = -1;
+        }
+        else query.push_back(i);
+    }
+ 
+    for (auto &[a, b] : edges) {
+        int start = mp[a][b];
+        if (start != -1)
+            dc.update(a, b, start, q - 1);
+    }
+ 
+    dc.dfs();
+ 
+    for (auto &i : query)
+        cout << dc.ans[i] << "\n";
+ 
+    return 0;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>dynamic_connectivity_cf</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
