@@ -75,7 +75,7 @@ public:
         int right = depth[b] - depth[lca];
         assert(0 <= k and k <= left + right);
         if (k < left) return kthAncestor(k, a);
-        else return kthAncestor(left + right - k, b);
+        return kthAncestor(left + right - k, b);
     }
 };
 ]]></content>

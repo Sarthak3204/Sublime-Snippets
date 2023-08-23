@@ -1,0 +1,253 @@
+<snippet>
+    <content><![CDATA[
+//https://cses.fi/problemset/task/2134/
+#include<bits/stdc++.h>
+using namespace std;
+
+class SparseTable {
+public:
+    int n;
+    vector<int> lg;
+    vector<vector<int>> table;
+
+    void build(vector<int> &euler, vector<int> &depth) {
+        n = static_cast<int>(euler.size());
+
+        lg.resize(n + 1);
+        for (int i = 2; i <= n; i++)
+            lg[i] = lg[i / 2] + 1;
+
+        table.resize(lg[n] + 1);
+        table[0] = euler;
+
+        for (int j = 1; j <= lg[n]; j++) {
+            table[j].resize(n - (1 << j) + 1);
+            for (int i = 0; i + (1 << j) - 1 < n; i++) {
+                int left = table[j - 1][i], right = table[j - 1][i + (1 << (j - 1))];
+                table[j][i] = (depth[left] < depth[right] ? left : right);
+            }
+        }
+    }
+
+    int query(int l, int r, vector<int> &depth) {
+        int j = lg[r - l + 1];
+        int left = table[j][l], right = table[j][r - (1 << j) + 1];
+        return (depth[left] < depth[right] ? left : right);
+    }
+};
+
+class SegTree {
+public:
+    vector<int> tree;
+    int s = 1, IDENTITY_ELEMENT = 0;
+
+    void build(vector<int> &tourList, vector<int> &arr) {
+        int n = static_cast<int>(tourList.size());
+        while (s < n) s *= 2;
+        tree.resize(2 * s, IDENTITY_ELEMENT);
+
+        for (int i = 0; i < n; i++)
+            tree[s + i] = arr[tourList[i]];
+
+        for (int i = s - 1; i >= 1; i--)
+            tree[i] = merge(tree[2 * i], tree[2 * i + 1]);
+    }
+
+    void update(int i, int val) {
+        apply(s + i, val);
+        for (int j = (s + i) / 2; j >= 1; j /= 2) {
+            tree[j] = merge(tree[2 * j], tree[2 * j + 1]);
+        }
+    }
+
+    int query(int lo, int hi) {
+        int ans = 0;
+        for (lo += s, hi += s; lo <= hi; lo /= 2, hi /= 2) {
+            if (lo & 1) ans = max(ans, tree[lo++]);
+            if (!(hi & 1)) ans = max(ans, tree[hi--]);
+        }
+        return ans;
+    }
+
+    void apply(int node, int val) {
+        tree[node] = val;
+        return;
+    }
+
+    int merge(int left, int right) {
+        return max(left, right);
+    }
+};
+
+class HLD {
+public:
+    int tour = 0, timer = -1;
+    vector<int> subtree, depth, tin, tout, parent;
+    vector<int> euler, heavyRoot;
+    vector<int> tourList, tourStart, &arr;
+    SparseTable st;
+    SegTree segT;
+
+    HLD(int root, int n, vector<int> adj[], vector<int> &arr) : arr(arr) {
+        tin.resize(n), tout.resize(n);
+        depth.resize(n), parent.resize(n);
+        subtree.resize(n), tourList.resize(n);
+        tourStart.resize(n), heavyRoot.resize(n);
+
+        dfs(root, -1, adj);
+        dfsTour(root, false, adj);
+        st.build(euler, depth);
+        segT.build(tourList, arr);
+    }
+
+    void dfs(int v, int p, vector<int> adj[]) {
+        parent[v] = p, subtree[v] = 1;
+        depth[v] = p < 0 ? 0 : depth[p] + 1;
+
+        for (auto &u : adj[v]) {
+            if (u == p) continue;
+            dfs(u, v, adj);
+            subtree[v] += subtree[u];
+        }
+        // Heavy-light subtree reordering.
+        sort(adj[v].begin(), adj[v].end(), [&](const int &a, const int &b) {
+            return subtree[a] > subtree[b];
+        });
+    }
+
+    void dfsTour(int v, bool heavy, vector<int> adj[]) {
+        tin[v] = ++timer;
+
+        heavyRoot[v] = heavy ? heavyRoot[parent[v]] : v;
+
+        tourList[tour] = v;
+        tourStart[v] = tour++;
+
+        euler.push_back(v);
+
+        bool heavyChild = true;
+        for (auto &u : adj[v]) {
+            if (u == parent[v]) continue;
+            dfsTour(u, heavyChild, adj);
+            euler.push_back(v);
+            heavyChild = false;
+        }
+
+        tout[v] = ++timer;
+    }
+
+
+    inline int getLCA(int a, int b) {
+        int l = tin[a], r = tin[b];
+        if (l > r) swap(l, r);
+        return st.query(l, r, depth);
+    }
+
+    inline int getDistance(int a, int b) {
+        return depth[a] + depth[b] - 2 * depth[getLCA(a, b)];
+    }
+
+    inline bool isAncestor(int a, int b) {//whether a is ancestor of b
+        return (tin[a] <= tin[b] and tout[b] <= tout[a]);
+    }
+
+    inline bool onPath(int x, int a, int b) { //whether x is on path from a to b
+        return ((isAncestor(x, a) or isAncestor(x, b)) and isAncestor(getLCA(a, b), x));
+    }
+
+    int kthAncestor(int k, int a) {
+        if (k > depth[a]) return -1;
+        while (a >= 0) {
+            int root = heavyRoot[a];
+            if (k <= depth[a] - depth[root]) {
+                return tourList[tourStart[a] - k];
+            }
+            else {
+                k -= depth[a] - depth[root] + 1;
+                a = parent[root];
+            }
+        }
+        return a;
+    }
+
+    int kthNodeOnPath(int k, int a, int b) {
+        int lca = getLCA(a, b);
+        int left = depth[a] - depth[lca];
+        int right = depth[b] - depth[lca];
+        if (0 <= k and k <= left + right) {
+            if (k < left) return kthAncestor(k, a);
+            return kthAncestor(left + right - k, b);
+        }
+        return -1;
+    }
+
+    int query(int a, int b) {
+        int lca = getLCA(a, b), ans = 0;
+        auto calc = [&](int l, int r) -> void {
+            while (true) {
+                int h1 = heavyRoot[l], h2 = heavyRoot[r];
+                if (h1 != h2) {
+                    ans = max(ans, segT.query(tourStart[h2], tourStart[r]));
+                    r = parent[h2];
+                }
+                else {
+                    ans = max(ans, segT.query(tourStart[l], tourStart[r]));
+                    break;
+                }
+            }
+        };
+        calc(lca, a), calc(lca, b);
+        return ans;
+    }
+
+    void update(int s, int x) {
+        segT.update(tourStart[s], x);
+    }
+};
+
+int32_t main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, q;
+    cin >> n >> q;
+
+    vector<int> a(n);
+    for (auto &x : a) cin >> x;
+
+    vector<int> adj[n];
+    for (int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--; v--;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    HLD H(0, n, adj, a);
+
+    while (q--) {
+        int op;
+        cin >> op;
+        if (--op) {
+            int u, v;
+            cin >> u >> v;
+            int ans = H.query(--u, --v);
+            cout << ans << "\n";
+        }
+        else {
+            int v, x;
+            cin >> v >> x;
+            H.update(--v, x);
+        }
+    }
+
+    return 0;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>HLD_path_update_max</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

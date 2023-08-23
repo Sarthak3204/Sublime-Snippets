@@ -1,0 +1,16 @@
+<snippet>
+    <content><![CDATA[
+int query(int lo, int hi) {
+    int ans = 0;
+    for (lo += s, hi += s; lo <= hi; lo /= 2, hi /= 2) {
+        if (lo & 1) ans = merge(ans, tree[lo++]);
+        if (!(hi & 1)) ans = merge(ans, tree[hi--]);
+    }
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>iterative_query</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
