@@ -1,9 +1,6 @@
 <snippet>
 	<content><![CDATA[
-#include<bits/stdc++.h>
-#define int            long long
-#define sz(x)          (int)(x.size())
-#define all(x)         x.begin(), x.end()
+#include "bits/stdc++.h"
 
 using namespace std;
 using ll = long long;
@@ -14,7 +11,14 @@ using ll = long long;
 #define deb(x...)
 #endif
 
-const ll INF = (ll)1e18;
+#define int         long long
+#define sz(x)       (int)(x.size())
+#define all(x)      x.begin(), x.end()
+#define uid(a, b)   uniform_int_distribution<long long>(a, b)(rng)
+
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+const int INF = (ll)1e18;
 const int mod = (int)1e9 + 7;
 
 int32_t main() {

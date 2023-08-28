@@ -1,9 +1,5 @@
 <snippet>
     <content><![CDATA[
-//https://cses.fi/problemset/task/2134/
-#include<bits/stdc++.h>
-using namespace std;
-
 class SparseTable {
 public:
     int n;
@@ -83,7 +79,7 @@ class HLD {
 public:
     int tour = 0, timer = -1;
     vector<int> subtree, depth, tin, tout, parent;
-    vector<int> euler, heavyRoot;
+    vector<int> euler, first_occurrence, heavyRoot;
     vector<int> tourList, tourStart, &arr;
     SparseTable st;
     SegTree segT;
@@ -93,6 +89,7 @@ public:
         depth.resize(n), parent.resize(n);
         subtree.resize(n), tourList.resize(n);
         tourStart.resize(n), heavyRoot.resize(n);
+        first_occurrence.resize(n);
 
         dfs(root, -1, adj);
         dfsTour(root, false, adj);
@@ -129,6 +126,7 @@ public:
         for (auto &u : adj[v]) {
             if (u == parent[v]) continue;
             dfsTour(u, heavyChild, adj);
+
             euler.push_back(v);
             heavyChild = false;
         }
@@ -141,6 +139,11 @@ public:
         int l = tin[a], r = tin[b];
         if (l > r) swap(l, r);
         return st.query(l, r, depth);
+        // if MLE then reomve SparseTable and use logN for lca query
+        // for (; heavyRoot[a] != heavyRoot[b]; a = parent[heavyRoot[a]])
+        //     if (depth[heavyRoot[a]] < depth[heavyRoot[b]]) swap(a, b);
+        // if (depth[a] > depth[b]) swap(a, b);
+        // return a;
     }
 
     inline int getDistance(int a, int b) {
@@ -182,21 +185,15 @@ public:
     }
 
     int query(int a, int b) {
-        int lca = getLCA(a, b), ans = 0;
-        auto calc = [&](int l, int r) -> void {
-            while (true) {
-                int h1 = heavyRoot[l], h2 = heavyRoot[r];
-                if (h1 != h2) {
-                    ans = max(ans, segT.query(tourStart[h2], tourStart[r]));
-                    r = parent[h2];
-                }
-                else {
-                    ans = max(ans, segT.query(tourStart[l], tourStart[r]));
-                    break;
-                }
-            }
-        };
-        calc(lca, a), calc(lca, b);
+        int ans = 0;
+        for (; heavyRoot[a] != heavyRoot[b]; a = parent[heavyRoot[a]]) {
+            if (depth[heavyRoot[a]] < depth[heavyRoot[b]]) swap(a, b);
+            ans = max(ans, segT.query(tourStart[heavyRoot[a]], tourStart[a]));
+        }
+
+        if (depth[a] > depth[b]) swap(a, b);
+        ans = max(ans, segT.query(tourStart[a], tourStart[b]));
+
         return ans;
     }
 
@@ -205,49 +202,9 @@ public:
     }
 };
 
-int32_t main() {
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int n, q;
-    cin >> n >> q;
-
-    vector<int> a(n);
-    for (auto &x : a) cin >> x;
-
-    vector<int> adj[n];
-    for (int i = 1; i < n; i++) {
-        int u, v;
-        cin >> u >> v;
-        u--; v--;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-
-    HLD H(0, n, adj, a);
-
-    while (q--) {
-        int op;
-        cin >> op;
-        if (--op) {
-            int u, v;
-            cin >> u >> v;
-            int ans = H.query(--u, --v);
-            cout << ans << "\n";
-        }
-        else {
-            int v, x;
-            cin >> v >> x;
-            H.update(--v, x);
-        }
-    }
-
-    return 0;
-}
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>HLD_path_update_max</tabTrigger>
+    <tabTrigger>HLD_segment_tree</tabTrigger>
     <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <!-- <scope>source.python</scope> -->
 </snippet>

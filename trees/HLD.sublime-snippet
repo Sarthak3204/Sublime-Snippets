@@ -92,6 +92,11 @@ public:
         int l = tin[a], r = tin[b];
         if (l > r) swap(l, r);
         return st.query(l, r, depth);
+        // if MLE then reomve SparseTable and use logN for lca query
+        // for (; heavyRoot[a] != heavyRoot[b]; a = parent[heavyRoot[a]])
+        //     if (depth[heavyRoot[a]] < depth[heavyRoot[b]]) swap(a, b);
+        // if (depth[a] > depth[b]) swap(a, b);
+        // return a;
     }
 
     inline int getDistance(int a, int b) {

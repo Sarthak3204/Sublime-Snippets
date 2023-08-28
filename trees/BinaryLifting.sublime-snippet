@@ -12,31 +12,30 @@ public:
         tin.resize(n), tout.resize(n);
         depth.resize(n), parent.resize(n);
         
-        up.resize(n, vector<int>(LOG, root));
+        up.resize(LOG, vector<int>(n, root));
         dfs(root, -1, adj);
     }
 
     void dfs(int v, int p, vector<int> adj[]) {
         tin[v] = ++timer;
         parent[v] = p;
+
         for (auto &u : adj[v]) {
             if (u == p) continue;
             depth[u] = depth[v] + 1;
-            up[u][0] = v;
-            for (int i = 1; i < LOG; i++) {
-                up[u][i] = up[up[u][i - 1]][i - 1];
-            }
+
+            up[0][u] = v;
+            for (int i = 1; i < LOG; i++) 
+                up[i][u] = up[i - 1][up[i - 1][u]];
+                
             dfs(u, v, adj);
         }
         tout[v] = ++timer;
     }
 
     int kthAncestor(int k, int v) {
-        for (int i = LOG - 1; i >= 0; i--) {
-            if ((k >> i) & 1) {
-                v = up[v][i];
-            }
-        }
+        for (int i = LOG - 1; i >= 0; i--) 
+            if ((k >> i) & 1) v = up[i][v];
         return v;
     }
 
@@ -48,13 +47,13 @@ public:
         if (a == b) return a;
 
         for (int i = LOG - 1; i >= 0; i--) {
-            if (up[a][i] != up[b][i]) {
-                a = up[a][i];
-                b = up[b][i];
+            if (up[i][a] != up[i][b]) {
+                a = up[i][a];
+                b = up[i][b];
             }
         }
 
-        return up[a][0];
+        return up[0][a];
     }
 
     int getDistance(int a, int b) {

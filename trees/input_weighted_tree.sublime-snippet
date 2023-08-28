@@ -4,7 +4,7 @@ vector<pair<int, int>> adj[n];
 for (int i = 1; i < n; i++) {
     int u, v, wt;
     cin >> u >> v >> wt;
-    u--; v--;
+    u--, v--;
     adj[u].push_back({v, wt});
     adj[v].push_back({u, wt});
 }
