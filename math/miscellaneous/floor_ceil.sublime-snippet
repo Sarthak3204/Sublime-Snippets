@@ -1,10 +1,10 @@
 <snippet>
 	<content><![CDATA[
-long long floor(long long a, long long b) {
-    return a / b - ((a ^ b) < 0 && a % b);
+ll floor (ll a, ll b) {
+    return a / b - ((a ^ b) < 0 and a % b);
 }
 
-long long ceil(long long a, long long b) {
+ll ceil (ll a, ll b) {
     return floor(a, b) + (a % b != 0);
 }
 ]]></content>

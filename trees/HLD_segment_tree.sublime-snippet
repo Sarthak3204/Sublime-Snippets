@@ -78,8 +78,8 @@ public:
 class HLD {
 public:
     int tour = 0, timer = -1;
-    vector<int> subtree, depth, tin, tout, parent;
-    vector<int> euler, first_occurrence, heavyRoot;
+    vector<int> subtree, depth, tin, tout;
+    vector<int> parent, euler, heavyRoot;
     vector<int> tourList, tourStart, &arr;
     SparseTable st;
     SegTree segT;
@@ -89,7 +89,6 @@ public:
         depth.resize(n), parent.resize(n);
         subtree.resize(n), tourList.resize(n);
         tourStart.resize(n), heavyRoot.resize(n);
-        first_occurrence.resize(n);
 
         dfs(root, -1, adj);
         dfsTour(root, false, adj);

@@ -3,13 +3,13 @@
 class BinaryLifting {
 public:
     int LOG, timer = -1;
-    vector<int> depth, tin, tout, parent;
+    vector<int> depth, tin, tout, parent, euler;
     vector<vector<int>> up;
 
     BinaryLifting(int root, int n, vector<int> adj[]) {
         LOG = 32 - __builtin_clz(n);
         
-        tin.resize(n), tout.resize(n);
+        tin.resize(n), tout.resize(n), euler.resize(n);
         depth.resize(n), parent.resize(n);
         
         up.resize(LOG, vector<int>(n, root));
@@ -19,7 +19,8 @@ public:
     void dfs(int v, int p, vector<int> adj[]) {
         tin[v] = ++timer;
         parent[v] = p;
-
+        
+        euler.push_back(v);
         for (auto &u : adj[v]) {
             if (u == p) continue;
             depth[u] = depth[v] + 1;
@@ -30,6 +31,8 @@ public:
                 
             dfs(u, v, adj);
         }
+        euler.push_back(v);
+        
         tout[v] = ++timer;
     }
 
