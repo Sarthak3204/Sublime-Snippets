@@ -2,15 +2,14 @@
 	<content><![CDATA[
 class SparseTable {
 public:
-    int n; 
+    int n;
     vector<int> lg;
     vector<vector<int>> table;
 
-    void build(vector<int> &euler, vector<int> &depth) {
-        n = static_cast<int>(euler.size()); 
-        
-        lg.resize(n + 1); 
-        for (int i = 2; i <= n; i++) 
+    SparseTable() {}
+    SparseTable(vector<int> &euler, vector<int> &depth) : n(size(euler)) {
+        lg.resize(n + 1);
+        for (int i = 2; i <= n; i++)
             lg[i] = lg[i / 2] + 1;
 
         table.resize(lg[n] + 1);
@@ -38,12 +37,9 @@ public:
     vector<int> depth, euler, tin, tout, parent;
     SparseTable st;
 
-    LCA(int root, int n, vector<int> adj[]) {
-        tin.resize(n), tout.resize(n);
-        depth.resize(n), parent.resize(n);
-        
+    LCA(int root, int n, vector<int> adj[]) : tin(n), tout(n), depth(n), parent(n) {
         dfs(root, -1, adj, 0);
-        st.build(euler, depth);
+        st = SparseTable(euler, depth);
     }
 
     void dfs(int v, int p, vector<int> adj[], int d) {

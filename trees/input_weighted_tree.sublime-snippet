@@ -5,8 +5,8 @@ for (int i = 1; i < n; i++) {
     int u, v, wt;
     cin >> u >> v >> wt;
     u--, v--;
-    adj[u].push_back({v, wt});
-    adj[v].push_back({u, wt});
+    adj[u].emplace_back(v, wt);
+    adj[v].emplace_back(u, wt);
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

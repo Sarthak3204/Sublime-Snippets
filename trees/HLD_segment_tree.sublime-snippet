@@ -6,9 +6,8 @@ public:
     vector<int> lg;
     vector<vector<int>> table;
 
-    void build(vector<int> &euler, vector<int> &depth) {
-        n = static_cast<int>(euler.size());
-
+    SparseTable() {}
+    SparseTable(vector<int> &euler, vector<int> &depth) : n(size(euler)) {
         lg.resize(n + 1);
         for (int i = 2; i <= n; i++)
             lg[i] = lg[i / 2] + 1;
@@ -37,30 +36,31 @@ public:
     vector<int> tree;
     int s = 1, IDENTITY_ELEMENT = 0;
 
-    void build(vector<int> &tourList, vector<int> &arr) {
-        int n = static_cast<int>(tourList.size());
-        while (s < n) s *= 2;
-        tree.resize(2 * s, IDENTITY_ELEMENT);
+    SegTree() {}
+    SegTree(vector<int> &tourList, vector<int> &arr) {
+        int n = size(tourList);
+        while (s < n) s <<= 1;
+        tree.resize(s << 1, IDENTITY_ELEMENT);
 
         for (int i = 0; i < n; i++)
             tree[s + i] = arr[tourList[i]];
 
         for (int i = s - 1; i >= 1; i--)
-            tree[i] = merge(tree[2 * i], tree[2 * i + 1]);
+            tree[i] = merge(tree[i << 1], tree[i << 1 | 1]);
     }
 
     void update(int i, int val) {
         apply(s + i, val);
-        for (int j = (s + i) / 2; j >= 1; j /= 2) {
-            tree[j] = merge(tree[2 * j], tree[2 * j + 1]);
+        for (int j = (s + i) >> 1; j >= 1; j >>= 1) {
+            tree[j] = merge(tree[j << 1], tree[j << 1 | 1]);
         }
     }
 
     int query(int lo, int hi) {
         int ans = 0;
-        for (lo += s, hi += s; lo <= hi; lo /= 2, hi /= 2) {
-            if (lo & 1) ans = max(ans, tree[lo++]);
-            if (!(hi & 1)) ans = max(ans, tree[hi--]);
+        for (lo += s, hi += s; lo <= hi; lo >>= 1, hi >>= 1) {
+            if (lo & 1) ans = merge(ans, tree[lo++]);
+            if (!(hi & 1)) ans = merge(ans, tree[hi--]);
         }
         return ans;
     }
@@ -78,22 +78,17 @@ public:
 class HLD {
 public:
     int tour = 0, timer = -1;
-    vector<int> subtree, depth, tin, tout;
-    vector<int> parent, euler, heavyRoot;
-    vector<int> tourList, tourStart, &arr;
+    bool val_edges = false;
+    vector<int> tin, tout, depth, parent, subtree, tourList, tourStart, heavyRoot, euler, &arr;
     SparseTable st;
     SegTree segT;
 
-    HLD(int root, int n, vector<int> adj[], vector<int> &arr) : arr(arr) {
-        tin.resize(n), tout.resize(n);
-        depth.resize(n), parent.resize(n);
-        subtree.resize(n), tourList.resize(n);
-        tourStart.resize(n), heavyRoot.resize(n);
-
+    HLD(int root, int n, vector<int> adj[], vector<int> &arr, bool val_edges = false) :
+        tin(n), tout(n), depth(n), parent(n), subtree(n), tourList(n), tourStart(n), heavyRoot(n), arr(arr), val_edges(val_edges) {
         dfs(root, -1, adj);
         dfsTour(root, false, adj);
-        st.build(euler, depth);
-        segT.build(tourList, arr);
+        st = SparseTable(euler, depth);
+        segT = SegTree(tourList, arr);
     }
 
     void dfs(int v, int p, vector<int> adj[]) {
@@ -106,8 +101,8 @@ public:
             subtree[v] += subtree[u];
         }
         // Heavy-light subtree reordering.
-        sort(adj[v].begin(), adj[v].end(), [&](const int &a, const int &b) {
-            return subtree[a] > subtree[b];
+        sort(all(adj[v]), [&](const auto & lhs, const auto & rhs) {
+            return subtree[lhs] > subtree[rhs];
         });
     }
 
@@ -183,24 +178,27 @@ public:
         return -1;
     }
 
-    int query(int a, int b) {
+    int query(int a, int b) {//remember to change merge function
         int ans = 0;
         for (; heavyRoot[a] != heavyRoot[b]; a = parent[heavyRoot[a]]) {
             if (depth[heavyRoot[a]] < depth[heavyRoot[b]]) swap(a, b);
-            ans = max(ans, segT.query(tourStart[heavyRoot[a]], tourStart[a]));
+            ans = merge(ans, segT.query(tourStart[heavyRoot[a]], tourStart[a]));
         }
 
         if (depth[a] > depth[b]) swap(a, b);
-        ans = max(ans, segT.query(tourStart[a], tourStart[b]));
+        ans = merge(ans, segT.query(tourStart[a] + val_edges, tourStart[b]));
 
         return ans;
+    }
+
+    int merge(int left, int right) {
+        return max(left, right);
     }
 
     void update(int s, int x) {
         segT.update(tourStart[s], x);
     }
-};
-
+};//if val_edges assing wt to lower node using dfs
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
     <tabTrigger>HLD_segment_tree</tabTrigger>

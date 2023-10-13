@@ -21,7 +21,7 @@ public:
         a = find(a);
         b = find(b);
         if (a == b) return false;
-        
+
         if (siz[a] < siz[b]) swap(a, b);
 
         components--;
@@ -29,6 +29,10 @@ public:
         siz[a] += siz[b];
 
         return true;
+    }
+
+    bool same(int a, int b) {
+        return find(a) == find(b);
     }
 };
 ]]></content>

@@ -6,9 +6,8 @@ public:
     vector<int> lg;
     vector<vector<int>> table;
 
-    void build(vector<int> &euler, vector<int> &depth) {
-        n = static_cast<int>(euler.size());
-
+    SparseTable() {}
+    SparseTable(vector<int> &euler, vector<int> &depth) : n(size(euler)) {
         lg.resize(n + 1);
         for (int i = 2; i <= n; i++)
             lg[i] = lg[i / 2] + 1;
@@ -35,21 +34,14 @@ public:
 class HLD {
 public:
     int tour = 0, timer = -1;
-    vector<int> subtree, depth;
-    vector<int> euler, heavyRoot;
-    vector<int> tin, tout, parent;
-    vector<int> tourList, tourStart;
+    vector<int> tin, tout, depth, parent, subtree, tourList, tourStart, heavyRoot, euler;
     SparseTable st;
 
-    HLD(int root, int n, vector<int> adj[]) {
-        tin.resize(n), tout.resize(n);
-        depth.resize(n), parent.resize(n);
-        subtree.resize(n), tourList.resize(n);
-        tourStart.resize(n), heavyRoot.resize(n);
-
+    HLD(int root, int n, vector<int> adj[]) :
+        tin(n), tout(n), depth(n), parent(n), subtree(n), tourList(n), tourStart(n), heavyRoot(n) {
         dfs(root, -1, adj);
         dfsTour(root, false, adj);
-        st.build(euler, depth);
+        st = SparseTable(euler, depth);
     }
 
     void dfs(int v, int p, vector<int> adj[]) {
@@ -62,8 +54,8 @@ public:
             subtree[v] += subtree[u];
         }
         // Heavy-light subtree reordering.
-        sort(adj[v].begin(), adj[v].end(), [&](const int &a, const int &b) {
-            return subtree[a] > subtree[b];
+        sort(all(adj[v]), [&](const int &lhs, const int &rhs) {
+            return subtree[lhs] > subtree[rhs];
         });
     }
 
@@ -87,7 +79,7 @@ public:
 
         tout[v] = ++timer;
     }
-    
+
     inline int getLCA(int a, int b) {
         int l = tin[a], r = tin[b];
         if (l > r) swap(l, r);

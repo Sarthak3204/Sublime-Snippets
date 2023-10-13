@@ -1,0 +1,116 @@
+<snippet>
+    <content><![CDATA[
+class functional_graph {
+public:
+    int n = 0;
+    vector<int> &F, which_cycle, cycle_root, cycle_position, depth, in_cycle, jump, jump_dist;
+    vector<vector<int>> children, cycles;
+
+    functional_graph(vector<int> &F) : F(F) {
+        n = size(F);
+        in_cycle.assign(n, 0);
+        which_cycle.assign(n, -1);
+        cycle_root.assign(n, -1);
+        cycle_position.assign(n, -1);
+        depth.assign(n, -1);
+        children.assign(n, {});
+        cycles.clear();
+
+        vector<int> seen(n, -1);
+
+        for (int i = 0; i < n; i++) {
+            if (seen[i] >= 0) continue;
+
+            int x = i;
+            do {
+                seen[x] = i;
+                x = F[x];
+            } while (seen[x] < 0);
+
+            if (seen[x] != i) continue;
+
+            vector<int> cycle;
+            int y = x;
+
+            do {
+                in_cycle[y] = 1;
+                cycle_position[y] = (int)size(cycle);
+                which_cycle[y] = (int)size(cycles);
+                cycle.push_back(y);
+                y = F[y];
+            } while (y != x);
+
+            cycles.push_back(cycle);
+        }
+
+        seen.assign(n, 0);
+
+        for (int i = 0; i < n; i++)
+            seen[F[i]] += !in_cycle[i];
+
+        for (int i = 0; i < n; i++)
+            children[i].reserve(seen[i]);
+
+        seen.clear();
+
+        for (int i = 0; i < n; i++)
+            if (!in_cycle[i])
+                children[F[i]].push_back(i);
+
+        jump.assign(n, -1);
+        jump_dist.assign(n, -1);
+        int cyc_root = -1, which_cyc = -1;
+
+        function<void(int, int)> dfs = [&](int node, int parent) {
+            depth[node] = parent < 0 ? 0 : depth[parent] + 1;
+            cycle_root[node] = cyc_root;
+            which_cycle[node] = which_cyc;
+            jump[node] = parent < 0 ? node : jump_dist[parent] == jump_dist[jump[parent]] ? jump[jump[parent]] : parent;
+            jump_dist[node] = depth[node] - depth[jump[node]];
+
+            for (int child : children[node])
+                dfs(child, node);
+        };
+
+        for (int i = 0; i < n; i++) {
+            if (in_cycle[i]) {
+                cyc_root = i;
+                which_cyc = which_cycle[i];
+                dfs(i, -1);
+            }
+        }
+    }
+
+    int cycle_length(int node) const {
+        return (int)size(cycles[which_cycle[node]]);
+    }
+
+    int go_forward(int v, int k) const {
+        if (k >= depth[v]) {
+            int root = cycle_root[v];
+            k -= depth[v];
+            int cyc = which_cycle[root];
+            int position = (cycle_position[root] + k) % (int)size(cycles[cyc]);
+            return cycles[cyc][position];
+        }
+
+        while (k > 0) {
+            if (jump_dist[v] <= k) {
+                k -= jump_dist[v];
+                v = jump[v];
+            }
+            else {
+                k--;
+                v = F[v];
+            }
+        }
+
+        return v;
+    }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>functional_graph</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
