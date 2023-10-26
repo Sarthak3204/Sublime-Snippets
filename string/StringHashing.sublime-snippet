@@ -1,6 +1,5 @@
 <snippet>
 	<content><![CDATA[
-const int N = (int)1e6;
 
 int ip1, ip2;
 const int p1 = 137;
@@ -18,44 +17,42 @@ int bexp(int a, int b, int m) {
     return ans % m;
 }
 
-pair<int, int> pw[N], ipw[N];
+const int N = (int)1e6;
+array<int, 2> pw[N], ipw[N];
 
-void precompute() {//Dont forget to call it
+void precompute() {
     pw[0] = {1, 1}, ipw[0] = {1, 1};
     ip1 = bexp(p1, mod1 - 2, mod1);
     ip2 = bexp(p2, mod2 - 2, mod2);
 
     for (int i = 1; i < N; i++) {
-        pw[i].first = (ll)pw[i - 1].first * p1 % mod1;
-        pw[i].second = (ll)pw[i - 1].second * p2 % mod2;
+        pw[i][0] = (ll)pw[i - 1][0] * p1 % mod1;
+        pw[i][1] = (ll)pw[i - 1][1] * p2 % mod2;
 
-        ipw[i].first = (ll)ipw[i - 1].first * ip1 % mod1;
-        ipw[i].second = (ll)ipw[i - 1].second * ip2 % mod2;
+        ipw[i][0] = (ll)ipw[i - 1][0] * ip1 % mod1;
+        ipw[i][1] = (ll)ipw[i - 1][1] * ip2 % mod2;
     }
 }
 
 class HashedString {
 public:
     int n;
-    vector<pair<int, int>> hash;
-    HashedString(string &s) {
-        this->n = static_cast<int>(s.size());
-        hash.resize(n);
-
+    vector<array<int, 2>> hash;
+    HashedString(string &s) : n(size(s)), hash(n) {
         hash[0] = {s[0], s[0]};
         for (int i = 1; i < n; i++) {
-            hash[i].first = (hash[i - 1].first + (ll)pw[i].first * s[i] % mod1) % mod1;
-            hash[i].second = (hash[i - 1].second + (ll)pw[i].second * s[i] % mod2) % mod2;
+            hash[i][0] = (hash[i - 1][0] + (ll)pw[i][0] * s[i] % mod1) % mod1;
+            hash[i][1] = (hash[i - 1][1] + (ll)pw[i][1] * s[i] % mod2) % mod2;
         }
     }
 
-    pair<int, int> getHash(int l, int r) {
+    array<int, 2> getHash(int l, int r) {
         assert(0 <= l and l <= r and r < n);
         if (!l) return hash[r];
 
-        pair<int, int> ans;
-        ans.first = (hash[r].first - hash[l - 1].first + mod1) * (ll)ipw[l].first % mod1;
-        ans.second = (hash[r].second - hash[l - 1].second + mod2) * (ll)ipw[l].second % mod2;
+        array<int, 2> ans;
+        ans[0] = (hash[r][0] - hash[l - 1][0] + mod1) * (ll)ipw[l][0] % mod1;
+        ans[1] = (hash[r][1] - hash[l - 1][1] + mod2) * (ll)ipw[l][1] % mod2;
 
         return ans;
     }

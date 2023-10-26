@@ -12,7 +12,7 @@ public:
         lazy.resize(s << 1);
         updates.resize(s << 1, IDENTITY_UPDATE);
     }
-	LazySGT(const vector<int> &a) {
+	LazySGT(vector<int> &a) {
 		int n = size(a);
 		while (s < n) s <<= 1;
 
@@ -45,7 +45,7 @@ public:
 		if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
 		int mid = midpoint(lo, hi);
-		int left = query(l, r, node << 1, lo , mid);
+		int left = query(l, r, node << 1, lo, mid);
 		int right = query(l, r, node << 1 | 1, mid + 1, hi);
 
 		return merge(left, right);
@@ -61,7 +61,7 @@ public:
 		if (lo > r or hi < l) return;
 
 		int mid = midpoint(lo, hi);
-		update(l, r, node << 1, lo , mid, upd);
+		update(l, r, node << 1, lo, mid, upd);
 		update(l, r, node << 1 | 1, mid + 1, hi, upd);
 
 		tree[node] = merge(tree[node << 1], tree[node << 1 | 1]);

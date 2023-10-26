@@ -6,7 +6,7 @@ public:
     vector<vector<int>> table;
 
     void build(vector<int> &euler, vector<int> &depth) {
-        n = sz(euler); lg.resize(n + 1); lg[1] = 0;
+        n = size(euler); lg.resize(n + 1); lg[1] = 0;
 
         for (int i = 2; i <= n; i++) lg[i] = lg[i / 2] + 1;
 
@@ -48,7 +48,7 @@ public:
 
         euler.push_back(v);
         depth[v] = d, parent[v] = p;
-        first_occurrence[v] = sz(euler) - 1;
+        first_occurrence[v] = (int)size(euler) - 1;
 
         for (auto &u : adj[v]) {
             if (u == p) continue;
@@ -83,7 +83,7 @@ public:
     vector<int> siz, removed, centroid_parent, best;
     LCA L;
 
-    void build(int root, int n, vector<int> adj[]) {
+    CentroidTree(int root, int n, vector<int> adj[]) {
         siz.assign(n, 0), removed.assign(n, 0), centroid_parent.assign(n, -1);
         best.assign(n, INT_MAX);//remeber to change this
 

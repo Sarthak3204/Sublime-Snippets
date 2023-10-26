@@ -12,10 +12,11 @@ using ll = long long;
 #endif
 
 #define int         long long
+#define ull         unsigned long long
 #define all(x)      x.begin(), x.end()
 #define uid(a, b)   uniform_int_distribution<long long>(a, b)(rng)
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 const ll INF = (ll)1e18;
 const int mod = (int)1e9 + 7;

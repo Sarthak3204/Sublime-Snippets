@@ -1,5 +1,17 @@
 <snippet>
 	<content><![CDATA[
+/*
+Let block size be B
+
+right pointer for all queries lying in each block can move upto O(N)
+overall right pointer moves O((N / B) * N)
+
+left pointer between two consecutive queryies can move upto O(B)
+overall left pointer moves O(Q * B)
+
+if B = sqrt(N)
+TC: O((N + Q) * sqrt(N) * F) where F is time complexity of recalculate function
+*/
 vector<array<int, 3>> query(q);
 
 for (int i = 0; i < q; i++) {
