@@ -1,6 +1,5 @@
 <snippet>
 	<content><![CDATA[
-//Hurry up and become Candidate Master 
 #include "bits/stdc++.h"
 
 using namespace std;

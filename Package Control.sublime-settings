@@ -5,15 +5,18 @@
 	],
 	"installed_packages":
 	[
+		"ayu",
+		"Base16 Eighties Dark Color Scheme",
 		"ClearCursorsCarets",
 		"CppFastOlympicCoding",
 		"Material Theme",
 		"Package Control",
 		"PackageResourceViewer",
+		"RailsBase16 Color Schemes",
 		"SublimeAStyleFormatter",
 		"Terminus",
 		"Theme - Bamboo",
-		"Theme - Cobalt2",
+		"Theme - Soda SolarizedDark",
 	],
 	"debug": true,
 }

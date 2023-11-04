@@ -45,8 +45,8 @@ public:
 		if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
 		int mid = midpoint(lo, hi);
-		int left = query(l, r, node << 1, lo, mid);
-		int right = query(l, r, node << 1 | 1, mid + 1, hi);
+		auto left = query(l, r, node << 1, lo, mid);
+		auto right = query(l, r, node << 1 | 1, mid + 1, hi);
 
 		return merge(left, right);
 	}
