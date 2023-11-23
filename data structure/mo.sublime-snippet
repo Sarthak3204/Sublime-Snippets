@@ -25,7 +25,7 @@ sort(all(query), [&](const auto & x, const auto & y) {
     int R = y[0] / BLOCK;
 
     if (L != R) return L < R;
-    else return x[1] < y[1];
+    return (L & 1) ? (x[1] < y[1]) : (x[1] > y[1]);
 });
 
 vector<int> ans(q);

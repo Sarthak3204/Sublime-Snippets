@@ -7,8 +7,6 @@
 		"Vintage",
 	],
 	"font_size": 12,
-	"dark_color_scheme": "Packages/Theme - Brogrammer/brogrammer.tmTheme",
-	"light_color_scheme": "Packages/Theme - Brogrammer/brogrammer.tmTheme",
     "translate_tabs_to_spaces": true,
     "tab_size": 4,
     "auto_indent": true,
