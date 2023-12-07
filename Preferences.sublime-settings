@@ -4,11 +4,13 @@
 	"theme": "Adaptive.sublime-theme",
 	"ignored_packages":
 	[
+		"Package Control",
 		"Vintage",
 	],
-	"font_size": 12,
+	"font_size": 13,
     "translate_tabs_to_spaces": true,
     "tab_size": 4,
     "auto_indent": true,
     // "auto_complete": false,
+	"index_files": false,
 }

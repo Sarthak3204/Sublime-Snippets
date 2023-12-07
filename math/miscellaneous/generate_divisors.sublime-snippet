@@ -2,7 +2,7 @@
 	<content><![CDATA[
 vector<int> generate_divisors(vector<pair<int, int>> &factor) {
     vector<int> divisors;
-    int n = sz(factor);
+    int n = size(factor);
 
     auto rec = [&](auto && rec, int i, int val) {
         if (i == n) {

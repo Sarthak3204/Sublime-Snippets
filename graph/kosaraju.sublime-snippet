@@ -1,15 +1,12 @@
 <snippet>
 	<content><![CDATA[
 int scc = 0;
-vector<int> vis(n), adjT[n], order;
-vector<int> root_nodes, root(n), adj_scc[n];
+vector<int> vis(n), order, root_nodes, root(n), adjT[n], adj_scc[n];
 
-function <void(int)> dfs1 = [&](int v) {
+function<void(int)> dfs1 = [&](int v) {
     vis[v] = 1;
-    for (auto &u : adj[v]) {
-        if (vis[u]) continue;
-        dfs1(u);
-    }
+    for (auto &u : adj[v]) 
+        if (!vis[u]) dfs1(u);
     order.push_back(v);
 };
 
@@ -25,13 +22,11 @@ for (int v = 0; v < n; v++)
 
 vector<int> components;
 
-function <void(int)> dfs2 = [&](int v) {
+function<void(int)> dfs2 = [&](int v) {
     vis[v] = 1;
     components.push_back(v);
-    for (auto &u : adjT[v]) {
-        if (vis[u]) continue;
-        dfs2(u);
-    }
+    for (auto &u : adjT[v]) 
+        if (!vis[u]) dfs2(u);
 };
 
 for (auto &v : order) {

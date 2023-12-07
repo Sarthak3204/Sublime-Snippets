@@ -6,7 +6,7 @@ vector<int> lis(int n, vector<int> &v) {//increasing
 	for (int i = 0; i < n; i++) {
 		if (a.empty() or a.back() < v[i]) {
 			a.push_back(v[i]);
-			length[i] = sz(a);
+			length[i] = size(a);
 		}
 		else {
 			int index = lower_bound(all(a), v[i]) - a.begin();
