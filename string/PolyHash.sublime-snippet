@@ -1,0 +1,148 @@
+<snippet>
+    <content><![CDATA[
+template<const int &mod>
+struct mint {
+    int val;
+    mint(long long v = 0) {
+        if (v < 0) v = v % mod + mod;
+        if (v >= mod) v %= mod;
+        val = v;
+    }
+
+    static int mod_inv(int a, int m = mod) {
+        int g = m, r = a, x = 0, y = 1;
+        while (r != 0) {
+            int q = g / r;
+            g %= r; swap(g, r);
+            x -= q * y; swap(x, y);
+        } return x < 0 ? x + m : x;
+    }
+
+    explicit operator int() const {return val;}
+
+    mint& operator+=(const mint &other) {val += other.val; if (val >= mod) val -= mod; return *this;}
+    mint& operator-=(const mint &other) {val -= other.val; if (val < 0) val += mod; return *this;}
+
+    static unsigned fast_mod(uint64_t x, unsigned m = mod) {
+#if !defined(_WIN32) || defined(_WIN64)
+        return x % m;
+#endif
+        unsigned x_high = x >> 32, x_low = (unsigned) x;
+        unsigned quot, rem;
+        asm("divl %4\n"
+            : "=a" (quot), "=d" (rem)
+            : "d" (x_high), "a" (x_low), "r" (m));
+        return rem;
+    }
+
+    mint& operator*=(const mint &other) {val = fast_mod((uint64_t) val * other.val); return *this;}
+    mint& operator/=(const mint &other) {return *this *= other.inv();}
+
+    friend mint operator+(const mint &a, const mint &b) {return mint(a) += b;}
+    friend mint operator-(const mint &a, const mint &b) {return mint(a) -= b;}
+    friend mint operator*(const mint &a, const mint &b) {return mint(a) *= b;}
+    friend mint operator/(const mint &a, const mint &b) {return mint(a) /= b;}
+
+    mint& operator++() {val = val == mod - 1 ? 0 : val + 1; return *this;}
+    mint& operator--() {val = val == 0 ? mod - 1 : val - 1; return *this;}
+    mint operator++(int32_t) {mint before = *this; ++*this; return before;}
+    mint operator--(int32_t) {mint before = *this; --*this; return before;}
+    mint operator-() const {return val == 0 ? 0 : mod - val;}
+
+    bool operator==(const mint &other) const {return val == other.val;}
+    bool operator!=(const mint &other) const {return val != other.val;}
+
+    mint inv() const {return mod_inv(val);}
+    mint pow(long long p) const {
+        assert(p >= 0);
+        mint a = *this, result = 1;
+        while (p > 0) {
+            if (p & 1) result *= a;
+            a *= a; p >>= 1;
+        } return result;
+    }
+
+    friend ostream& operator << (ostream &stream, const mint &m) {return stream << m.val;}
+    friend istream& operator >> (istream &stream, mint &m) {return stream >> m.val;}
+};
+
+const int mod1 = 127657753;
+const int mod2 = 987654319;
+
+using mint1 = mint<mod1>;
+using mint2 = mint<mod2>;
+
+const int N = (int)1e6;
+
+mint1 p1 = uid((int)1e5, (int)1e7);
+mint1 ip1, pw1[N], ipw1[N];
+
+mint2 p2 = uid((int)1e5, (int)1e7);
+mint2 ip2, pw2[N], ipw2[N];
+
+void precompute() {
+    ip1 = p1.pow(mod1 - 2);
+    ip2 = p2.pow(mod2 - 2);
+
+    pw1[0] = ipw1[0] = 1;
+    pw2[0] = ipw2[0] = 1;
+
+    for (int i = 1; i < N; i++) {
+        pw1[i] = pw1[i - 1] * p1;
+        pw2[i] = pw2[i - 1] * p2;
+
+        ipw1[i] = ipw1[i - 1] * ip1;
+        ipw2[i] = ipw2[i - 1] * ip2;
+    }
+}
+
+class PolyHash {
+private:
+    int n;
+    vector<mint1> h1_f, h1_b;
+    vector<mint2> h2_f, h2_b;
+public:
+    PolyHash(string &s) : n(size(s)), h1_f(n), h1_b(n), h2_f(n), h2_b(n) {
+        h1_f[0] = s[0];
+        h2_f[0] = s[0];
+
+        for (int i = 1; i < n; i++) {
+            h1_f[i] = h1_f[i - 1] + pw1[i] * s[i];
+            h2_f[i] = h2_f[i - 1] + pw2[i] * s[i];
+        }
+
+        h1_b[n - 1] = s[n - 1];
+        h2_b[n - 1] = s[n - 1];
+
+        for (int i = n - 2; i >= 0; i--) {
+            h1_b[i] = h1_b[i + 1] + pw1[n - 1 - i] * s[i];
+            h2_b[i] = h2_b[i + 1] + pw2[n - 1 - i] * s[i];
+        }
+    }
+
+    pair<mint1, mint2> getF(int l, int r) {
+        assert(0 <= l and l <= r and r < n);
+        pair<mint1, mint2> ans;
+
+        ans.first = (h1_f[r] - (l ? h1_f[l - 1] : 0)) * ipw1[l];
+        ans.second = (h2_f[r] - (l ? h2_f[l - 1] : 0)) * ipw2[l];
+
+        return ans;
+    }
+
+    pair<mint1, mint2> getB(int l, int r) {
+        assert(0 <= l and l <= r and r < n);
+        pair<mint1, mint2> ans;
+
+        ans.first = (h1_b[l] - (r + 1 < n ? h1_b[r + 1] : 0)) * ipw1[n - 1 - r];
+        ans.second = (h2_b[l] - (r + 1 < n ? h2_b[r + 1] : 0)) * ipw2[n - 1 - r];
+
+        return ans;
+    }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>PolyHash</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

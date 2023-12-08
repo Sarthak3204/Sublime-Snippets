@@ -4,7 +4,6 @@
 	"theme": "Adaptive.sublime-theme",
 	"ignored_packages":
 	[
-		"Package Control",
 		"Vintage",
 	],
 	"font_size": 13,
@@ -12,5 +11,5 @@
     "tab_size": 4,
     "auto_indent": true,
     // "auto_complete": false,
-	"index_files": false,
+	"index_files": true,
 }

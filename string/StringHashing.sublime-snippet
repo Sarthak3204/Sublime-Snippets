@@ -1,9 +1,7 @@
 <snippet>
 	<content><![CDATA[
-
-int ip1, ip2;
-const int p1 = 137;
-const int p2 = 277;
+int p1 = uid((int)1e5, (int)1e7), ip1;//137
+int p2 = uid((int)1e5, (int)1e7), ip2;//277
 const int mod1 = 127657753;
 const int mod2 = 987654319;
 
