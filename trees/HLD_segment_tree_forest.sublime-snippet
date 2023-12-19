@@ -83,21 +83,30 @@ public:
     SparseTable st;
     SegTree segT;
 
-    HLD(int root, int n, vector<int> adj[], vector<int> &arr, bool val_edges = false) :
+    HLD(int n, vector<int> adj[], vector<int> &arr, bool val_edges = false) :
         tin(n), tout(n), depth(n), parent(n), subtree(n), tourList(n), tourStart(n), heavyRoot(n), arr(arr), val_edges(val_edges) {
-        dfs(root, -1, adj);
-        dfsTour(root, false, adj);
+        
+        vector<int> vis(n), root;
+        for (int i = 0; i < n; i++) {
+            if (vis[i]) continue;
+            root.push_back(i);
+            dfs(i, -1, vis, adj);
+        }
+        for (auto &i : root)
+            dfsTour(i, false, adj);
+            
         st = SparseTable(euler, depth);
         segT = SegTree(tourList, arr);
     }
 
-    void dfs(int v, int p, vector<int> adj[]) {
+    void dfs(int v, int p, vector<int> &vis, vector<int> adj[]) {
+        vis[v] = 1;
         parent[v] = p, subtree[v] = 1;
         depth[v] = p < 0 ? 0 : depth[p] + 1;
 
         for (auto &u : adj[v]) {
             if (u == p) continue;
-            dfs(u, v, adj);
+            dfs(u, v, vis, adj);
             subtree[v] += subtree[u];
         }
         // Heavy-light subtree reordering.
@@ -201,7 +210,7 @@ public:
 };//if val_edges assing wt to lower node using dfs
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>HLD_segment_tree</tabTrigger>
+    <tabTrigger>HLD_segment_tree_forest</tabTrigger>
     <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <!-- <scope>source.python</scope> -->
 </snippet>

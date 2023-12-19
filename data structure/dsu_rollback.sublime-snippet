@@ -3,13 +3,14 @@
 class dsu_rollback {
 public:
     int components;
-    vector<int> rank, parent;
-    stack<array<int, 4>> op;//a, b, rankA, rankB
+    vector<int> rank, parent, siz;
+    stack<array<int, 6>> op;//a, b, rankA, rankB, sizA, sizB
 
     dsu_rollback() {}
     dsu_rollback(int n) {
         components = n;
         rank.resize(n);
+        siz.resize(n, 1);
         parent.resize(n);
         iota(all(parent), 0);
     }
@@ -24,10 +25,11 @@ public:
         if (a == b) return false;
 
         if (rank[a] < rank[b]) swap(a, b);
-        op.push({a, b, rank[a], rank[b]});
+        op.push({a, b, rank[a], rank[b], siz[a], siz[b]});
 
         components--;
         parent[b] = a;
+        siz[a] += siz[b];
         rank[a] += rank[a] == rank[b];
 
         return true;
@@ -36,12 +38,14 @@ public:
     void rollback() {
         if (op.empty()) return;
 
-        auto [a, b, rankA, rankB] = op.top();
+        auto [a, b, rankA, rankB, sizA, sizB] = op.top();
         op.pop();
 
         components++;
         parent[a] = a;
         parent[b] = b;
+        siz[a] = sizA;
+        siz[b] = sizB;
         rank[a] = rankA;
         rank[b] = rankB;
     }

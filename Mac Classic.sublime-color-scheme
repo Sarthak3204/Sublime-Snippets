@@ -5,7 +5,6 @@
     },
     "globals":
     {
-        "background": "var(black3)",
     },
     "rules":
     [

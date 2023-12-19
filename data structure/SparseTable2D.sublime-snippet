@@ -2,17 +2,15 @@
 	<content><![CDATA[
 class SparseTable2D {
 public:
-    int n, m; vector<int> lg;
+    int n, m; 
+    vector<int> lg;
     vector<vector<vector<vector<int>>>> table;
 
-    SparseTable2D(const vector<vector<int>> &v) {
-        n = static_cast<int>(v.size());
-        m = static_cast<int>(v.front().size());
-
-        lg.resize(max(n, m) + 1); lg[1] = 0;
+    SparseTable2D(const vector<vector<int>> &v) : n(size(v)), m(size(v.front())) {
+        lg.resize(max(n, m) + 1);
 
         for (int i = 2; i <= max(n, m); i++)
-            lg[i] = lg[i / 2] + 1;
+            lg[i] = lg[i >> 1] + 1;
 
         table.resize(lg[n] + 1, vector<vector<vector<int>>>(lg[m] + 1));
         table[0][0] = v;
@@ -59,7 +57,7 @@ public:
         }
     }
 
-    int query(int i1, int j1, int x, int y) {//upper corner, row , col
+    int query(int i1, int j1, int x, int y) {//upper corner, row, col
         int lg1 = lg[x], lg2 = lg[y];
         int i2 = i1 + x - (1 << lg1);
         int j2 = j1 + y - (1 << lg2);
