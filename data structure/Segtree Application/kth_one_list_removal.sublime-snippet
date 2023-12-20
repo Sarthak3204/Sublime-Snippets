@@ -30,7 +30,7 @@ public:
     }
 
     int query(int k) {return query(k, 1, 0, s - 1);}
-    int merge(int left, int right) {return left + right;}
+    int merge(int lhs, int rhs) {return lhs + rhs;}
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

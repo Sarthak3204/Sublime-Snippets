@@ -35,7 +35,7 @@ public:
             tree[j] = merge(tree[2 * j], tree[2 * j + 1]);
     }
     int query(int x, int l) {return query(x, l, 1, 0, s - 1);}//j >= l and a[j] >= x
-    int merge(int left, int right) {return (max(b[left], b[right]) == b[left] ? left : right);}
+    int merge(int lhs, int rhs) {return (max(b[lhs], b[rhs]) == b[lhs] ? lhs : rhs);}
 };
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

@@ -5,16 +5,16 @@ Node* insert(Node* root, int x) {
     while (true) {
         if (temp->data == x) break;
         if (x < temp->data) {
-            if (temp->left) temp = temp->left;
+            if (temp->lhs) temp = temp->lhs;
             else {
-                temp->left = new Node(x);
+                temp->lhs = new Node(x);
                 break;
             }
         }
         else {
-            if (temp->right) temp = temp->right;
+            if (temp->rhs) temp = temp->rhs;
             else {
-                temp->right = new Node(x);
+                temp->rhs = new Node(x);
                 break;
             }
         }

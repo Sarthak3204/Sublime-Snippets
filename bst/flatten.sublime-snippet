@@ -1,19 +1,19 @@
 <snippet>
 	<content><![CDATA[
 pair<Node*, Node*> f(Node *temp) {
-    Node *l = temp->left, *r = temp->right;
+    Node *l = temp->lhs, *r = temp->rhs;
     Node *head = temp, *tail = temp;
 
     if (r) {
         auto R = f(r);
-        temp->right = R.first;
+        temp->rhs = R.first;
 
         tail = R.second;
     }
     if (l) {
         auto L = f(l);
-        temp->left = NULL;
-        L.second->right = temp;
+        temp->lhs = NULL;
+        L.second->rhs = temp;
 
         head = L.first;
     }

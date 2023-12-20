@@ -9,14 +9,14 @@ vector<int> inOrder(Node* root) {
     while (true) {
         if (node) {
             s.push(node);
-            node = node->left;
+            node = node->lhs;
         }
         else {
             if (s.empty()) break;
             node = s.top();
             ans.push_back(node->data);
             s.pop();
-            node = node->right;
+            node = node->rhs;
         }
     }
 

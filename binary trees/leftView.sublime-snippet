@@ -1,13 +1,13 @@
 <snippet>
 	<content><![CDATA[
-vector<int> leftView(Node *root) {
+vector<int> lhsView(Node *root) {
     vector<int> ans;
     if (root == NULL) return ans;
 
     map<int, int> mp;
     auto f = [&](auto && f, Node * temp, int d) -> void {
         if (mp.find(d) == mp.end()) mp[d] = temp->data;
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
         if (l) f(f, l, d + 1);
         if (r) f(f, r, d + 1);
     };
@@ -23,7 +23,7 @@ vector<int> leftView(Node *root) {
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>binary_trees_leftView</tabTrigger>
+	<tabTrigger>binary_trees_lhsView</tabTrigger>
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
 	<!-- <scope>source.python</scope> -->
 </snippet>

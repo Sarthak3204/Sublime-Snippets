@@ -73,11 +73,11 @@ public:
     
     int kthNodeOnPath(int k, int a, int b) {
         int lca = getLCA(a, b);
-        int left = depth[a] - depth[lca];
-        int right = depth[b] - depth[lca];
-        assert(0 <= k and k <= left + right);
-        if (k < left) return kthAncestor(k, a);
-        return kthAncestor(left + right - k, b);
+        int lhs = depth[a] - depth[lca];
+        int rhs = depth[b] - depth[lca];
+        assert(0 <= k and k <= lhs + rhs);
+        if (k < lhs) return kthAncestor(k, a);
+        return kthAncestor(lhs + rhs - k, b);
     }
 };
 ]]></content>

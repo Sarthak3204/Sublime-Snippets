@@ -8,7 +8,7 @@ vector<vector<int>> Paths(Node* root) {
     path.push_back(root->data);
 
     auto f = [&](auto & f, Node *temp) {
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
         if (!l and !r) {
             ans.push_back(path);
             return;

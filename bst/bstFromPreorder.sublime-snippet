@@ -6,8 +6,8 @@ TreeNode* bstFromPreorder(vector<int>& preorder) {
     auto f = [&](auto && f, int ub) -> TreeNode* {
         if (i == n or preorder[i] > ub) return NULL;
         TreeNode *root = new TreeNode(preorder[i++]);
-        root->left = f(f, root->val);
-        root->right = f(f, ub);
+        root->lhs = f(f, root->val);
+        root->rhs = f(f, ub);
         return root;
     };
 

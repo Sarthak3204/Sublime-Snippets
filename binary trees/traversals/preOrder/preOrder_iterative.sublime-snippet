@@ -11,7 +11,7 @@ vector<int> preOrder(Node* root) {
         ans.push_back(node->data);
         s.pop();
 
-        Node *l = node->left, *r = node->right;
+        Node *l = node->lhs, *r = node->rhs;
 
         if (r) s.push(r);
         if (l) s.push(l);

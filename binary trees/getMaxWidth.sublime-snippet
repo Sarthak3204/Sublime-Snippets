@@ -4,7 +4,7 @@ int getMaxWidth(Node* root) {
     map<int, int> mp;
     auto f = [&](auto & f, Node * temp, int x) -> void {
         mp[x]++;
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
 
         if (l) f(f, l, x + 1);
         if (r) f(f, r, x + 1);

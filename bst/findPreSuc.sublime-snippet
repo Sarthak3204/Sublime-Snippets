@@ -5,18 +5,18 @@ void findPreSuc(Node* root, Node*& pre, Node*& suc, int x) {
     while (temp) {
         if (x > temp->key) {
             pre = temp;
-            temp = temp->right;
+            temp = temp->rhs;
         }
-        else temp = temp->left;
+        else temp = temp->lhs;
     }
 
     temp = root;
     while (temp) {
         if (x < temp->key) {
             suc = temp;
-            temp = temp->left;
+            temp = temp->lhs;
         }
-        else temp = temp->right;
+        else temp = temp->rhs;
     }
 }
 ]]></content>

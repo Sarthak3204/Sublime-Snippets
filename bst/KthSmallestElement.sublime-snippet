@@ -5,9 +5,9 @@ int KthSmallestElement(Node *root, int k) {
     auto f = [&](auto && f, Node * temp, int pos) -> int {
         if (!temp or pos < 0) return 0;
 
-        int eleL = f(f, temp->left, pos);
+        int eleL = f(f, temp->lhs, pos);
         if (eleL == pos) ans = temp->data;
-        int eleR = f(f, temp->right, pos - eleL - 1);
+        int eleR = f(f, temp->rhs, pos - eleL - 1);
 
         return eleL + eleR + 1;
     };

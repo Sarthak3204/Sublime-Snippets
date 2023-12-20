@@ -16,7 +16,7 @@ vector<int> topView(Node *root) {
 
             if (mp.find(x) == mp.end()) mp[x] = v->data;
 
-            Node *l = v->left, *r = v->right;
+            Node *l = v->lhs, *r = v->rhs;
 
             if (l) q.push({l, x - 1});
             if (r) q.push({r, x + 1});

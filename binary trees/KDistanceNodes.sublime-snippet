@@ -8,7 +8,7 @@ vector<int> KDistanceNodes(Node* root, int target, int k) {
     Node *node;
     auto f1 = [&](auto && f1, Node * temp) -> void {
         if (temp->data == target) node = temp;
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
 
         if (l) mp[l] = temp, f1(f1, l);
         if (r) mp[r] = temp, f1(f1, r);
@@ -22,7 +22,7 @@ vector<int> KDistanceNodes(Node* root, int target, int k) {
             ans.push_back(temp->data);
             return;
         }
-        Node *l = temp->left, *r = temp->right, *p = mp[temp];
+        Node *l = temp->lhs, *r = temp->rhs, *p = mp[temp];
         if (l and l != prev) f2(f2, l, temp, d + 1);
         if (r and r != prev) f2(f2, r, temp, d + 1);
         if (p and p != prev) f2(f2, p, temp, d + 1);

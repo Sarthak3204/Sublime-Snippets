@@ -45,10 +45,10 @@ public:
 		if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
 		int mid = midpoint(lo, hi);
-		auto left = query(l, r, node << 1, lo, mid);
-		auto right = query(l, r, node << 1 | 1, mid + 1, hi);
+		auto lhs = query(l, r, node << 1, lo, mid);
+		auto rhs = query(l, r, node << 1 | 1, mid + 1, hi);
 
-		return merge(left, right);
+		return merge(lhs, rhs);
 	}
 
 	void update(int l, int r, int node, int lo, int hi, int upd) {
@@ -75,8 +75,8 @@ public:
 		update(l, r, 1, 0, s - 1, upd);
 	}
 
-	int merge(int left, int right) {
-		return (left + right);
+	int merge(int lhs, int rhs) {
+		return (lhs + rhs);
 	}
 
 	void combine(int node, int lo, int hi, int upd) {

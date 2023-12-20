@@ -4,24 +4,24 @@ vector<int> morrisPostOrder(Node* root) {
     vector<int> ans;
     Node *curr = root;
     while (curr) {
-        if (curr->right) {//need to create thread with left most child
-            Node *prev = curr->right;
-            while (prev->left and prev->left != curr)
-                prev = prev->left;
+        if (curr->rhs) {//need to create thread with lhs most child
+            Node *prev = curr->rhs;
+            while (prev->lhs and prev->lhs != curr)
+                prev = prev->lhs;
 
-            if (prev->left) {
-                prev->left = NULL;
-                curr = curr->left;
+            if (prev->lhs) {
+                prev->lhs = NULL;
+                curr = curr->lhs;
             }
             else {
-                prev->left = curr;
+                prev->lhs = curr;
                 ans.push_back(curr->data);
-                curr = curr->right;
+                curr = curr->rhs;
             }
         }
         else {
             ans.push_back(curr->data);
-            curr = curr->left;
+            curr = curr->lhs;
         }
     }
 

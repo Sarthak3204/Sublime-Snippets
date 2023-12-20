@@ -25,10 +25,10 @@ public:
         else if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
         int mid = (lo + hi) / 2;
-        auto left = query(l, r, 2 * node, lo , mid);
-        auto right = query(l, r, 2 * node + 1, mid + 1, hi);
+        auto lhs = query(l, r, 2 * node, lo , mid);
+        auto rhs = query(l, r, 2 * node + 1, mid + 1, hi);
 
-        return merge(left, right);
+        return merge(lhs, rhs);
     }
 
     void update(int i, int val) {
@@ -43,12 +43,12 @@ public:
         return query(l, r, 1, 0, s - 1)[3];
     }
 
-    array<int, 4> merge(array<int, 4> left, array<int, 4> right) {
+    array<int, 4> merge(array<int, 4> lhs, array<int, 4> rhs) {
         array<int, 4> ans;
-        ans[0] = left[0] + right[0];
-        ans[1] = max(left[1], left[0] + right[1]);
-        ans[2] = max(right[2], right[0] + left[2]);
-        ans[3] = max({left[3], right[3], left[2] + right[1]});
+        ans[0] = lhs[0] + rhs[0];
+        ans[1] = max(lhs[1], lhs[0] + rhs[1]);
+        ans[2] = max(rhs[2], rhs[0] + lhs[2]);
+        ans[3] = max({lhs[3], rhs[3], lhs[2] + rhs[1]});
         return ans;
     }
 };

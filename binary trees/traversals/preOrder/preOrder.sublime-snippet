@@ -5,8 +5,8 @@ vector<int> preOrder(Node* root) {
     auto f = [&](auto && f, Node * temp) {
         if (!temp) return;
         ans.push_back(temp->data);
-        f(f, temp->left);
-        f(f, temp->right);
+        f(f, temp->lhs);
+        f(f, temp->rhs);
     };
 
     f(f, root);

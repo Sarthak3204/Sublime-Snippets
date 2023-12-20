@@ -3,7 +3,7 @@
 int largestBst(Node *root) {
     int ans = 1;
     auto f = [&](auto && f, Node * temp) -> arr {
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
 
         arr now = {1, temp->data, temp->data, 1};
 

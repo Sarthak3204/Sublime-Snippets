@@ -12,10 +12,10 @@ TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         TreeNode *temp = new TreeNode(postorder[postR]);
 
         int L = postL, R = postL + ind - inL - 1;
-        if (L <= R) temp->left = f(f, L, R, inL, ind - 1);
+        if (L <= R) temp->lhs = f(f, L, R, inL, ind - 1);
 
         L = R + 1, R = postR - 1;
-        if (L <= R) temp->right = f(f, L, R, ind + 1, inR);
+        if (L <= R) temp->rhs = f(f, L, R, ind + 1, inR);
 
         return temp;
     };

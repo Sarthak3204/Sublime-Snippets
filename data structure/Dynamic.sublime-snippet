@@ -34,11 +34,11 @@ public:
 
         int mid = lo + (hi - lo) / 2;
 
-        int left = 0, right = 0;
-        if ((*node).LeftChild != NULL) left = query(l, r, (*node).LeftChild, lo, mid);
-        if ((*node).RightChild != NULL) right = query(l, r, (*node).RightChild, mid + 1, hi);
+        int lhs = 0, rhs = 0;
+        if ((*node).LeftChild != NULL) lhs = query(l, r, (*node).LeftChild, lo, mid);
+        if ((*node).RightChild != NULL) rhs = query(l, r, (*node).RightChild, mid + 1, hi);
 
-        return left + right;
+        return lhs + rhs;
     }
 
     void update(int index, int newValue, Bird* node, int lo, int hi) {

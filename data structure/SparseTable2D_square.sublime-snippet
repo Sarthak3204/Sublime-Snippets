@@ -19,11 +19,11 @@ public:
             table[a].resize(n - (1 << a) + 1, vector<int>(m - (1 << a) + 1));
             for (int c = 0; c + (1 << a) - 1 < n; c++) {
                 for (int d = 0; d + (1 << a) - 1 < m; d++) {
-                    int upper_left = table[a - 1][c][d];
-                    int upper_right = table[a - 1][c][d + (1 << (a - 1))];
-                    int bottom_left = table[a - 1][c + (1 << (a - 1))][d];
-                    int bottom_right = table[a - 1][c + (1 << (a - 1))][d + (1 << (a - 1))];
-                    table[a][c][d] = min({upper_left, upper_right, bottom_left, bottom_right});
+                    int upper_lhs = table[a - 1][c][d];
+                    int upper_rhs = table[a - 1][c][d + (1 << (a - 1))];
+                    int bottom_lhs = table[a - 1][c + (1 << (a - 1))][d];
+                    int bottom_rhs = table[a - 1][c + (1 << (a - 1))][d + (1 << (a - 1))];
+                    table[a][c][d] = min({upper_lhs, upper_rhs, bottom_lhs, bottom_rhs});
                 }
             }
         }

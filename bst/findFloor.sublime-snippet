@@ -5,9 +5,9 @@ int findFloor(Node* root, int x) {
     while (root) {
         if (root->data <= x) {
             ans = min(ans, root->data);
-            root = root->right;
+            root = root->rhs;
         }
-        else root = root->left;
+        else root = root->lhs;
     }
     return ans;
 }

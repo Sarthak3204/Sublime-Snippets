@@ -4,39 +4,39 @@ Node *deleteNode(Node *root, int x) {
     Node *temp = root;
     
     if (temp->data == x) {
-        Node *l = temp->left, *r = temp->right, *now = l;
+        Node *l = temp->lhs, *r = temp->rhs, *now = l;
         delete(temp);
         if (!l) return r;
-        while (now->right) now = now->right;
-        now->right = r;
+        while (now->rhs) now = now->rhs;
+        now->rhs = r;
         return l;
     }
     
     while (temp) {
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
         if (l and l->data == x) {
-            Node *now = l->left, *nxt = l->right;
+            Node *now = l->lhs, *nxt = l->rhs;
             delete(l);
             if (now) {
-                temp->left = now;
-                while (now->right) now = now->right;
-                now->right = nxt;
+                temp->lhs = now;
+                while (now->rhs) now = now->rhs;
+                now->rhs = nxt;
             }
-            else temp->left = nxt;
+            else temp->lhs = nxt;
         }
         else if (r and r->data == x) {
-            Node *now = r->left, *nxt = r->right;
+            Node *now = r->lhs, *nxt = r->rhs;
             delete(r);
             if (now) {
-                temp->right = now;
-                while (now->right) now = now->right;
-                now->right = nxt;
+                temp->rhs = now;
+                while (now->rhs) now = now->rhs;
+                now->rhs = nxt;
             }
-            else temp->right = nxt;
+            else temp->rhs = nxt;
         }
         
-        if (x < temp->data) temp = temp->left;
-        else temp = temp->right;
+        if (x < temp->data) temp = temp->lhs;
+        else temp = temp->rhs;
     }
     return root;
 }

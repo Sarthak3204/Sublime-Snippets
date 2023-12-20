@@ -9,15 +9,15 @@ vector<int> postOrder(Node* root) {
     while (node or !s.empty()) {
         if (node) {
             s.push(node);
-            node = node->left;
+            node = node->lhs;
         }
         else {
-            Node *temp = s.top()->right;
+            Node *temp = s.top()->rhs;
             if (!temp) {
                 temp = s.top();
                 s.pop();
                 ans.push_back(temp->data);
-                while (!s.empty() and s.top()->right == temp) {
+                while (!s.empty() and s.top()->rhs == temp) {
                     temp = s.top();
                     s.pop();
                     ans.push_back(temp->data);

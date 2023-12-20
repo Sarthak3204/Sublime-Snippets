@@ -4,24 +4,24 @@ vector<int> morrisInOrder(Node* root) {
     vector<int> ans;
     Node *curr = root;
     while (curr) {
-        if (curr->left) {//need to create thread with right most child
-            Node *prev = curr->left;
-            while (prev->right and prev->right != curr)
-                prev = prev->right;
+        if (curr->lhs) {//need to create thread with rhs most child
+            Node *prev = curr->lhs;
+            while (prev->rhs and prev->rhs != curr)
+                prev = prev->rhs;
 
-            if (prev->right) {
-                prev->right = NULL;
+            if (prev->rhs) {
+                prev->rhs = NULL;
                 ans.push_back(curr->data);
-                curr = curr->right;
+                curr = curr->rhs;
             }
             else {
-                prev->right = curr;
-                curr = curr->left;
+                prev->rhs = curr;
+                curr = curr->lhs;
             }
         }
         else {
             ans.push_back(curr->data);
-            curr = curr->right;
+            curr = curr->rhs;
         }
     }
     return ans;

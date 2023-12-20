@@ -5,7 +5,7 @@ bool isBST(Node* root) {
 
     bool ans = true;
     auto f = [&](auto && f, Node * temp) -> pair<int, int> {
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
 
         int mini = temp->data, maxi = temp->data;
         if (l) {

@@ -23,10 +23,10 @@ public:
         else if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
         int mid = (lo + hi) / 2;
-        auto left = query(l, r, 2 * node, lo , mid);
-        auto right = query(l, r, 2 * node + 1, mid + 1, hi);
+        auto lhs = query(l, r, 2 * node, lo , mid);
+        auto rhs = query(l, r, 2 * node + 1, mid + 1, hi);
 
-        return merge(left, right);
+        return merge(lhs, rhs);
     }
 
     void update(int l, int r, int val, int node, int lo, int hi) {
@@ -51,9 +51,9 @@ public:
         update(l, r, val, 1, 0, s - 1);
     }
 
-    pair<int, int> merge(pair<int, int> left, pair<int, int> right) {
-        int l = left.first + right.first;
-        int r = max({0ll, left.second, left.first + right.second});
+    pair<int, int> merge(pair<int, int> lhs, pair<int, int> rhs) {
+        int l = lhs.first + rhs.first;
+        int r = max({0ll, lhs.second, lhs.first + rhs.second});
         return {l, r};
     }
 };

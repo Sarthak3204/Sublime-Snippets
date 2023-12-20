@@ -11,7 +11,7 @@ Node* lca(Node* root, int n1, int n2) {
             ans.push_back(path);
         }
 
-        Node *l = temp->left, *r = temp->right;
+        Node *l = temp->lhs, *r = temp->rhs;
 
         if (l) {
             path.push_back(l);

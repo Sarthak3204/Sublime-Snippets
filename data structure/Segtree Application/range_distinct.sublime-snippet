@@ -54,10 +54,10 @@ public:
         if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
         int mid = midpoint(lo, hi);
-        int left = query(l, r, 2 * node, lo , mid);
-        int right = query(l, r, 2 * node + 1, mid + 1, hi);
+        int lhs = query(l, r, 2 * node, lo , mid);
+        int rhs = query(l, r, 2 * node + 1, mid + 1, hi);
 
-        return left + right;
+        return lhs + rhs;
     }
 
     void update(int i, int val) {
@@ -76,19 +76,19 @@ public:
         return;
     }
 
-    vector<int> merge(vector<int> &left, vector<int> &right) {
-        int N = left.size(), M = right.size();
+    vector<int> merge(vector<int> &lhs, vector<int> &rhs) {
+        int N = lhs.size(), M = rhs.size();
 
         vector<int> v(N + M);
         int i = 0, j = 0, p = 0;
         while (i < N and j < M) {
-            if (left[i] <= right[j]) v[p] = left[i++];
-            else v[p] = right[j++];
+            if (lhs[i] <= rhs[j]) v[p] = lhs[i++];
+            else v[p] = rhs[j++];
             p++;
         }
 
-        while (i < N) v[p++] = left[i++];
-        while (j < M) v[p++] = right[j++];
+        while (i < N) v[p++] = lhs[i++];
+        while (j < M) v[p++] = rhs[j++];
 
         assert(p == N + M);
         return v;

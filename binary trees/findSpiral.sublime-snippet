@@ -14,7 +14,7 @@ vector<int> findSpiral(Node *root) {
         vector<Node*> v;
         for (int i = 0; i < n; i++) {
             Node *node = q.front();
-            Node *l = node->left, *r = node->right;
+            Node *l = node->lhs, *r = node->rhs;
             q.pop();
 
             if (lev) {

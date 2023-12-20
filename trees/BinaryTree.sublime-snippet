@@ -2,8 +2,8 @@
 	<content><![CDATA[
 struct node {
     int val;
-    node *left, *right;
-    node(int data) : val(val), left(NULL), right(NULL) {}//intializer list
+    node *lhs, *rhs;
+    node(int data) : val(val), lhs(NULL), rhs(NULL) {}//intializer list
 };
 
 class BinaryTree {
@@ -17,8 +17,8 @@ class BinaryTree {
             if (ptr == NULL) return;
 
             ans.push_back((*ptr).val);
-            f(f, (*ptr).left);
-            f(f, (*ptr).right);
+            f(f, (*ptr).lhs);
+            f(f, (*ptr).rhs);
         };
 
         f(f, root);
@@ -31,9 +31,9 @@ class BinaryTree {
         auto f = [&](auto && f, node * ptr) -> void {
             if (ptr == NULL) return;
 
-            f(f, (*ptr).left);
+            f(f, (*ptr).lhs);
             ans.push_back((*ptr).val);
-            f(f, (*ptr).right);
+            f(f, (*ptr).rhs);
         };
 
         f(f, root);
@@ -46,8 +46,8 @@ class BinaryTree {
         auto f = [&](auto && f, node * ptr) -> void {
             if (ptr == NULL) return;
 
-            f(f, (*ptr).left);
-            f(f, (*ptr).right);
+            f(f, (*ptr).lhs);
+            f(f, (*ptr).rhs);
             ans.push_back((*ptr).val);
         };
 
@@ -72,8 +72,8 @@ class BinaryTree {
                 q.pop();
 
                 level.push_back((*v).val);
-                if ((*v).left != NULL) q.push((*v).left);
-                if ((*v).right != NULL) q.push((*v).right);
+                if ((*v).lhs != NULL) q.push((*v).lhs);
+                if ((*v).rhs != NULL) q.push((*v).rhs);
             }
 
             ans.push_back(level);

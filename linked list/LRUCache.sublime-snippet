@@ -30,11 +30,11 @@ public:
         if (it != mp.end()) {
             Node *p = it->second;
 
-            Node *left = p->prev;
-            Node *right = p->next;
+            Node *lhs = p->prev;
+            Node *rhs = p->next;
 
-            left->next = right;
-            right->prev = left;
+            lhs->next = rhs;
+            rhs->prev = lhs;
 
             Node *nxt = head->next;
 

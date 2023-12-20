@@ -8,7 +8,7 @@ private:
         TreeNode *temp = node;
         while (temp) {
             s.push(temp);
-            temp = (reverse ? temp->right : temp->left);
+            temp = (reverse ? temp->rhs : temp->lhs);
         }
     }
 public:
@@ -20,7 +20,7 @@ public:
     int next() {
         TreeNode *temp = s.top();
         s.pop();
-        pushAll((reverse ? temp->left : temp->right));
+        pushAll((reverse ? temp->lhs : temp->rhs));
         return temp->val;
     }
     

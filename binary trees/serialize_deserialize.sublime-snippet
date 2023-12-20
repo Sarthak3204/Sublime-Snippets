@@ -10,7 +10,7 @@ vector<int> serialize(Node *root)  {
     while (!q.empty()) {
         Node *temp = q.front(); q.pop();
         ans.push_back((temp ? temp->data : -1));
-        if (temp) q.push(temp->left), q.push(temp->right);
+        if (temp) q.push(temp->lhs), q.push(temp->rhs);
     }
 
     return ans;
@@ -30,12 +30,12 @@ Node *deSerialize(vector<int> &a) {
 
         if (a[i] != -1) {
             Node *l = new Node(a[i]);
-            v->left = l, q.push(l);
+            v->lhs = l, q.push(l);
         }
 
         if (a[i + 1] != -1) {
             Node *r = new Node(a[i + 1]);
-            v->right = r, q.push(r);
+            v->rhs = r, q.push(r);
         }
     }
 
