@@ -10,7 +10,7 @@ public:
     SparseTable(vector<int> &euler, vector<int> &depth) : n(size(euler)) {
         lg.resize(n + 1);
         for (int i = 2; i <= n; i++)
-            lg[i] = lg[i / 2] + 1;
+            lg[i] = lg[i >> 1] + 1;
 
         table.resize(lg[n] + 1);
         table[0] = euler;
@@ -33,7 +33,7 @@ public:
 
 class LCA {
 public:
-    int timer = -1;
+    int timer = 0;
     vector<int> depth, euler, tin, tout, parent;
     SparseTable st;
 
@@ -43,7 +43,7 @@ public:
     }
 
     void dfs(int v, int p, vector<int> adj[], int d) {
-        tin[v] = ++timer;
+        tin[v] = timer++;
 
         euler.push_back(v);
         depth[v] = d, parent[v] = p;
@@ -54,7 +54,7 @@ public:
             euler.push_back(v);
         }
 
-        tout[v] = ++timer;
+        tout[v] = timer++;
     }
 
     inline int getLCA(int a, int b) {

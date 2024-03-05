@@ -77,7 +77,7 @@ public:
 
 class HLD {
 public:
-    int tour = 0, timer = -1;
+    int tour = 0, timer = 0;
     bool val_edges = false;
     vector<int> tin, tout, depth, parent, subtree, tourList, tourStart, heavyRoot, euler, &arr;
     SparseTable st;
@@ -116,7 +116,7 @@ public:
     }
 
     void dfsTour(int v, bool heavy, vector<int> adj[]) {
-        tin[v] = ++timer;
+        tin[v] = timer++;
 
         heavyRoot[v] = heavy ? heavyRoot[parent[v]] : v;
 
@@ -134,9 +134,8 @@ public:
             heavyChild = false;
         }
 
-        tout[v] = ++timer;
+        tout[v] = timer++;
     }
-
 
     inline int getLCA(int a, int b) {
         int l = tin[a], r = tin[b];

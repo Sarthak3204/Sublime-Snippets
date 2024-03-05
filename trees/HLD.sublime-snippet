@@ -10,7 +10,7 @@ public:
     SparseTable(vector<int> &euler, vector<int> &depth) : n(size(euler)) {
         lg.resize(n + 1);
         for (int i = 2; i <= n; i++)
-            lg[i] = lg[i / 2] + 1;
+            lg[i] = lg[i >> 1] + 1;
 
         table.resize(lg[n] + 1);
         table[0] = euler;
@@ -33,7 +33,7 @@ public:
 
 class HLD {
 public:
-    int tour = 0, timer = -1;
+    int tour = 0, timer = 0;
     vector<int> tin, tout, depth, parent, subtree, tourList, tourStart, heavyRoot, euler;
     SparseTable st;
 
@@ -60,7 +60,7 @@ public:
     }
 
     void dfsTour(int v, bool heavy, vector<int> adj[]) {
-        tin[v] = ++timer;
+        tin[v] = timer++;
 
         heavyRoot[v] = heavy ? heavyRoot[parent[v]] : v;
 
@@ -77,7 +77,7 @@ public:
             heavyChild = false;
         }
 
-        tout[v] = ++timer;
+        tout[v] = timer++;
     }
 
     inline int getLCA(int a, int b) {

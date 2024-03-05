@@ -1,0 +1,190 @@
+<snippet>
+    <content><![CDATA[
+struct point {
+    int x, y;
+    point() : x(0), y(0) {}
+    point(int x, int y) : x(x), y(y) {}
+ 
+    point& operator+=(const point &other) {
+        x += other.x;
+        y += other.y;
+        return *this;
+    }
+    point& operator-=(const point &other) {
+        x -= other.x;
+        y -= other.y;
+        return *this;
+    }
+    point& operator*=(int mult) {
+        x *= mult;
+        y *= mult;
+        return *this;
+    }
+    point operator+(const point &other) const {
+        return point(*this) += other;
+    }
+    point operator-(const point &other) const {
+        return point(*this) -= other;
+    }
+    point operator*(int mult) const {
+        return point(*this) *= mult;
+    }
+    bool operator==(const point &other) const {
+        return x == other.x && y == other.y;
+    }
+    bool operator!=(const point &other) const {
+        return !(*this == other);
+    }
+    point operator-() const {
+        return point(-x, -y);
+    }
+    int norm() const {
+        return x * x + y * y;
+    }
+    double dist() const {
+        return sqrtl((double)norm());
+    }
+    friend istream& operator>>(istream &in, point &p) {
+        return in >> p.x >> p.y;
+    }
+    friend ostream& operator<<(ostream &os, const point &p) {
+        return os << '(' << p.x << ", " << p.y << ')';
+    }
+};
+ 
+int dot(const point &a, const point &b) {
+    return a.x * b.x + a.y + b.y;
+}
+ 
+int cross(const point &a, const point &b) {
+    return a.x * b.y - b.x * a.y;
+}
+ 
+int orientation(const point &a, const point &b, const point &c) { //a -> b -> c, acw > 0, cw < 0, co-linear = 0
+    int cross_sign = cross(b - a, c - a);
+    return (cross_sign > 0) - (cross_sign < 0);
+}
+ 
+bool onSegment(const point &a, const point &b, const point &c) { //c lies on segment a-b
+    return !orientation(a, b, c) and c.x >= min(a.x, b.x) and c.x <= max(a.x, b.x) and c.y >= min(a.y, b.y) and c.y <= max(a.y, b.y);
+}
+ 
+bool intersect(const point &a, const point &b, const point &c, const point &d) {
+    if (orientation(a, b, c) != orientation(a, b, d) and orientation(c, d, a) != orientation(c, d, b)) return true;
+    if (onSegment(a, b, c)) return true;
+    if (onSegment(a, b, d)) return true;
+    if (onSegment(c, d, a)) return true;
+    if (onSegment(c, d, b)) return true;
+    return false;
+}
+ 
+int manhattan(const point &a, const point &b) {
+    return abs(a.x - b.x) + abs(a.y - b.y);
+}
+ 
+double distance(const point &a, const point &b, const point &c) {
+    assert(a != b);
+    return (double)(abs(cross(b - a, c - a))) / (b - a).dist();
+}
+ 
+int location(const point &p, const vector<point> &a) { //-1 = boundary, 0 = outside, 1 = inside
+    int n = size(a);
+    point q((int)1e9, p.y);
+ 
+    int cnt = 0;
+    for (int i = 0; i < n; i++) {
+        if (onSegment(a[i], a[(i + 1) % n], p)) {
+            cnt = -1;
+            break;
+        }
+        int l = min(a[i].y, a[(i + 1) % n].y);
+        int r = max(a[i].y, a[(i + 1) % n].y);
+        if (l <= p.y and p.y < r and intersect(a[i], a[(i + 1) % n], p, q)) cnt ^= 1;
+    }
+    return cnt;
+}
+ 
+int areaSigned2x(const vector<point> &a) {
+    int ans = 0;
+    for (int i = 2; i < (int)size(a); i++)
+        ans += cross(a[i] - a[0], a[i] - a[i - 1]);
+    return ans;
+}
+ 
+vector<int> hull(const vector<point> &a) {
+    int ind = min_element(all(a), [&](const auto & lhs, const auto & rhs) {
+        return (lhs.x != rhs.x ? lhs.x < rhs.x : lhs.y < rhs.y);
+    }) - a.begin();
+ 
+    vector<int> candidates, indices = {ind};
+    for (int i = 0; i < (int)size(a); i++)
+        if (a[i] != a[ind]) candidates.push_back(i);
+ 
+    sort(all(candidates), [&](const auto & lhs, const auto & rhs) {
+        int o = orientation(a[ind], a[lhs], a[rhs]);
+        return o ? o > 0 : (a[lhs] - a[ind]).norm() < (a[rhs] - a[ind]).norm();
+    });
+ 
+    for (auto &i : candidates) {
+        while ((int)size(indices) > 1 and orientation(a[end(indices)[-2]], a[end(indices)[-1]], a[i]) <= 0)
+            indices.pop_back();
+        indices.push_back(i);
+    }
+    return indices;
+}
+ 
+pair<int, int> tangent(const point &p, const vector<point> &a) {
+    int n = size(a);
+    pair<int, int> ans;
+ 
+    if (orientation(a[n - 1], a[0], p) < 0) {
+        int lo = 0, hi = n - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) >> 1;
+            if (orientation(p, a[n - 1], a[mid]) >= 0 and orientation(p, a[mid], a[(mid + 1) % n]) <= 0) {
+                ans.first = mid;
+                hi = mid - 1;
+            }
+            else lo = mid + 1;
+        }
+ 
+        lo = 0, hi = n - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) >> 1;
+            if (orientation(p, a[0], a[mid]) <= 0 and orientation(p, a[mid], a[(mid - 1 + n) % n]) >= 0) {
+                ans.second = mid;
+                lo = mid + 1;
+            }
+            else hi = mid - 1;
+        }
+    }
+    else {
+        int lo = 0, hi = n - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) >> 1;
+            if (orientation(p, a[0], a[mid]) >= 0 and orientation(p, a[mid], a[(mid - 1 + n) % n]) < 0) {
+                ans.first = mid;
+                lo = mid + 1;
+            }
+            else hi = mid - 1;
+        }
+ 
+        lo = 0, hi = n - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) >> 1;
+            if (orientation(p, a[n - 1], a[mid]) <= 0 and orientation(p, a[mid], a[(mid + 1) % n]) > 0) {
+                ans.second = mid;
+                hi = mid - 1;
+            }
+            else lo = mid + 1;
+        }
+    }
+ 
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>point</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

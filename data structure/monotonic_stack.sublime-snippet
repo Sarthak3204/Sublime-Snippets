@@ -15,10 +15,10 @@ vector<int> monotonic_stack(const vector<int> &a, function<bool(int, int)> f, in
     return ind;
 }
 /*
-vector<int> NGE_R = monotonic_stack(a, [&](const int x, const int y) -> bool { return x > y; }, 0);
-vector<int> NGE_L = monotonic_stack(a, [&](const int x, const int y) -> bool { return x > y; }, 0, -1);
-vector<int> NSE_R = monotonic_stack(a, [&](const int x, const int y) -> bool { return x < y; }, 0);
-vector<int> NSE_L = monotonic_stack(a, [&](const int x, const int y) -> bool { return x < y; }, 0, -1);
+auto NGE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x > y; }, 0);
+auto PGE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x > y; }, 0, -1);
+auto NSE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x < y; }, 0);
+auto PSE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x < y; }, 0, -1);
 */
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

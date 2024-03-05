@@ -33,14 +33,17 @@ public:
 
 class SegTree {
 public:
-    vector<int> tree;
-    int s = 1, IDENTITY_ELEMENT = 0;
+    vector<int> tree, updates, lazy;
+    int s = 1, IDENTITY_ELEMENT = 0, IDENTITY_UPDATE = 0;
 
     SegTree() {}
     SegTree(vector<int> &tourList, vector<int> &arr) {
         int n = size(tourList);
         while (s < n) s <<= 1;
+
         tree.resize(s << 1, IDENTITY_ELEMENT);
+        lazy.resize(s << 1);
+        updates.resize(s << 1, IDENTITY_UPDATE);
 
         for (int i = 0; i < n; i++)
             tree[s + i] = arr[tourList[i]];
@@ -49,29 +52,65 @@ public:
             tree[i] = merge(tree[i << 1], tree[i << 1 | 1]);
     }
 
-    void update(int i, int val) {
-        apply(s + i, val);
-        for (int j = (s + i) >> 1; j >= 1; j >>= 1) {
-            tree[j] = merge(tree[j << 1], tree[j << 1 | 1]);
+    void pushdown(int node, int lo, int hi) {
+        if (lazy[node]) {
+            combine(node, lo, hi, updates[node]);
+            if (lo != hi) {
+                apply(node << 1, updates[node]);
+                apply(node << 1 | 1, updates[node]);
+            }
+            lazy[node] = 0;
+            updates[node] = IDENTITY_UPDATE;
         }
     }
 
-    int query(int lo, int hi) {
-        int ans = 0;
-        for (lo += s, hi += s; lo <= hi; lo >>= 1, hi >>= 1) {
-            if (lo & 1) ans = merge(ans, tree[lo++]);
-            if (!(hi & 1)) ans = merge(ans, tree[hi--]);
+    int query(int l, int r, int node, int lo, int hi) {
+        pushdown(node, lo, hi);
+        if (l <= lo and hi <= r) return tree[node];
+        if (lo > r or hi < l) return IDENTITY_ELEMENT;
+
+        int mid = midpoint(lo, hi);
+        auto lhs = query(l, r, node << 1, lo, mid);
+        auto rhs = query(l, r, node << 1 | 1, mid + 1, hi);
+
+        return merge(lhs, rhs);
+    }
+
+    void update(int l, int r, int node, int lo, int hi, int upd) {
+        pushdown(node, lo, hi);
+        if (l <= lo and hi <= r) {
+            apply(node, upd);
+            pushdown(node, lo, hi);
+            return;
         }
-        return ans;
+        if (lo > r or hi < l) return;
+
+        int mid = midpoint(lo, hi);
+        update(l, r, node << 1, lo, mid, upd);
+        update(l, r, node << 1 | 1, mid + 1, hi, upd);
+
+        tree[node] = merge(tree[node << 1], tree[node << 1 | 1]);
     }
 
-    void apply(int node, int val) {//remember to change apply function
-        tree[node] = val;
-        return;
+    int query(int l, int r) {
+        return query(l, r, 1, 0, s - 1);
     }
 
-    int merge(int lhs, int rhs) {//remember to change merge function
-        return max(lhs, rhs);
+    void update(int l, int r, int upd) {
+        update(l, r, 1, 0, s - 1, upd);
+    }
+
+    int merge(int lhs, int rhs) {
+        return (lhs + rhs);
+    }
+
+    void combine(int node, int lo, int hi, int upd) {
+        tree[node] += (hi - lo + 1) * upd;
+    }
+
+    void apply(int node, int upd) {
+        lazy[node] = 1;
+        updates[node] += upd;
     }
 };
 
@@ -132,11 +171,6 @@ public:
         int l = tin[a], r = tin[b];
         if (l > r) swap(l, r);
         return st.query(l, r, depth);
-        // if MLE then reomve SparseTable and use logN for lca query
-        // for (; heavyRoot[a] != heavyRoot[b]; a = parent[heavyRoot[a]])
-        //     if (depth[heavyRoot[a]] < depth[heavyRoot[b]]) swap(a, b);
-        // if (depth[a] > depth[b]) swap(a, b);
-        // return a;
     }
 
     inline int getDistance(int a, int b) {
@@ -191,16 +225,22 @@ public:
     }
 
     int merge(int lhs, int rhs) {
-        return max(lhs, rhs);
+        return lhs + rhs;
     }
 
-    void update(int s, int x) {
-        segT.update(tourStart[s], x);
+    void update(int a, int b, int x) {
+        for (; heavyRoot[a] != heavyRoot[b]; a = parent[heavyRoot[a]]) {
+            if (depth[heavyRoot[a]] < depth[heavyRoot[b]]) swap(a, b);
+            segT.update(tourStart[heavyRoot[a]], tourStart[a], x);
+        }
+
+        if (depth[a] > depth[b]) swap(a, b);
+        segT.update(tourStart[a] + val_edges, tourStart[b], x);
     }
 };//if val_edges assing wt to lower node using dfs
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>HLD_segment_tree</tabTrigger>
+    <tabTrigger>HLD_lazy_segment_tree</tabTrigger>
     <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <!-- <scope>source.python</scope> -->
 </snippet>

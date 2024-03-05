@@ -107,6 +107,25 @@ public:
 
         return v;
     }
+
+    int min_steps(int u, int v) {//u -> v
+        int ans = -1;
+        if (!in_cycle[u] and !in_cycle[v]) {
+            int k = depth[u] - depth[v];
+            if (k >= 0 and go_forward(u, k) == v) ans = k;
+        }
+        else if (which_cycle[u] == which_cycle[v] and in_cycle[v]) {
+            ans = 0;
+            if (!in_cycle[u]) {
+                ans += depth[u];
+                u = cycle_root[u];
+            }
+            int i = cycle_position[u], j = cycle_position[v];
+            ans += j - i;
+            if (i > j) ans += cycle_length(u);
+        }
+        return ans;
+    }
 };
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

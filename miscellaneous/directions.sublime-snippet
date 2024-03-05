@@ -1,9 +1,10 @@
 <snippet>
 	<content><![CDATA[
-vector<pair<int, int>> dir = {{ -1, 0}, {0, 1}, {1, 0}, {0, -1}};
+vector<pair<int, int>> dir = {pair(-1, 0), pair(0, -1), pair(0, 1), pair(1, 0), pair(-1, -1), pair(-1, 1), pair(1, -1), pair(1, 1)};
+
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>4dir</tabTrigger>
+	<tabTrigger>directions</tabTrigger>
 	<!-- Optional: Set a scope to limit where the snippet will trigger -->
 	<!-- <scope>source.python</scope> -->
 </snippet>

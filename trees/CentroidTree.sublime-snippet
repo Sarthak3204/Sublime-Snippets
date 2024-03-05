@@ -2,15 +2,18 @@
 	<content><![CDATA[
 class SparseTable {
 public:
-    int n; vector<int> lg;
+    int n;
+    vector<int> lg;
     vector<vector<int>> table;
 
-    void build(vector<int> &euler, vector<int> &depth) {
-        n = size(euler); lg.resize(n + 1); lg[1] = 0;
+    SparseTable() {}
+    SparseTable(vector<int> &euler, vector<int> &depth) : n(size(euler)) {
+        lg.resize(n + 1);
+        for (int i = 2; i <= n; i++)
+            lg[i] = lg[i >> 1] + 1;
 
-        for (int i = 2; i <= n; i++) lg[i] = lg[i / 2] + 1;
-
-        table.resize(lg[n] + 1), table[0] = euler;
+        table.resize(lg[n] + 1);
+        table[0] = euler;
 
         for (int j = 1; j <= lg[n]; j++) {
             table[j].resize(n - (1 << j) + 1);
@@ -30,17 +33,14 @@ public:
 
 class LCA {
 public:
-    int timer = 0;
-    vector<int> depth, euler, first_occurrence, tin, tout, parent;
+    int timer = -1;
+    vector<int> depth, euler, tin, tout, parent;
     SparseTable st;
 
-    void build(int root, int n, vector<int> adj[]) {
-        tin.resize(n), tout.resize(n);
-        depth.resize(n), parent.resize(n);
-        first_occurrence.resize(n);
-
+    LCA() {}
+    LCA(int root, int n, vector<int> adj[]) : tin(n), tout(n), depth(n), parent(n) {
         dfs(root, -1, adj, 0);
-        st.build(euler, depth);
+        st = SparseTable(euler, depth);
     }
 
     void dfs(int v, int p, vector<int> adj[], int d) {
@@ -48,7 +48,6 @@ public:
 
         euler.push_back(v);
         depth[v] = d, parent[v] = p;
-        first_occurrence[v] = (int)size(euler) - 1;
 
         for (auto &u : adj[v]) {
             if (u == p) continue;
@@ -60,7 +59,7 @@ public:
     }
 
     inline int getLCA(int a, int b) {
-        int l = first_occurrence[a], r = first_occurrence[b];
+        int l = tin[a], r = tin[b];
         if (l > r) swap(l, r);
         return st.query(l, r, depth);
     }
@@ -73,7 +72,7 @@ public:
         return (tin[a] <= tin[b] and tout[b] <= tout[a]);
     }
 
-    inline bool onPath(int x, int a, int b) { //whether x is on path from a to b
+    inline bool onPath(int x, int a, int b) {//whether x is on path from a to b
         return ((isAncestor(x, a) or isAncestor(x, b)) and isAncestor(getLCA(a, b), x));
     }
 };
@@ -83,40 +82,39 @@ public:
     vector<int> siz, removed, centroid_parent, best;
     LCA L;
 
-    CentroidTree(int root, int n, vector<int> adj[]) {
-        siz.assign(n, 0), removed.assign(n, 0), centroid_parent.assign(n, -1);
-        best.assign(n, INT_MAX);//remeber to change this
+    CentroidTree(int root, int n, vector<int> adj[]) :
+        siz(n), removed(n), centroid_parent(n), best(n, INF) {//remeber to change this
+        dfs3(root, adj);
+        L = LCA(root, n, adj);
+    }
 
-        function<void(int, int)> dfs1 = [&](int v, int p) {//find siz
-            siz[v] = 1;
-            for (auto &u : adj[v]) {
-                if (u == p or removed[u]) continue;
-                dfs1(u, v), siz[v] += siz[u];
-            }
-        };
+    void dfs1(int v, int p, vector<int> adj[]) {//find siz
+        siz[v] = 1;
+        for (auto &u : adj[v]) {
+            if (u == p or removed[u]) continue;
+            dfs1(u, v, adj);
+            siz[v] += siz[u];
+        }
+    }
 
-        function<int(int, int, int)> dfs2 = [&](int v, int p, int m) {//find centroid for a tree
-            for (auto &u : adj[v]) {
-                if (u == p or removed[u]) continue;
-                if (siz[u] > m / 2) return dfs2(u, v, m);
-            }
-            return v;
-        };
+    int dfs2(int v, int p, vector<int> adj[], int m) {//find centroid for a tree
+        for (auto &u : adj[v]) {
+            if (u == p or removed[u]) continue;
+            if (siz[u] > (m >> 1)) return dfs2(u, v, adj, m);
+        }
+        return v;
+    }
 
-        function<int(int)> dfs3 = [&](int v) {//assign centroid parent
-            dfs1(v, -1);
-            int c = dfs2(v, -1, siz[v]);
-            removed[c] = 1;
+    int dfs3(int v, vector<int> adj[]) {//assign centroid parent
+        dfs1(v, -1, adj);
+        int c = dfs2(v, -1, adj, siz[v]);
+        removed[c] = 1;
 
-            for (auto &u : adj[c]) {
-                if (removed[u]) continue;
-                centroid_parent[dfs3(u)] = c;
-            }
-            return c;
-        };
-
-        dfs3(root);
-        L.build(root, n, adj);
+        for (auto &u : adj[c]) {
+            if (removed[u]) continue;
+            centroid_parent[dfs3(u, adj)] = c;
+        }
+        return c;
     }
     //nearest black node
     int query(int v) {

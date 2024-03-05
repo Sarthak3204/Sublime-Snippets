@@ -104,7 +104,7 @@ private:
         Node &p = v[k];
         if (p.add != 0) {
             push_add(k << 1, p.add);
-            push_add(k * 2 + 1, p.add);
+            push_add(k << 1 | 1, p.add);
             p.add = 0;
         }
         if (p.g1 < v[k << 1].g1) push_min(k << 1, p.g1);
