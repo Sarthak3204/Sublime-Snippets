@@ -6,8 +6,10 @@
 	"installed_packages":
 	[
 		"ayu",
+		"Berry Color Scheme",
 		"ClearCursorsCarets",
 		"Color Scheme - Legacy",
+		"Cool & Clear - Color Scheme",
 		"CppFastOlympicCoding",
 		"GitHub Theme",
 		"Material Theme",
@@ -15,7 +17,10 @@
 		"PackageResourceViewer",
 		"SublimeAStyleFormatter",
 		"Terminus",
+		"Theme - Adaptify",
 		"Theme - Bamboo",
+		"Theme - Gravity",
+		"Theme - One",
 		"Theme - Soda SolarizedDark",
 	],
 	"debug": true,

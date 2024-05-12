@@ -44,7 +44,7 @@ public:
 		if (l <= lo and hi <= r) return tree[node];
 		if (lo > r or hi < l) return IDENTITY_ELEMENT;
 
-		int mid = midpoint(lo, hi);
+		int mid = (lo + hi) >> 1;
 		auto lhs = query(l, r, node << 1, lo, mid);
 		auto rhs = query(l, r, node << 1 | 1, mid + 1, hi);
 
@@ -60,7 +60,7 @@ public:
 		}
 		if (lo > r or hi < l) return;
 
-		int mid = midpoint(lo, hi);
+		int mid = (lo + hi) >> 1;
 		update(l, r, node << 1, lo, mid, upd);
 		update(l, r, node << 1 | 1, mid + 1, hi, upd);
 
