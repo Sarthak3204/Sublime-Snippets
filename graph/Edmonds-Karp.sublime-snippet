@@ -1,0 +1,57 @@
+<snippet>
+    <content><![CDATA[
+int n, m;
+cin >> n >> m;
+
+vector adj(n, vector<int>(n));
+for (int i = 0; i < m; i++) {
+    int x, y, c;
+    cin >> x >> y >> c;
+    adj[--x][--y] += c;
+}
+
+auto max_flow = [&](int source, int sink) -> int {//Edmonds-Karp O(V * E^2)
+    int ans = 0;
+    vector<int> par(n);
+
+    auto reachable = [&]() -> bool {
+        fill(all(par), -1);
+
+        queue<int> q;
+        q.push(source);
+
+        while (!q.empty()) {
+            int x = q.front();
+            q.pop();
+            for (int y = 0; y < n; y++) {
+                int cap = adj[x][y];
+                if (cap <= 0 or par[y] != -1) continue;
+                q.push(y);
+                par[y] = x;
+            }
+        }
+        return par[sink] != -1;
+    };
+
+    while (reachable()) {
+        int flow = INF;
+        for (int node = sink; node != source; node = par[node])
+            flow = min(flow, adj[par[node]][node]);
+
+        ans += flow;
+        for (int node = sink; node != source; node = par[node]) {
+            adj[par[node]][node] -= flow;
+            adj[node][par[node]] += flow;//augmented edges
+        }
+    }
+
+    return ans;
+};
+cout << max_flow(0, n - 1) << "\n";
+
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>Edmonds-Karp</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
