@@ -6,12 +6,14 @@ Let block size be B
 rhs pointer for all queries lying in each block can move upto O(N)
 overall rhs pointer moves O((N / B) * N)
 
-lhs pointer between two consecutive queryies can move upto O(B)
+lhs pointer between two consecutive queries can move upto O(B)
 overall lhs pointer moves O(Q * B)
 
 if B = sqrt(N)
 TC: O((N + Q) * sqrt(N) * F) where F is time complexity of recalculate function
 */
+int q;
+cin >> q;
 vector<array<int, 3>> query(q);
 
 for (int i = 0; i < q; i++) {
@@ -29,8 +31,16 @@ sort(all(query), [&](const auto & x, const auto & y) {
 });
 
 vector<int> ans(q);
+int i = 0, j = -1, res = 0;
 
-int i = 0, j = -1;
+auto add = [&](int i) -> void {
+
+};
+
+auto remove = [&](int i) -> void {
+
+};
+
 for (auto &[l, r, ind] : query) {
     while (j < r) add(++j);
     while (i > l) add(--i);
@@ -40,6 +50,8 @@ for (auto &[l, r, ind] : query) {
 
     ans[ind] = res;
 }
+
+for (auto &x : ans) cout << x << "\n";
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>mo</tabTrigger>

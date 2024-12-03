@@ -1,0 +1,19 @@
+<snippet>
+    <content><![CDATA[
+int lo = $1, hi = $2, val = -INF;
+auto calc = [&](int $3) -> int {
+    
+};
+
+while (lo <= hi) {
+    int L = lo + (hi - lo) / 3;
+    int R = hi - (hi - lo) / 3;  
+    if (calc(L) <= calc(R)) lo = L + 1;
+    else hi = R - 1;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>ternary_maximum</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

@@ -14,6 +14,7 @@ using ll = long long;
 #define int         long long
 #define ull         unsigned long long
 #define all(x)      x.begin(), x.end()
+#define rev(x)      x.rbegin(), x.rend()
 #define uid(a, b)   uniform_int_distribution<long long>(a, b)(rng)
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());

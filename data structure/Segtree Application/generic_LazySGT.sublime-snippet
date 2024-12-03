@@ -1,0 +1,93 @@
+<snippet>
+    <content><![CDATA[
+struct U {
+    U() {}//Identity Update
+    void operator+=(const U &obj) {//composition
+       
+    }
+};
+struct T {
+    T() {}//Identity Element
+    T operator+(const T &obj) const {//op
+
+    }
+    void operator+=(const U &obj) {//mapping
+        
+    }
+};
+struct LazySGT {
+    vector<T> tree;
+    vector<U> updates;
+    int s = 1;
+
+    LazySGT() {}
+    LazySGT(int n) {
+        while (s < n) s <<= 1;
+        tree.resize(s << 1, T());
+        updates.resize(s << 1, U());
+    }
+    LazySGT(const vector<T> &a) {
+        int n = size(a);
+        while (s < n) s <<= 1;
+
+        tree.resize(s << 1, T());
+        updates.resize(s << 1, U());
+
+        for (int i = 0; i < n; i++)
+            tree[s + i] = a[i];
+
+        for (int i = s - 1; i >= 1; i--)
+            tree[i] = tree[i << 1] + tree[i << 1 | 1];
+    }
+
+    void pushdown(int node, int lo, int hi) {
+        tree[node] += updates[node];
+        if (lo != hi) {
+            updates[node << 1] += updates[node];
+            updates[node << 1 | 1] += updates[node];
+        }
+        updates[node] = U();
+    }
+
+    T query(int l, int r, int node, int lo, int hi) {
+        pushdown(node, lo, hi);
+        if (l <= lo and hi <= r) return tree[node];
+        if (lo > r or hi < l) return T();
+
+        int mid = (lo + hi) >> 1;
+        auto lhs = query(l, r, node << 1, lo, mid);
+        auto rhs = query(l, r, node << 1 | 1, mid + 1, hi);
+
+        return lhs + rhs;
+    }
+
+    void update(int l, int r, int node, int lo, int hi, const U &upd) {
+        pushdown(node, lo, hi);
+        if (l <= lo and hi <= r) {
+            updates[node] += upd;
+            pushdown(node, lo, hi);
+            return;
+        }
+        if (lo > r or hi < l) return;
+
+        int mid = (lo + hi) >> 1;
+        update(l, r, node << 1, lo, mid, upd);
+        update(l, r, node << 1 | 1, mid + 1, hi, upd);
+
+        tree[node] = tree[node << 1] + tree[node << 1 | 1];
+    }
+
+    T query(int l, int r) {
+        return query(l, r, 1, 0, s - 1);
+    }
+
+    void update(int l, int r, const U &upd) {
+        update(l, r, 1, 0, s - 1, upd);
+    }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>generic_LazySGT</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

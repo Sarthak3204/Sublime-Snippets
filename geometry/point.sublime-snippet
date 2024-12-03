@@ -111,7 +111,7 @@ int areaSigned2x(const vector<point> &a) {
     return ans;
 }
  
-vector<int> hull(const vector<point> &a) {
+vector<int> hull(const vector<point> &a) {//gives acw order, reverse sign for cw
     int ind = min_element(all(a), [&](const auto & lhs, const auto & rhs) {
         return (lhs.x != rhs.x ? lhs.x < rhs.x : lhs.y < rhs.y);
     }) - a.begin();
@@ -181,6 +181,36 @@ pair<int, int> tangent(const point &p, const vector<point> &a) {
     }
  
     return ans;
+}
+
+array<int, 3> maxTriangleArea2x(const vector<point> &a) {
+    auto ind = hull(a);
+    int m = size(ind);
+    int ans = -1;
+    array<int, 3> indices;
+    for (int it = 0; it < m; it++) {
+        int i = it;
+        int j = (it + 1) % m;
+        int k = (it + 2) % m;
+        while (k != i) {
+            int maxArea = abs(cross(a[ind[j]] - a[ind[i]], a[ind[k]] - a[ind[i]]));
+            while ((k + 1) % m != i) {
+                int now = abs(cross(a[ind[j]] - a[ind[i]], a[ind[(k + 1) % m]] - a[ind[i]]));
+                if (now > maxArea) {
+                    maxArea = now;
+                    k = (k + 1) % m;
+                }
+                else break;
+            }
+            if (maxArea > ans) {
+                ans = maxArea;
+                indices = {ind[i], ind[j], ind[k]};
+            }
+            j = (j + 1) % m;
+            if (j == k) k = (k + 1) % m;
+        }
+    }
+    return indices;
 }
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

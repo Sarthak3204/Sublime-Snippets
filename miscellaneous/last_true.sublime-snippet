@@ -1,0 +1,22 @@
+<snippet>
+    <content><![CDATA[
+int lo = $1, hi = $2, val = -1;
+auto check = [&](int $3) -> bool {
+    
+};
+
+while (lo <= hi) {
+    int mid = (lo + hi) >> 1;
+    if (check(mid)) {
+        val = mid;
+        lo = mid + 1;
+    }
+    else hi = mid - 1;
+}
+assert(val != -1);
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>last_true</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
