@@ -1,0 +1,7 @@
+<snippet>
+	<description>all</description>
+	<content>
+		<![CDATA[${1:a}.begin(), ${1:a}.end()]]></content>
+	<tabTrigger>all</tabTrigger>
+	<scope>(source.c++ | source.objc++) - meta.preprocessor.include - comment - string</scope>
+</snippet>
