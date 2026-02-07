@@ -19,8 +19,8 @@ using ll = long long;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-const ll INF = (ll)1e18;
-const int mod = (int)1e9 + 7;
+constexpr ll INF = (ll)1e18;
+constexpr int mod = (int)1e9 + 7;
 
 int32_t main() {
 
