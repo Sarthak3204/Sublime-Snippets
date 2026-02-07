@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[
-const int N = (int)2e5;
+constexpr int N = (int)2e5;
 int spf[N + 1];
 
 void initiate() {
@@ -17,7 +17,7 @@ vector<pair<int, int>> factorize(int x) {
     while (x > 1) {
         int y = spf[x], cnt = 0;
         while (!(x % y)) x /= y, cnt++;
-        factor.push_back({y, cnt});
+        factor.emplace_back(y, cnt);
     }
     return factor;
 }

@@ -1,24 +1,25 @@
 <snippet>
 	<content><![CDATA[
-const int N = (int)2e5;
+constexpr int N = (int)2e5;
 
-int isPrime[N + 1];
-vector<int> prime;
+bitset < N + 1 > isPrime;
+vector<int> primes;
 
 void initiate(bool store = false) {
-    for (int i = 0; i <= N; ++i)
-        isPrime[i] = (i & 1);
+    isPrime.set();
 
-    isPrime[1] = 0, isPrime[2] = 1;
-    for (int i = 3; i * i <= N; i += 2) {
+    isPrime[0] = isPrime[1] = 0;
+    for (int i = 2; i * i <= N; ++i) {
         if (!isPrime[i]) continue;
-        for (int j = i * i; j <= N; j += 2 * i)
+        for (int j = i * i; j <= N; j += i)
             isPrime[j] = 0;
     }
 
     if (!store) return;
+
+    primes.reserve(N / log(N));
     for (int i = 2; i <= N; i++)
-        if (isPrime[i]) prime.push_back(i);
+        if (isPrime[i]) primes.push_back(i);
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
