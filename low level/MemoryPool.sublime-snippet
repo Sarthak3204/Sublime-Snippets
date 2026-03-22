@@ -1,0 +1,118 @@
+<snippet>
+    <content><![CDATA[
+#include <iostream>
+#include <stdexcept>
+/*
+Fixed size memory pool allocator:
+Pre-allocated memory block
+Fixed-size allocations
+O(1) allocate / deallocate
+No fragmentation
+Good cache locality
+
+Stack instead of FIFO:
+the engine recycles the exact same 2 or 3 blocks of memory over and over again,
+keeping the data permanently locked inside the CPU's fastest circuits.
+*/
+template<typename T, size_t PoolSize>
+class MemoryPool {
+private:
+    union Chunk {
+        T obj;
+        Chunk* nxt;
+    };
+    Chunk* pool;
+    Chunk* head;
+
+public:
+    MemoryPool() {
+        pool = new Chunk[PoolSize];
+
+        for (size_t i = 0; i < PoolSize - 1; ++i) {
+            pool[i].nxt = &pool[i + 1];
+        }
+        pool[PoolSize - 1].nxt = nullptr;
+        head = &pool[0];
+    }
+    ~MemoryPool() {
+        delete[] pool;
+    }
+
+    T* allocate() {
+        if (!head) {
+            throw std::bad_alloc();
+        }
+
+        Chunk* cur = head;
+        head = head->nxt;
+
+        return &(cur->obj);
+    }
+
+    void deallocate(T* ptr) {
+        if (!ptr) return;
+
+        Chunk* cur = reinterpret_cast<Chunk*>(ptr);
+
+        cur->nxt = head;
+        head = cur;
+    }
+};
+
+struct Order {
+    int id;
+    int quantity;
+    double price;
+};
+
+int main() {
+    std::cout << "=== HFT Memory Pool Initialized ===\n";
+    std::cout << "Size of an Order: " << sizeof(Order) << " bytes.\n";
+    // We expect the union to pad this out to 16 bytes!
+
+    // Create a small pool so we can easily track it
+    MemoryPool<Order, 10> order_pool;
+
+    std::cout << "\n--- Phase 1: Rapid Allocation ---\n";
+    Order* ord1 = order_pool.allocate();
+    ord1->id = 101;
+    std::cout << "Allocated Order " << ord1->id << " at memory address: " << ord1 << "\n";
+
+    Order* ord2 = order_pool.allocate();
+    ord2->id = 102;
+    std::cout << "Allocated Order " << ord2->id << " at memory address: " << ord2 << "\n";
+
+    Order* ord3 = order_pool.allocate();
+    ord3->id = 103;
+    std::cout << "Allocated Order " << ord3->id << " at memory address: " << ord3 << "\n";
+
+
+    std::cout << "\n--- Phase 2: Market Tick Processing (Deallocation) ---\n";
+    // We process order 102 and 101, so we don't need them anymore.
+    std::cout << "Trade executed. Freeing Order 102...\n";
+    order_pool.deallocate(ord2);
+
+    std::cout << "Trade executed. Freeing Order 101...\n";
+    order_pool.deallocate(ord1);
+
+
+    std::cout << "\n--- Phase 3: The Incoming Burst (Proving O(1) Reuse) ---\n";
+    // Two new orders hit the network card. Let's allocate them.
+    Order* ord4 = order_pool.allocate();
+    ord4->id = 104;
+    std::cout << "Allocated Order " << ord4->id << " at memory address: " << ord4;
+    std::cout << "  <-- RECLAIMED 101's ADDRESS!\n";
+
+    Order* ord5 = order_pool.allocate();
+    ord5->id = 105;
+    std::cout << "Allocated Order " << ord5->id << " at memory address: " << ord5;
+    std::cout << "  <-- RECLAIMED 102's ADDRESS!\n";
+
+    std::cout << "\n=== Engine Shutting Down ===\n";
+    return 0;
+}]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>MemoryPool</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
