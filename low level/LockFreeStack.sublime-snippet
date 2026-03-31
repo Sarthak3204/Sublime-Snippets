@@ -1,0 +1,168 @@
+<snippet>
+    <content><![CDATA[
+#include <atomic>
+#include <thread>
+#include <optional>
+#include <cassert>
+#include <cstdint>
+#include <memory>
+#include <vector>
+#include <iostream>
+/*
+In our Lock-Free stack, a thread can theoretically suffer from Starvation. If the OS scheduler is cruel, or if the contention is too high, a thread could theoretically get stuck in that do-while loop for a very long time, constantly having its snapshot ruined by faster threads.
+*/
+template<typename T>
+class LockFreeStack {
+    struct Node {
+        T data;
+        Node* nxt;
+        explicit Node(T&& data) : data(std::move(data)), nxt(nullptr) {}
+    };
+    // Tagged Pointer
+    // Packs a 64-bit version tag into the upper 16 bits of the pointer.
+    // On x86-64 / AArch64, user-space addresses only use bits [47:0].
+    // This defeats ABA: even if address is reused, the tag will differ
+    struct TaggedPtr {
+        uintptr_t val = 0;
+
+        TaggedPtr() = default;
+        TaggedPtr(uintptr_t val) : val(val) {}
+
+        static constexpr uintptr_t tag_shift = 48;
+        static constexpr uintptr_t ptr_mask = 0x0000FFFFFFFFFFFFull;
+
+        static TaggedPtr make(Node* ptr, uint64_t tag) noexcept {
+            return TaggedPtr((tag << tag_shift) | (reinterpret_cast<uintptr_t>(ptr) & ptr_mask));
+        }
+
+        Node* ptr() noexcept {
+            return reinterpret_cast<Node*>(val & ptr_mask);
+        }
+
+        uintptr_t tag() noexcept {
+            return (val >> tag_shift);
+        }
+    };
+    // Head pointer
+    // std::atomic<TaggedPtr> is lock-free iff sizeof(TaggedPtr)==8
+    // and the platform provides a native 64-bit CAS instruction.
+    std::atomic<TaggedPtr> head{};
+    static_assert(sizeof(TaggedPtr) == 8, "TaggedPtr must be 64-bit");
+
+public:
+    void push(T val) {
+        Node* node = new Node(std::move(val));
+
+        TaggedPtr old_head = head.load(std::memory_order_relaxed);
+        // ↑ RELAXED: we're just reading to seed the CAS expected value.
+        //   No happens-before needed here — if we lose the CAS we retry
+        //   with the fresh value that CAS writes back into old_head.
+
+        TaggedPtr new_head;
+        do {
+            node->nxt = old_head.ptr();
+            new_head = TaggedPtr::make(node, old_head.tag() + 1);
+        } while (!head.compare_exchange_weak(old_head, new_head, std::memory_order_release, std::memory_order_relaxed));
+        // SUCCESS = release:
+        //   All writes to node->data and node->next (above) are
+        //   guaranteed visible to any thread that does an acquire-load
+        //   of head and sees this new pointer.  Without release here,
+        //   a reader could see head pointing to our node but read
+        //   stale/garbage data from it.
+        //
+        // FAILURE = relaxed:
+        //   On failure we only read head (no write). Release on a
+        //   pure read is meaningless.  The standard requires:
+        //     failure_order ≤ success_order
+        //     failure_order ≠ release / acq_rel
+    }
+
+    std::optional<T> pop() {
+        TaggedPtr old_head = head.load(std::memory_order_acquire);
+        // ↑ ACQUIRE: synchronizes-with the release store in push().
+        //   Guarantees we see all node->data writes before we
+        //   dereference old_head.ptr().
+
+        TaggedPtr new_head;
+        do {
+            if (!old_head.ptr()) return std::nullopt;
+
+            new_head = TaggedPtr::make(old_head.ptr()->nxt, old_head.tag() + 1);
+        } while (!head.compare_exchange_weak(old_head, new_head, std::memory_order_acquire, std::memory_order_acquire));
+        // SUCCESS = acquire:
+        //   We won the race. We need acquire to see the node's contents
+        //   written by whoever pushed it.
+        //
+        // FAILURE = acquire:
+        //   On failure, old_head is updated with the real current head.
+        //   We'll immediately dereference old_head.ptr()->next in the
+        //   next iteration, so we MUST acquire here too — otherwise we
+        //   might observe a stale next pointer.
+        T data = std::move(old_head.ptr()->data);
+        // ⚠  MEMORY RECLAMATION HAZARD — do NOT delete here!
+        //    Another thread may hold a pointer to this node and be
+        //    about to dereference it.  Safe options:
+        //      1. Hazard Pointers (folly::hazptr)
+        //      2. Epoch-Based Reclamation (RCU / folly EBR)
+        //      3. Quiescent State Based Reclamation
+        //    For interviews: mention this explicitly. It signals you
+        //    know the full problem space, not just the CAS loop.
+        // delete old_head.ptr();  ← UNSAFE IN MULTITHREADED CONTEXT
+        return data;
+    }
+};
+
+int main() {
+    LockFreeStack<int> s;
+    constexpr int ITEMS = 100000;
+
+    std::atomic<int> push_count{0};
+    std::atomic<int> pop_count{0};
+
+    // 4 pusher threads
+    std::vector<std::thread> pushers;
+    for (int t = 0; t < 4; ++t) {
+        pushers.emplace_back([&] {
+            for (int i = 0; i < ITEMS / 4; ++i) {
+                s.push(i);
+                push_count.fetch_add(1, std::memory_order_relaxed);
+            }
+        });
+    }
+
+    // 4 popper threads
+    std::vector<std::thread> poppers;
+    for (int t = 0; t < 4; ++t) {
+        poppers.emplace_back([&] {
+            int local = 0;
+            // keep trying until we've seen all pushes are done
+            // and the stack is empty
+            while (true) {
+                if (s.pop().has_value()) {
+                    ++local;
+                } else if (push_count.load(std::memory_order_relaxed) == ITEMS) {
+                    break; // all pushed and nothing left to pop
+                }
+            }
+            pop_count.fetch_add(local, std::memory_order_relaxed);
+        });
+    }
+
+    for (auto& p : pushers) p.join();
+    for (auto& p : poppers) p.join();
+
+    // drain anything remaining
+    while (s.pop().has_value())
+        pop_count.fetch_add(1, std::memory_order_relaxed);
+
+    assert(pop_count.load() == ITEMS);
+    std::cout << "concurrent push+pop (" << pop_count << " items): PASS\n";
+
+    return 0;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>LockFreeStack</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
