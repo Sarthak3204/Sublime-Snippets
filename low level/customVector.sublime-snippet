@@ -1,0 +1,126 @@
+<snippet>
+    <content><![CDATA[
+template <typename T>
+class Vector {
+public:
+    Vector() = default;
+
+    ~Vector() {
+        clear();
+        ::operator delete(buff, std::align_val_t{alignof(T)});
+    }
+
+    Vector(const Vector& other) {
+        reserve(other.siz);
+        for (size_t i = 0; i < other.siz; i++)
+            new (slot(i)) T(other[i]);
+        siz = other.siz;
+    }
+
+    Vector& operator=(const Vector& other) {
+        if (this != &other) { Vector tmp(other); swap(tmp); }
+        return *this;
+    }
+
+    Vector(Vector&& other) noexcept { swap(other); }
+
+    Vector& operator=(Vector&& other) noexcept {
+        if (this != &other) { Vector tmp(std::move(other)); swap(tmp); }
+        return *this;
+    }
+
+
+    void reserve(size_t new_cap) {
+        if (new_cap <= cap) return;
+
+        std::byte* new_buff = static_cast<std::byte*>(
+                                  ::operator new(new_cap * sizeof(T), std::align_val_t{alignof(T)})
+                              );
+
+        for (size_t i = 0; i < siz; i++) {
+            new (new_buff + i * sizeof(T)) T(std::move((*this)[i]));
+            destroy(i);
+        }
+
+        ::operator delete(buff, std::align_val_t{alignof(T)});
+        buff = new_buff;
+        cap  = new_cap;
+    }
+
+    void resize(size_t n, const T& val = T()) {
+        if (n > siz) {
+            reserve(n);
+            for (size_t i = siz; i < n; i++)
+                new (slot(i)) T(val);
+        } else {
+            for (size_t i = n; i < siz; i++)
+                destroy(i);
+        }
+        siz = n;
+    }
+
+    template <typename... Args>
+    void emplace_back(Args&&... args) {
+        if (siz == cap) reserve(cap ? cap * 2 : 1);
+        new (slot(siz)) T(std::forward<Args>(args)...);
+        ++siz;
+    }
+
+    void push_back(const T& val) { emplace_back(val); }
+    void push_back(T&& val)      { emplace_back(std::move(val)); }
+
+    void pop_back() {
+        destroy(siz - 1);
+        --siz;
+    }
+
+    void clear() {
+        for (size_t i = 0; i < siz; i++)
+            destroy(i);
+        siz = 0;
+    }
+
+    void swap(Vector& other) noexcept {
+        std::swap(buff, other.buff);
+        std::swap(siz,  other.siz);
+        std::swap(cap,  other.cap);
+    }
+
+    T&       operator[](size_t i)       { return *slot(i); }
+    const T& operator[](size_t i) const { return *slot(i); }
+
+    T&       front()       { return (*this)[0]; }
+    T&       back()        { return (*this)[siz - 1]; }
+    T*       begin()       { return slot(0); }
+    T*       end()         { return slot(siz); }
+    const T* begin() const { return slot(0); }
+    const T* end()   const { return slot(siz); }
+
+    size_t size()     const { return siz; }
+    size_t capacity() const { return cap; }
+    bool   empty()    const { return siz == 0; }
+
+private:
+
+    // slot() — the one reinterpret_cast in the whole class.
+    // std::launder tells the compiler a T was placement-new'd here,
+    // preventing it from caching stale pointer provenance assumptions.
+    T* slot(size_t i) {
+        return std::launder(reinterpret_cast<T*>(buff + i * sizeof(T)));
+    }
+    const T* slot(size_t i) const {
+        return std::launder(reinterpret_cast<const T*>(buff + i * sizeof(T)));
+    }
+
+    void destroy(size_t i) noexcept { slot(i)->~T(); }
+
+    std::byte* buff = nullptr;
+    size_t     siz  = 0;
+    size_t     cap  = 0;
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>customVector</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>
