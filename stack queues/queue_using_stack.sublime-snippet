@@ -1,0 +1,39 @@
+<snippet>
+	<content><![CDATA[
+class Queue {
+    stack<int> input, output;
+public:
+    void enqueue(int x) {
+        input.push(x);
+    }
+
+    int dequeue() {
+        int n = input.size();
+        
+        assert(output.empty());
+        for (int i = 1; i < n; i++) {
+            output.push(input.top());
+            input.pop();
+        }
+        
+        int ans;
+        if (input.empty()) ans = -1;
+        else {
+            ans = input.top();
+            input.pop();   
+        }
+        
+        while (!output.empty()) {
+            input.push(output.top());
+            output.pop();
+        }
+        
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_queue_using_stack</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

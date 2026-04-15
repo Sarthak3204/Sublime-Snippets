@@ -1,0 +1,15 @@
+<snippet>
+	<content><![CDATA[
+function<void(int, int)> dfs${1} = [&](int v, int p) {
+    for (auto &u : adj[v]) {
+        if (u == p) continue;
+        dfs${1}(u, v);
+    }
+};
+dfs${1}(${2:0}, -1);
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dfs_snippet</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

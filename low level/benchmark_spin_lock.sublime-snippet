@@ -1,0 +1,110 @@
+<snippet>
+    <content><![CDATA[
+#include <iostream>
+#include <atomic>
+#include <thread>
+#include <vector>
+#include <mutex>
+#include <chrono>
+
+/*
+1. When does a spin lock outperform a mutex?
+When the critical section is shorter than a context switch (~1–5µs) and
+the number of waiting threads doesn't exceed the number of CPU cores.
+Both conditions must hold.
+
+Why threads ≤ cores matters: A spinning thread consumes an entire core
+doing nothing productive. If you have more spinning threads than cores,
+the OS time-slices them — and may preempt the thread holding the lock,
+causing all spinners to waste their entire time slice (~1ms) waiting for
+it to be rescheduled. A mutex would have freed those cores immediately.
+
+2. When does a spin lock degrade?
+Two cases: high contention with many threads (cache line bouncing), and
+any situation where a thread can block inside the critical section
+(starvation + 100% CPU waste).
+
+3. Why __builtin_ia32_pause()?
+Without it, the CPU's out-of-order engine speculatively executes many
+loop iterations ahead, then detects a memory-order violation when the
+flag changes and has to flush the pipeline — costing ~20 cycles.
+PAUSE tells the CPU to drain its pipeline between iterations, reducing
+this penalty. It also reduces power consumption by approximately 10x
+during the spin, which matters in a datacentre with hundreds of cores
+spinning simultaneously.
+
+ARM equivalent:
+__asm__ volatile("yield"); // ISB (instruction sync barrier) also used
+
+Analogy: Without PAUSE, a spinning thread is like a person repeatedly
+slamming a locked door — exhausting themselves and making noise that
+disturbs the person inside trying to unlock it. With PAUSE, they knock,
+wait a moment, knock again — using less energy, less noise, and the
+person inside can finish unlocking the door faster.
+*/
+class SpinLock {
+    std::atomic_flag flag = ATOMIC_FLAG_INIT;
+public:
+    void lock() {
+        while (true) {
+            while (flag.test(std::memory_order_relaxed))
+                __builtin_ia32_pause(); // x86 hint: this is a spin-wait
+
+            if (!flag.test_and_set(std::memory_order_acquire)) return;
+        }
+    }
+    void unlock() {
+        flag.clear(std::memory_order_release);
+    }
+};
+
+// Global variables for the test
+SpinLock spinlock;
+std::mutex std_mutex;
+
+template<typename LockType>
+void do_work(LockType& lock, int iterations, size_t heavy_workload) {
+    for (size_t i = 0; i < iterations; ++i) {
+        lock.lock();
+
+        volatile int cnt = 0;
+        for (size_t j = 0; j < heavy_workload; ++j)
+            cnt += j; // volatile prevents elimination
+
+        lock.unlock();
+    }
+}
+
+template<typename LockType>
+void run_test(std::string name, LockType& lock, int threads, int heavy_workload) {
+    std::vector<std::thread> pool;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < threads; ++i)
+        pool.push_back(std::thread(do_work<LockType>, std::ref(lock), 100000, heavy_workload));
+
+    for (auto& t : pool) { t.join(); }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    std::cout << name << " took: " << duration << " ms\n";
+}
+
+int main() {
+    std::cout << "--- SCENARIO 1: Extremely Short Critical Section ---\n";
+    run_test("SpinLock", spinlock, 4, 0);
+    run_test("Mutex   ", std_mutex, 4, 0);
+
+    std::cout << "\n--- SCENARIO 2: Long Critical Section ---\n";
+    run_test("SpinLock", spinlock, 4, 1000);
+    run_test("Mutex   ", std_mutex, 4, 1000);
+
+    return 0;
+}]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>benchmark_spin_lock</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

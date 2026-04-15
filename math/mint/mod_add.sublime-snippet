@@ -1,0 +1,13 @@
+<snippet>
+	<content><![CDATA[
+int mod_add(ll a, ll b, int m) {
+	a = a % m;
+	b = b % m;
+	return (((a + b) % m) + m) % m;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>mod_add</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

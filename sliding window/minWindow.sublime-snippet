@@ -1,0 +1,40 @@
+<snippet>
+    <content><![CDATA[
+string minWindow(string s, string t) {//https://leetcode.com/problems/minimum-window-substring/description/
+    int n = s.size();
+    int m = t.size();
+
+    if (m > n) return "";
+
+    vector<int> req(58), cnt(58);
+    for (auto &x : t) req[x - 'A']++;
+
+    auto check = [&]() -> bool {
+        bool ok = true;
+        for (int k = 0; k < 58; k++) {
+            ok &= cnt[k] >= req[k];
+        }
+        return ok;
+    };
+
+    int i = 0, j = 0, l = -1, r = -1, ans = n + 1;
+    while (j < n) {
+        cnt[s[j] - 'A']++;
+        while (check()) {
+            int len = j - i + 1;
+            if (len < ans) {
+                l = i, r = j, ans = len;
+            }
+            cnt[s[i++] - 'A']--;
+        }
+        j++;
+    }
+
+    return (ans < n + 1 ? s.substr(l, ans) : "");
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>sliding_window_minWindow</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

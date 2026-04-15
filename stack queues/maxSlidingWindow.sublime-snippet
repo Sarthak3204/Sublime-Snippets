@@ -1,0 +1,45 @@
+<snippet>
+	<content><![CDATA[
+class monotone_deque {
+public:
+    deque<int> q;
+    void insert(int x) {
+        while (!q.empty() and q.back() < x) 
+            q.pop_back();
+        q.push_back(x);
+    };
+
+    void remove(int x) {
+        if (!q.empty() and q.front() == x) 
+            q.pop_front();
+    }
+
+    int getMax() {
+        assert(!q.empty());
+        return q.front();
+    }
+};
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int> &a, int k) {
+        monotone_deque q;
+        int n = a.size();
+        vector<int> ans;
+
+        for (int i = 0, j = 0; j < n; j++) {
+            q.insert(a[j]);
+            if (j - i + 1 == k) {
+                ans.push_back(q.getMax());
+                q.remove(a[i++]);
+            }
+        }
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_maxSlidingWindow</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

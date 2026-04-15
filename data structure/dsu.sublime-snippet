@@ -1,0 +1,43 @@
+<snippet>
+	<content><![CDATA[
+class dsu {
+public:
+    int components;
+    vector<int> par, siz;
+
+    dsu(int n) {
+        components = n;
+        siz.resize(n, 1);
+        par.resize(n);
+        iota(all(par), 0);
+    }
+
+    int find(int a) {
+        if (a == par[a]) return a;
+        return par[a] = find(par[a]);
+    }
+
+    bool unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return false;
+
+        if (siz[a] < siz[b]) swap(a, b);
+
+        components--;
+        par[b] = a;
+        siz[a] += siz[b];
+
+        return true;
+    }
+
+    bool same(int a, int b) {
+        return find(a) == find(b);
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dsu</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

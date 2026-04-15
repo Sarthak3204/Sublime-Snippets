@@ -1,0 +1,82 @@
+<snippet>
+    <content><![CDATA[
+struct node {
+    ull pri = 0;
+    int siz = 0, rev = 0, val = 0;
+    node *lhs = NULL, *rhs = NULL;
+    node(int val) : val(val), pri(rng()), siz(1) {}
+};
+ 
+int size(node *temp) {
+    return temp ? temp->siz : 0;
+}
+ 
+class treap {
+public:
+    void pushdown(node *temp) {
+        if (temp and temp->rev) {
+            temp->rev = 0;
+            swap(temp->lhs, temp->rhs);
+            if (temp->lhs) temp->lhs->rev ^= 1;
+            if (temp->rhs) temp->rhs->rev ^= 1;
+        }
+    }
+ 
+    void update(node *temp) {
+        temp->siz = 1 + size(temp->lhs) + size(temp->rhs);
+    }
+ 
+    pair<node*, node*> split(node *temp, int cnt) {
+        if (!temp) return {NULL, NULL};
+ 
+        pushdown(temp);
+        if (size(temp->lhs) < cnt) {
+            auto [l, r] = split(temp->rhs, cnt - (size(temp->lhs) + 1));
+            temp->rhs = l;
+            update(temp);
+            return {temp, r};
+        }
+        else {
+            auto [l, r] = split(temp->lhs, cnt);
+            temp->lhs = r;
+            update(temp);
+            return {l, temp};
+        }
+    }
+ 
+    node* merge(node *l, node *r) {
+        pushdown(l);
+        pushdown(r);
+        if (!l or !r) return l ? l : r;
+        if (l->pri > r->pri) {
+            l->rhs = merge(l->rhs, r);
+            update(l);
+            return l;
+        }
+        else {
+            r->lhs = merge(l, r->lhs);
+            update(r);
+            return r;
+        }
+    }
+ 
+    int query(node *temp, int x) {
+        if (size(temp->lhs) + 1 == x) return temp->val;
+        if (size(temp->lhs) >= x) return query(temp->lhs, x);
+        return query(temp->rhs, x - (size(temp->lhs) + 1));
+    }
+ 
+    void print(node *temp, vector<int> &a) {
+        if (!temp) return;
+        pushdown(temp);
+        print(temp->lhs, a);
+        a.push_back(temp->val);
+        print(temp->rhs, a);
+    }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>treap</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

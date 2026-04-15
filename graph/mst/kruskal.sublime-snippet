@@ -1,0 +1,25 @@
+<snippet>
+    <content><![CDATA[
+auto kruskal = [&]() -> int {
+    sort(edges.begin(), edges.end(), [&](const auto & lhs, const auto & rhs) {
+        return lhs[2] < rhs[2];
+    });
+
+    dsu d(n);
+
+    int cnt = 0, ans = 0;
+    for (auto &[u, v, wt] : edges) {
+        if (d.find(u) != d.find(v)) {
+            cnt++, ans += wt;
+            d.unite(u, v);
+        }
+    }
+
+    return (cnt == n - 1 ? ans : -1);
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>mst_kruskal</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

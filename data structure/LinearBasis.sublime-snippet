@@ -1,0 +1,73 @@
+<snippet>
+    <content><![CDATA[
+using i64 = int64_t;
+
+class LinearBasis {
+private:
+    static constexpr int MAX_BITS = 60;
+    array<i64, MAX_BITS> basis{};
+    int sz{0};
+
+public:
+    LinearBasis() = default;
+
+    bool insert(i64 x) {
+        for (int i = MAX_BITS - 1; i >= 0; i--) {
+            if (!((x >> i) & 1)) continue;
+
+            if (!basis[i]) {
+                basis[i] = x;
+                sz++;
+                return true;
+            }
+
+            x ^= basis[i];
+        }
+        return false;
+    }
+
+    i64 max_xor(i64 val = 0) const {
+        i64 res = val;
+        for (int i = MAX_BITS - 1; i >= 0; i--)
+            if ((res ^ basis[i]) > res) res ^= basis[i];
+
+        return res;
+    }
+
+    i64 min_xor() const {
+        for (int i = 0; i < MAX_BITS; i++)
+            if (basis[i]) return basis[i];
+
+        return 0;
+    }
+
+    bool contains(i64 k) const {
+        for (int i = MAX_BITS - 1; i >= 0; i--) {
+            if (!((k >> i) & 1)) continue;
+            if (!basis[i]) return false;
+
+            k ^= basis[i];
+        }
+        return true;
+    }
+
+    LinearBasis& operator+=(const LinearBasis& other) {
+        for (int i = 0; i < MAX_BITS; ++i)
+            if (other.basis[i]) this->insert(other.basis[i]);
+
+        return *this;
+    }
+
+    friend LinearBasis operator+(LinearBasis lhs, const LinearBasis& rhs) {
+        lhs += rhs;
+        return lhs;
+    }
+
+    int size() const { return sz; }
+};
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>LinearBasis</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

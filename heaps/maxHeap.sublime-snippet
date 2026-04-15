@@ -1,0 +1,75 @@
+<snippet>
+	<content><![CDATA[
+class maxHeap {
+public:
+    const int INF = INT_MAX;
+    int s = 1, ind = 0;
+    vector<int> tree;
+
+    maxHeap(int n) {build(n);}
+
+    maxHeap(vector<int> &a) {//Heapify method O(n) https://www.youtube.com/watch?v=8noP3YjjJCM
+        int n = a.size(); build(n);
+        for (int i = n; i >= 1; i--) {
+            tree[i] = a[i - 1];
+            propagate(i);
+        }
+        ind = n;
+    }
+
+    void build(int n) {
+        while (s <= n) s *= 2;
+        tree.resize(s, -INF);
+        tree[0] = INF;
+    }
+
+    void propagate(int i) {
+        while (true) {
+            int l = 2 * i, r = 2 * i + 1;
+            if (l < s) {
+                int j = (tree[l] > tree[r] ? l : r);
+                if (tree[i] < tree[j]) {
+                    swap(tree[i], tree[j]);
+                    i = j;
+                }
+                else break;
+            }
+            else break;
+        }
+    }
+
+    void insert(int data) {//O(logn) if n elements then O(n*logn)
+        int i = ++ind;
+        tree[i] = data;
+        while (i) {
+            int p = i / 2;
+            if (tree[i] > tree[p]) {
+                swap(tree[i], tree[p]);
+                i = p;
+            }
+            else break;
+        }
+    }
+
+    void remove() {
+        tree[1] = tree[ind];
+        tree[ind--] = -INF;
+        propagate(1);
+    }
+
+    vector<int> heap_sort() {
+        vector<int> ans;
+        while (tree[1] != -INF) {
+            ans.push_back(tree[1]);
+            remove();
+        }
+        return ans;
+    }
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_maxHeap</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

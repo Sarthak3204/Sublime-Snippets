@@ -1,0 +1,58 @@
+<snippet>
+	<content><![CDATA[
+#define LinearSieve
+
+const int N = (int)2e5;
+vector<int> spf(N + 1), isPrime(N + 1);
+
+void initiate() {
+	for (int i = 0; i <= N; ++i) spf[i] = i;
+	for (int i = 2; i * i <= N; i++) {
+		if (spf[i] == i) {
+			isPrime[i] = 1;
+			for (int j = i * i; j <= N; j += i) {
+				if (spf[j] == j) spf[j] = i;
+			}
+		}
+	}
+}
+
+vector<pii> factorize(int x) {
+	vector<pii> factor;
+	while (x > 1) {
+		int y = spf[x], cnt = 0;
+		while (!(x % y)) {
+			x /= y;
+			cnt++;
+		}
+		factor.pb({y, cnt});
+	}
+	return factor;
+}
+
+int bexp(int a, int b, int mod) {
+	int ans = 1;
+	while (b) {
+		if (b & 1) ans = (ans * 1LL * a) % mod;
+		a = (a * 1LL * a) % mod;
+		b >>= 1;
+	}
+	return ans % mod;
+}
+
+int divsum_sieve(int x) {
+	vector<pii> factor = factorize(x);
+	ll sum = 1;
+	for (auto &[x, y] : factor) {
+		sum *= ((bexp(x, y + 1, mod) - 1 + mod) % mod * bexp(x - 1, mod - 2, mod)) % mod;
+		sum %= mod;
+	}
+
+	return sum;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>divsum_sieve</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

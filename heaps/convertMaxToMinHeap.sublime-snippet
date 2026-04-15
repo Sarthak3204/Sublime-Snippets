@@ -1,0 +1,22 @@
+<snippet>
+	<content><![CDATA[
+void convertMaxToMinHeap(vector<int> &a, int n) {
+    for (int k = n / 2; k >= 1; k--) {
+        int i = k;
+        while (2 * i <= n) {
+            int l = 2 * i, r = 2 * i + 1, j = l;
+            if (r <= n and a[r - 1] < a[l - 1]) j = r;
+            if (a[i - 1] > a[j - 1]) {
+                swap(a[i - 1], a[j - 1]);
+                i = j;
+            }
+            else break;
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>heaps_convertMaxToMinHeap</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

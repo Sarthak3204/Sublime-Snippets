@@ -1,0 +1,72 @@
+<snippet>
+	<content><![CDATA[
+class SegTree {
+public:
+    vector<int> tree;
+    int s = 1, IDENTITY_ELEMENT = 0;
+    
+    SegTree() {}
+    SegTree(int n) {
+        while (s < n) s <<= 1;
+        tree.resize(s << 1, IDENTITY_ELEMENT);
+    }
+    SegTree(vector<int> &a) {
+        int n = size(a);
+        while (s < n) s <<= 1;
+        tree.resize(s << 1, IDENTITY_ELEMENT);
+
+        for (int i = 0; i < n; i++)
+            tree[s + i] = a[i];
+
+        for (int i = s - 1; i >= 1; i--)
+            tree[i] = merge(tree[i << 1], tree[i << 1 | 1]);
+    }
+
+    int query(int l, int r, int node, int lo, int hi) {
+        if (l <= lo and hi <= r) return tree[node];
+        if (lo > r or hi < l) return IDENTITY_ELEMENT;
+
+        int mid = (lo + hi) >> 1;
+        auto lhs = query(l, r, node << 1, lo, mid);
+        auto rhs = query(l, r, node << 1 | 1, mid + 1, hi);
+
+        return merge(lhs, rhs);
+    }
+
+    void update(int l, int r, int val, int node, int lo, int hi) {
+        if (l <= lo and hi <= r) {
+            apply(node, val);
+            return;
+        }
+        if (lo > r or hi < l) return;
+
+        int mid = (lo + hi) >> 1;
+        update(l, r, val, node << 1, lo, mid);
+        update(l, r, val, node << 1 | 1, mid + 1, hi);
+
+        tree[node] = merge(tree[node << 1], tree[node << 1 | 1]);
+    }
+
+    int query(int l, int r) {
+        return query(l, r, 1, 0, s - 1);
+    }
+
+    void update(int l, int r, int val) {
+        update(l, r, val, 1, 0, s - 1);
+    }
+    
+    void apply(int node, int val) {
+        tree[node] = val;
+        return;
+    }
+    
+    int merge(int lhs, int rhs) {
+        return lhs + rhs;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>SegTree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,114 @@
+<snippet>
+    <content><![CDATA[
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <optional>
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <chrono>
+
+template<typename T>
+class BoundedQueue {
+    std::queue<T> q;
+    const size_t cap;
+
+    // 1. SINGLE MUTEX ARCHITECTURE
+    // Using exactly one mutex to protect the shared state mathematically
+    // prevents lock-ordering deadlocks (e.g., the ABBA problem).
+    std::mutex mx;
+
+    // 2. AVOIDING THE THUNDERING HERD (Two CVs)
+    // We use two CVs so signals are laser-targeted. Producers only wake up
+    // Consumers, and Consumers only wake up Producers. This prevents a Producer
+    // from accidentally waking up another Producer.
+    std::condition_variable cv_not_full;
+    std::condition_variable cv_not_empty;
+
+public:
+    explicit BoundedQueue(size_t cap) : cap(cap) {}
+
+    void push(T item) {
+        std::unique_lock lock{mx};
+
+        // 3. PREVENTING SPURIOUS WAKEUPS
+        // The lambda acts as a secondary check. If the OS randomly wakes this
+        // thread up for no reason, it will re-evaluate the lambda. If the queue
+        // is still full, the thread silently puts itself back to sleep.
+        cv_not_full.wait(lock, [this] {
+            return q.size() < cap;
+        });
+
+        // 4. ZERO-COPY SEMANTICS
+        // Using std::move tells the compiler to steal the internal memory pointers
+        // of 'item' rather than triggering an expensive deep copy.
+        q.push(std::move(item));
+
+        // 5. PREVENTING PESSIMIZATION (Manual Unlock)
+        // We unlock manually before ringing the doorbell (notify). If we kept the
+        // lock while notifying, the Consumer would wake up, immediately hit the
+        // locked door, and be forced back into an OS sleep cycle.
+        lock.unlock();
+        cv_not_empty.notify_one();
+    }
+
+    [[nodiscard]] T pop() {
+        std::unique_lock lock{mx};
+
+        // [BUG FIXED] We want to wait until the queue is NOT empty.
+        cv_not_empty.wait(lock, [this] {
+            return !q.empty();
+        });
+
+        T item = std::move(q.front());
+        q.pop();
+
+        lock.unlock();
+        cv_not_full.notify_one(); // Signal to sleeping Producers that space opened up
+
+        return item;
+    }
+};
+
+int main() {
+    std::cout << "=== Bounded Queue Test Started ===\n";
+
+    BoundedQueue<int> queue(5);
+
+    // 1. Start the Consumer Thread (Reads slowly: 1 item per second)
+    std::thread consumer([&queue]() {
+        for (int i = 0; i < 15; ++i) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            int val = queue.pop();
+            std::cout << "[Consumer] Popped: " << val << "\n";
+        }
+    });
+
+    // 2. Start 3 Producer Threads (Writes extremely fast)
+    std::vector<std::thread> producers;
+    for (int p = 1; p <= 3; ++p) {
+        producers.emplace_back([&queue, p]() {
+            for (int i = 1; i <= 5; ++i) {
+                int payload = (p * 100) + i;
+                std::cout << "[Producer " << p << "] Pushing: " << payload << "\n";
+                queue.push(payload);
+            }
+        });
+    }
+
+    // 3. Wait for all threads to finish
+    for (auto& t : producers) {
+        t.join();
+    }
+    consumer.join();
+
+    std::cout << "=== System Shutdown Cleanly ===\n";
+    return 0;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>BoundedQueue</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

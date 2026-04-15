@@ -1,0 +1,61 @@
+<snippet>
+    <content><![CDATA[
+//https://leetcode.com/problems/count-good-triplets-in-an-array/description/
+long long goodTriplets(vector<int>& nums1, vector<int>& nums2) {
+    int n = nums1.size();
+
+    vector<int> ind(n);
+    vector<long long> dp1(n), dp2(n);
+    for (int i = 0; i < n; i++) {
+        ind[nums2[i]] = i;
+    }
+    for (auto &x : nums1) x = ind[x];
+
+    auto merge = [&](int lo, int mid, int hi) {
+        for (int i = mid + 1, k = lo; i <= hi; i++) {
+            while (k <= mid and nums1[k] < nums1[i]) k++;
+            dp1[nums1[i]] += k - lo;
+        }
+        for (int i = lo, k = mid + 1; i <= mid; i++) {
+            while (k <= hi and nums1[k] <= nums1[i]) k++;
+            dp2[nums1[i]] += hi - k + 1;
+        }
+
+        int i = lo, j = mid + 1, k = 0;
+        int a[hi - lo + 1];
+        while (i <= mid and j <= hi) {
+            if (nums1[i] <= nums1[j]) a[k++] = nums1[i++];
+            else a[k++] = nums1[j++];
+        }
+
+        while (i <= mid) a[k++] = nums1[i++];
+        while (j <= hi) a[k++] = nums1[j++];
+
+        for (int i = lo; i <= hi; i++) {
+            nums1[i] = a[i - lo];
+        }
+    };
+
+    auto f = [&](auto && f, int lo, int hi) {
+        if (lo >= hi) return;
+        int mid = (lo + hi) / 2;
+        f(f, lo, mid);
+        f(f, mid + 1, hi);
+        merge(lo, mid, hi);
+    };
+
+    f(f, 0, n - 1);
+
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans += dp1[i] * dp2[i];
+    }
+
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>merge_sort_goodTriplets</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

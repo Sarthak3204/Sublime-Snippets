@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+class VeniceSet {
+public:
+    multiset<int> s;
+    int water_level = 0;
+
+    void add(int v) {
+        s.insert(v + water_level);
+    }
+
+    void remove(int v) {
+        s.erase(s.find(v + water_level));
+    }
+
+    void updateAll(int w) {
+        water_level += w;
+    }
+
+    int getMin() {
+        return *s.begin() - water_level;
+    }
+
+    int size() {
+        return s.size();
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>VeniceSet</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

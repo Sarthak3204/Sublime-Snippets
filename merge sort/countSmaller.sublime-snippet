@@ -1,0 +1,50 @@
+<snippet>
+    <content><![CDATA[
+//https://leetcode.com/problems/count-of-smaller-numbers-after-self/
+vector<int> countSmaller(vector<int>& nums) {
+    int n = nums.size();
+    vector<pair<int, int>> arr(n);
+
+    for (int i = 0; i < n; i++) {
+        arr[i] = {nums[i], i};
+    }
+
+    vector<int> ans(n);
+    auto merge = [&](int lo, int mid, int hi) -> void {
+        vector<pair<int, int>> a;
+        int i = lo, j = mid + 1;
+        while (i <= mid and j <= hi) {
+            if (arr[i].first > arr[j].first) {
+                ans[arr[i].second] += hi - j + 1;
+                a.push_back(arr[i++]);
+            }
+            else a.push_back(arr[j++]);
+        }
+
+        while (i <= mid) a.push_back(arr[i++]);
+        while (j <= hi) a.push_back(arr[j++]);
+
+        for (int i = lo; i <= hi; i++) {
+            arr[i] = a[i - lo];
+        }
+    };
+
+    auto f = [&](auto && f, int lo, int hi) -> void {
+        if (lo >= hi) return;
+        int mid = (lo + hi) / 2;
+        f(f, lo, mid);
+        f(f, mid + 1, hi);
+        merge(lo, mid, hi);
+        return;
+    };
+
+    f(f, 0, n - 1);
+
+    return ans;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>merge_sort_countSmaller</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

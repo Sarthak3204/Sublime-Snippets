@@ -1,0 +1,45 @@
+<snippet>
+	<content><![CDATA[
+struct Lexo_substring {//(n ^ 2)logn
+	vector<vector<int>> lcp;
+	vector<pii> substrings;
+
+	Lexo_substring(int n, string &s) {
+		lcp.resize(n + 1, vector<int>(n + 1, 0));
+
+		for (int i = n - 1; i >= 0; i--) {
+			for (int j = n - 1; j >= 0; j--) {
+				if (s[i] == s[j]) {
+					lcp[i][j] = 1 + lcp[i + 1][j + 1];
+				}
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = i; j < n; j++) {
+				substrings.pb({i, j});
+			}
+		}
+
+		function cmp = [&](pii & a, pii & b) -> bool {
+			int len1 = a.ss - a.ff + 1;
+			int len2 = b.ss - b.ff + 1;
+			int common = lcp[a.ff][b.ff];
+			if (common < min(len1, len2)) {
+				return s[a.ff + common] < s[b.ff + common];
+			}
+			if (len1 != len2) {
+				return len1 < len2;
+			}
+			return a.ff > b.ff;
+		};
+
+		sort(all(substrings), cmp);
+	}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Lexo_substring</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

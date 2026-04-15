@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+int LIS(vector<int> &a, int n) { //O(n^2)
+	vector<int> dp(n, 1);
+	int maxi = 1;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < i; j++) {
+			if (a[j] < a[i]) dp[i] = max(dp[i], 1 + dp[j]);
+		}
+		maxi = max(maxi, dp[i]);
+	}
+	return maxi;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LIS</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

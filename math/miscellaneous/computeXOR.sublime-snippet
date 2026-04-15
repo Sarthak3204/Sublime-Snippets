@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+int computeXOR(int n) {
+    switch (n % 4) {
+    case 0: return n;
+    case 1: return 1;
+    case 2: return n + 1;
+    default: return 0;
+    };
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>computeXOR</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

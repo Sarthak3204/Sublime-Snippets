@@ -1,0 +1,30 @@
+<snippet>
+	<content><![CDATA[
+vector<int> dist(n, INF), parent(n, -1);
+auto dijkstra = [&](int source) {
+    dist[source] = 0;
+    set<pair<int, int>> s;
+    s.insert({0, source});
+
+    while (!s.empty()) {
+        auto [d, v] = *s.begin();
+        s.erase(s.begin());
+
+        for (auto &[u, wt] : adj[v]) {
+            if (d + wt < dist[u]) {
+                s.erase({dist[u], u});
+
+                dist[u] = d + wt;
+                parent[u] = v;
+
+                s.insert({dist[u], u});
+            }
+        }
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>shortest_path_dijkstra_set</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,35 @@
+<snippet>
+	<content><![CDATA[
+string removeKdigits(string s, int k) {
+    int n = s.size();
+    stack<char> st;
+
+    for (int i = 0; i < n; i++) {
+        while (k and !st.empty() and st.top() > s[i])
+            st.pop(), k--;
+        st.push(s[i]);
+    }
+
+    while (k and !st.empty())
+        st.pop(), k--;
+
+    string ans;
+    while (!st.empty())
+        ans.push_back(st.top()), st.pop();
+
+    reverse(ans.begin(), ans.end());
+
+    if (ans.empty()) return "0";
+
+    int i = 0;
+    while (ans[i] == '0') i++;
+    ans =  ans.substr(i, n - i);
+
+    return ans.size() > 0 ? ans : "0";
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_removeKdigits</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,60 @@
+<snippet>
+	<content><![CDATA[
+long long subarrayRanges(int n, vector<int> &a) {
+    vector<int> NSE1(n, n), NSE2(n, -1), NGE1(n, n), NGE2(n, -1);
+    stack<int> s;
+
+    for (int i = 0; i < n; i++) {
+        while (!s.empty() and a[i] < a[s.top()]) {
+            NSE1[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    while (!s.empty()) s.pop();
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!s.empty() and a[i] <= a[s.top()]) {
+            NSE2[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    while (!s.empty()) s.pop();
+
+    for (int i = 0; i < n; i++) {
+        while (!s.empty() and a[i] > a[s.top()]) {
+            NGE1[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    while (!s.empty()) s.pop();
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!s.empty() and a[i] >= a[s.top()]) {
+            NGE2[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        long long contribution = (long long)(NSE1[i] - i) * (i - NSE2[i]);
+        ans -= contribution * a[i];
+
+        contribution = (long long)(NGE1[i] - i) * (i - NGE2[i]);
+        ans += contribution * a[i];
+    }
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_subarrayRanges</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

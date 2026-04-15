@@ -1,0 +1,38 @@
+<snippet>
+	<content><![CDATA[
+int sumSubarrayMins(int n, vector<int> &a) {
+    vector<int> NSE1(n, n), NSE2(n, -1);
+    stack<int> s;
+
+    for (int i = 0; i < n; i++) {
+        while (!s.empty() and a[i] < a[s.top()]) {
+            NSE1[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    while (!s.empty()) s.pop();
+
+    for (int i = n - 1; i >= 0; i--) {
+        while (!s.empty() and a[i] <= a[s.top()]) {
+            NSE2[s.top()] = i;
+            s.pop();
+        }
+        s.push(i);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        long long contribution = (long long)(NSE1[i] - i) * (i - NSE2[i]);
+        ans = (ans + (contribution * a[i]) % mod) % mod;
+    }
+
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stack_queues_sumSubarrayMins</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

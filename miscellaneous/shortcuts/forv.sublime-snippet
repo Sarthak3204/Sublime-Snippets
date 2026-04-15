@@ -1,0 +1,8 @@
+<snippet>
+	<description> Vector For Loop</description>
+	<content><![CDATA[for (auto ${1:it} = ${2:v}.begin(); $1 != ${2:v}.end(); $1++) {
+	$0
+}]]></content>
+	<tabTrigger>forv</tabTrigger>
+	<scope>(source.c | source.objc | source.c++ | source.objc++) - meta.preprocessor.include - comment - string</scope>
+</snippet>

@@ -1,0 +1,95 @@
+<snippet>
+    <content><![CDATA[
+#include <array>
+#include <atomic>
+#include <thread>
+#include <optional>
+#include <iostream>
+/*
+memory_order_release: I promise the data is written before I update this index
+memory_order_acquire: I promise I will wait to see the updated index before I read the data
+alignas(64) <> alignas(std::hardware_destructive_interference_size)
+*/
+template<typename T, size_t Size>
+class SPSCQueue {
+    static_assert(Size > 0 and !(Size & (Size - 1)), "Size must be power of 2");
+
+    std::array<T, Size> buffer;
+
+    alignas(64) std::atomic<size_t> head{0};
+    alignas(64) std::atomic<size_t> tail{0};
+
+public:
+    [[nodiscard]] bool push(T item) {
+        size_t cur = head.load(std::memory_order_relaxed);
+        size_t nxt = (cur + 1) & (Size - 1);
+
+        if (nxt == tail.load(std::memory_order_acquire)) return false;
+
+        buffer[cur] = std::move(item);
+        head.store(nxt, std::memory_order_release);
+
+        return true;
+    }
+
+    [[nodiscard]] std::optional<T> pop() {
+        size_t cur = tail.load(std::memory_order_relaxed);
+        size_t nxt = (cur + 1) & (Size - 1);
+
+        if (cur == head.load(std::memory_order_acquire)) return std::nullopt;
+
+        T item = std::move(buffer[cur]);
+        tail.store(nxt, std::memory_order_release);
+
+        return item;
+    }
+};
+int main() {
+    std::cout << "=== Lock-Free SPSC Ring Buffer Test ===\n";
+
+    // Allocate on the stack. 1024 integers is very small (~4KB), perfectly safe.
+    SPSCQueue<int, 1024> queue;
+
+    std::thread consumer([&queue]() {
+        int expected = 0;
+        int received_count = 0;
+
+        while (expected < 10000) {
+            auto opt_val = queue.pop();
+            if (opt_val.has_value()) {
+                if (opt_val.value() != expected) {
+                    std::cerr << "DATA CORRUPTION! Expected " << expected
+                              << " but got " << opt_val.value() << "\n";
+                    std::exit(1);
+                }
+                expected++;
+                received_count++;
+            }
+            // If empty, the lock-free loop just spins. (We could yield here in a real app)
+        }
+        std::cout << "[Consumer] Successfully received " << received_count << " items in perfect order.\n";
+    });
+
+    std::thread producer([&queue]() {
+        int i = 0;
+        while (i < 10000) {
+            // Try to push. If it returns false (queue full), the loop spins and tries again.
+            if (queue.push(i)) {
+                i++;
+            }
+        }
+        std::cout << "[Producer] Successfully pushed 10000 items.\n";
+    });
+
+    producer.join();
+    consumer.join();
+
+    std::cout << "=== Test Passed Successfully ===\n";
+    return 0;
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>SPSCQueue</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

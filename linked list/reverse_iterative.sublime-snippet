@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+
+ListNode* reverseList(ListNode* head) {
+    if (head == NULL) return head;
+
+    ListNode *temp1 = NULL;
+    while (true) {
+        ListNode *temp2 = head->next;
+        head->next = temp1;
+        if (temp2 == NULL) return head;
+        temp1 = head;
+        head = temp2;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>linked_list_reverse_iterative</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

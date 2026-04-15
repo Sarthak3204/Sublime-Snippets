@@ -1,0 +1,9 @@
+<snippet>
+	<content><![CDATA[
+$0.erase(unique(all($0)), $0.end());
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>uniq</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
