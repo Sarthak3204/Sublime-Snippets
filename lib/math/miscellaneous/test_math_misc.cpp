@@ -10,7 +10,7 @@ namespace cb {
 #include "lib/math/miscellaneous/count_bits_0_to_n.cpp"
 }
 namespace cd {
-#include "lib/math/miscellaneous/count_divisors.cpp"
+#include "lib/math/miscellaneous/divisors/count_divisors.cpp"
 }
 namespace gp {
 #include "lib/math/miscellaneous/count_of_pairs_of_gcd_g_in_1_to_n.cpp"
@@ -21,10 +21,10 @@ namespace pal {  // a whole program: run its main() with cin/cout redirected
 #undef main
 }  // namespace pal
 namespace ds {
-#include "lib/math/miscellaneous/div_sum.cpp"
+#include "lib/math/miscellaneous/divisors/div_sum.cpp"
 }
 namespace fc {
-#include "lib/math/miscellaneous/floor_ceil.cpp"
+#include "lib/math/miscellaneous/floor_ceil/floor_ceil.cpp"
 }
 namespace g1 {
 #include "lib/math/miscellaneous/gcd.cpp"
@@ -34,26 +34,26 @@ namespace l1 {
 #include "lib/math/miscellaneous/lcm.cpp"
 }
 namespace gd {
-#include "lib/math/miscellaneous/generate_divisors.cpp"
+#include "lib/math/miscellaneous/divisors/generate_divisors.cpp"
 }
 namespace gds {
-#include "lib/math/miscellaneous/generate_divisors_sqrt_n.cpp"
+#include "lib/math/miscellaneous/divisors/generate_divisors_sqrt_n.cpp"
 }
 namespace le {
-#include "lib/math/miscellaneous/large_expo.cpp"
+#include "lib/math/miscellaneous/exponentiation/large_expo.cpp"
 }
 namespace mx {
-#include "lib/math/miscellaneous/matrix_exp.cpp"
+#include "lib/math/miscellaneous/exponentiation/matrix_exp.cpp"
 }
 namespace pw {
-#include "lib/math/miscellaneous/pow.cpp"
+#include "lib/math/miscellaneous/exponentiation/pow.cpp"
 }
 vector<ll> all_floors(ll l) {  // statement-level snippets need `l`
-#include "lib/math/miscellaneous/generate_all_floors.cpp"
+#include "lib/math/miscellaneous/floor_ceil/generate_all_floors.cpp"
     return v;
 }
 vector<ll> all_ceils(ll l) {
-#include "lib/math/miscellaneous/generate_all_ceils.cpp"
+#include "lib/math/miscellaneous/floor_ceil/generate_all_ceils.cpp"
     return v;
 }
 

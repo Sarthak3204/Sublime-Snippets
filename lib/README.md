@@ -53,9 +53,16 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | `low_level/` | [Low-level / systems](low_level/README.md) | 6 |  |  | 1 |
 | `math/` | [Math](math/README.md) |  |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`mint/` | [Modular arithmetic (`mint` and helpers)](math/mint/README.md) | 7 |  |  | 2 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`miscellaneous/` | [Math: miscellaneous](math/miscellaneous/README.md) | 18 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bigint/` |  | 1 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`number_theory/` | [Number theory](math/number_theory/README.md) | 13 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`miscellaneous/` | [Math: miscellaneous](math/miscellaneous/README.md) | 7 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bigint/` | [Big integers (`bigint`)](math/miscellaneous/bigint/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`divisors/` | [Divisors (`generate_divisors`, `count_divisors`, `div_sum`)](math/miscellaneous/divisors/README.md) | 4 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exponentiation/` | [Exponentiation (`binary_exp`, `pow`, `large_expo`, `matrix_exp`)](math/miscellaneous/exponentiation/README.md) | 4 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`floor_ceil/` | [Floor and ceiling (`floor_ceil`, `generate_all_floors`, `generate_all_ceils`)](math/miscellaneous/floor_ceil/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`number_theory/` | [Number theory](math/number_theory/README.md) | 3 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`extended_gcd/` | [Extended Euclid and the Chinese remainder theorem](math/number_theory/extended_gcd/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`factorization/` | [Factorization by trial division](math/number_theory/factorization/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mobius/` | [Möbius function μ(n)](math/number_theory/mobius/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`phi/` | [Euler's totient φ(n)](math/number_theory/phi/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sieve/` | [Sieves](math/number_theory/sieve/README.md) | 5 |  |  |  |
 | `merge_sort/` | [Merge-sort counting](merge_sort/README.md) | 6 |  |  |  |
 | `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 25 |  |  | 1 |

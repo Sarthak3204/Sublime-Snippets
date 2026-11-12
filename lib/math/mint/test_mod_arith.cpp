@@ -1,7 +1,7 @@
 #include "test_prelude.hpp"
 
 namespace impl {
-#include "lib/math/miscellaneous/binary_exp.cpp"
+#include "lib/math/miscellaneous/exponentiation/binary_exp.cpp"
 #include "lib/math/mint/mminvprime.cpp"  // @needs binary_exp
 #include "lib/math/mint/mod_add.cpp"
 #include "lib/math/mint/mod_sub.cpp"

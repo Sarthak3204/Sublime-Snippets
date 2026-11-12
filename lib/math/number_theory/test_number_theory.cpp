@@ -5,27 +5,27 @@ namespace comb {
 #include "lib/math/number_theory/combinatorics.cpp"
 }
 namespace crt2 {
-#include "lib/math/number_theory/extended_gcd.cpp"  // @needs
-#include "lib/math/number_theory/crt.cpp"
+#include "lib/math/number_theory/extended_gcd/extended_gcd.cpp"  // @needs
+#include "lib/math/number_theory/extended_gcd/crt.cpp"
 }
 namespace tcrt {
-#include "lib/math/number_theory/extended_gcd.cpp"  // @needs (via crt)
-#include "lib/math/number_theory/crt.cpp"           // @needs
-#include "lib/math/number_theory/tcrt.cpp"
+#include "lib/math/number_theory/extended_gcd/extended_gcd.cpp"  // @needs (via crt)
+#include "lib/math/number_theory/extended_gcd/crt.cpp"           // @needs
+#include "lib/math/number_theory/extended_gcd/tcrt.cpp"
 }
 namespace divsum {
 #include "lib/math/number_theory/sieve/linear_sieve.cpp"  // @needs
-#include "lib/math/miscellaneous/binary_exp.cpp"    // @needs
+#include "lib/math/miscellaneous/exponentiation/binary_exp.cpp"    // @needs
 #include "lib/math/number_theory/sieve/divsum_sieve.cpp"
 }
 namespace egcd {
-#include "lib/math/number_theory/extended_gcd.cpp"
+#include "lib/math/number_theory/extended_gcd/extended_gcd.cpp"
 }
 namespace fact {
-#include "lib/math/number_theory/factorize.cpp"
+#include "lib/math/number_theory/factorization/factorize.cpp"
 }
 namespace mfact {
-#include "lib/math/number_theory/map_factorize.cpp"
+#include "lib/math/number_theory/factorization/map_factorize.cpp"
 }
 namespace prime {
 #include "lib/math/number_theory/is_prime.cpp"
@@ -34,10 +34,10 @@ namespace lsieve {
 #include "lib/math/number_theory/sieve/linear_sieve.cpp"
 }
 namespace mob {
-#include "lib/math/number_theory/mobius.cpp"
+#include "lib/math/number_theory/mobius/mobius.cpp"
 }
 namespace mob_n {
-#include "lib/math/number_theory/mobius_1_to_n.cpp"
+#include "lib/math/number_theory/mobius/mobius_1_to_n.cpp"
 }
 namespace mob_sieve {
 #include "lib/math/number_theory/sieve/mobius_sieve.cpp"
@@ -46,10 +46,10 @@ namespace ncrl {
 #include "lib/math/number_theory/ncr_linear.cpp"
 }
 namespace phi1 {
-#include "lib/math/number_theory/phi.cpp"
+#include "lib/math/number_theory/phi/phi.cpp"
 }
 namespace phin {
-#include "lib/math/number_theory/phi_1_to_n.cpp"
+#include "lib/math/number_theory/phi/phi_1_to_n.cpp"
 }
 namespace sieve {
 #include "lib/math/number_theory/sieve/sieve.cpp"
@@ -59,7 +59,7 @@ namespace sfact {
 #include "lib/math/number_theory/sieve/sieve_factorization.cpp"
 }
 namespace wheel {
-#include "lib/math/number_theory/wheel_factor.cpp"
+#include "lib/math/number_theory/factorization/wheel_factor.cpp"
 }
 
 // ---- brute force ----
