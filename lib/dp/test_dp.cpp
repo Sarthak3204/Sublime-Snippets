@@ -1,20 +1,20 @@
 #include "test_prelude.hpp"
 
 namespace num_lis {
-#include "lib/dp/find_number_of_lis.cpp"
+#include "lib/dp/lis/find_number_of_lis.cpp"
 }
 namespace lcs_ns {
-#include "lib/dp/lcs.cpp"
-#include "lib/dp/print_lcs.cpp"
+#include "lib/dp/lcs/lcs.cpp"
+#include "lib/dp/lcs/print_lcs.cpp"
 }
 namespace lis_n2 {
-#include "lib/dp/lis.cpp"
+#include "lib/dp/lis/lis.cpp"
 }
 namespace lis_inc {
-#include "lib/dp/lis_increasing.cpp"
+#include "lib/dp/lis/lis_increasing.cpp"
 }
 namespace lis_nd {
-#include "lib/dp/lis_non_decreasing.cpp"
+#include "lib/dp/lis/lis_non_decreasing.cpp"
 }
 
 bool is_subsequence(const vector<ll> &sub, const vector<ll> &v) {

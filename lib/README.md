@@ -29,8 +29,10 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;`sparse_table/` | [Sparse table](data_structure/sparse_table/README.md) | 5 |  |  | 2 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`treap/` | [Implicit treap (`treap`)](data_structure/treap/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`venice_set/` | [Venice set (`venice_set`)](data_structure/venice_set/README.md) | 1 |  |  |  |
-| `dp/` | [Dynamic programming](dp/README.md) | 6 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` |  | 1 |  |  | 1 |
+| `dp/` | [Dynamic programming](dp/README.md) |  |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`lcs/` | [Longest common subsequence (LCS)](dp/lcs/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` | [Line container (dynamic convex hull trick)](dp/line_container/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`lis/` | [Longest increasing subsequence (LIS)](dp/lis/README.md) | 4 |  |  |  |
 | `geometry/` | [Geometry](geometry/README.md) | 1 |  |  | 1 |
 | `graph/` | [Graphs](graph/README.md) | 3 |  |  | 2 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`bipartite/` | [Bipartite check (`check_bipartite`)](graph/bipartite/README.md) | 1 |  |  |  |
