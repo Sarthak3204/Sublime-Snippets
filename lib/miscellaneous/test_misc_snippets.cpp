@@ -4,7 +4,7 @@ namespace impl {
 #include "lib/miscellaneous/binary_to_decimal.cpp"
 #include "lib/miscellaneous/decimal_to_binary.cpp"
 #include "lib/miscellaneous/classcomp.cpp"
-#include "lib/miscellaneous/compress_array.cpp"
+#include "lib/miscellaneous/coordinate_compression/compress_array.cpp"
 #include "lib/miscellaneous/custom_hash.cpp"
 #include "lib/miscellaneous/find_sqrt.cpp"
 #include "lib/miscellaneous/int128.cpp"
@@ -14,10 +14,10 @@ namespace impl {
 }  // namespace impl
 #include "lib/miscellaneous/gp_hash_table.cpp"  // pb_ds include + using namespace: global, like in a solution
 namespace dq_max {
-#include "lib/miscellaneous/monotone_deque_max.cpp"
+#include "lib/miscellaneous/monotone_deque/monotone_deque_max.cpp"
 }
 namespace dq_min {
-#include "lib/miscellaneous/monotone_deque_min.cpp"
+#include "lib/miscellaneous/monotone_deque/monotone_deque_min.cpp"
 }
 
 // namespace_io reads `stdin` and writes `stdout`: point both at temporary files while it is compiled.
@@ -46,7 +46,7 @@ pair<vector<ll>, vector<ll>> nge_nse(int n, const vector<ll> &v) {
 }
 vector<ll> compressed_coords(vector<ll> coord, const vector<ll> &queries) {
     using impl::custom_hash;
-#include "lib/miscellaneous/coordinate_compression.cpp"
+#include "lib/miscellaneous/coordinate_compression/coordinate_compression.cpp"
     vector<ll> r;
     for (ll q : queries) r.push_back(mp[q]);
     return r;

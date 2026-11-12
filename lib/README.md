@@ -68,7 +68,9 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`phi/` | [Euler's totient φ(n)](math/number_theory/phi/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sieve/` | [Sieves](math/number_theory/sieve/README.md) | 5 |  |  |  |
 | `merge_sort/` | [Merge-sort counting](merge_sort/README.md) | 6 |  |  |  |
-| `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 25 |  |  | 1 |
+| `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 21 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`coordinate_compression/` | [Coordinate compression](miscellaneous/coordinate_compression/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`monotone_deque/` | [Monotone deque (sliding window maximum / minimum)](miscellaneous/monotone_deque/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`sorting/` | [Sorting algorithms](miscellaneous/sorting/README.md) | 7 |  |  |  |
 | `sliding_window/` | [Sliding window](sliding_window/README.md) | 3 |  |  |  |
 | `stack_queues/` | [Stacks and queues](stack_queues/README.md) | 20 |  |  |  |
