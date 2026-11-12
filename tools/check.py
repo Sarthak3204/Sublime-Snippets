@@ -9,7 +9,7 @@ Metadata (leading comment lines): `// @needs name ...` pastes those snippets fir
 
 Usage:
     python tools/check.py                 # all files
-    python tools/check.py lib/dp/lis.cpp  # selected files
+    python tools/check.py lib/dp/lis/lis.cpp  # selected files
     python tools/check.py -v ...          # print compiler errors
 """
 

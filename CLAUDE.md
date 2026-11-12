@@ -41,7 +41,7 @@ ctest --test-dir build -R "SegTree"                        # tests matching a na
 ./build/test_segment_tree.exe --gtest_filter='SegTree.EdgeCases'   # one test case
 cmake -S . -B build-ubsan -G Ninja -DENABLE_UBSAN_TRAP=ON -DCMAKE_BUILD_TYPE=Debug && cmake --build build-ubsan -j 8 && ctest --test-dir build-ubsan
 python tools/check.py                      # compile-check every lib/ snippet (with and without `#define int long long`)
-python tools/check.py lib/dp/lis.cpp -v    # one file, print compiler errors
+python tools/check.py lib/dp/lis/lis.cpp -v    # one file, print compiler errors
 python tools/cpp2snippet.py --out <dir>    # fallback: regenerate .sublime-snippet files from lib/
 ```
 
