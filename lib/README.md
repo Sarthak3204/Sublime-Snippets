@@ -32,12 +32,22 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | `dp/` | [Dynamic programming](dp/README.md) | 6 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` |  | 1 |  |  | 1 |
 | `geometry/` | [Geometry](geometry/README.md) | 1 |  |  | 1 |
-| `graph/` | [Graphs](graph/README.md) | 18 |  |  | 2 |
+| `graph/` | [Graphs](graph/README.md) | 3 |  |  | 2 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`bipartite/` | [Bipartite check (`check_bipartite`)](graph/bipartite/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`cycle_detection/` | [Cycle detection in a directed graph (`dag_cycle`, `dg_cycle`)](graph/cycle_detection/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`eulerian_path/` | [Eulerian path and circuit (`eulerian_path_directed_graph`, `eulerian_path_undirected_graph`)](graph/eulerian_path/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`functional_graph/` | [Functional graph (`functional_graph`)](graph/functional_graph/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`low_link/` | [Bridges and articulation points (`find_bridges`, `find_articulation_point`)](graph/low_link/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`max_flow/` | [Maximum flow (`max_flow`, `edmonds_karp`)](graph/max_flow/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`mst/` | [Minimum spanning tree (`kruskal`, `prims`)](graph/mst/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`scc/` | [Strongly connected components (`kosaraju`)](graph/scc/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`shortest_path/` | [Shortest Path Algo in Graphs](graph/shortest_path/README.md) |  |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`01bfs/` | [0-1 BFS (`01bfs`)](graph/shortest_path/01bfs/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bellman_ford/` | [Bellman-Ford](graph/shortest_path/bellman_ford/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dijkstra/` | [Dijkstra](graph/shortest_path/dijkstra/README.md) | 3 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`floyd_warshall/` | [Floyd-Warshall](graph/shortest_path/floyd_warshall/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`topological_sort/` | [Topological sort (`topological_sort_bfs`, `topological_sort_dfs`)](graph/topological_sort/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`two_sat/` | [2-SAT (`two_sat`)](graph/two_sat/README.md) | 1 |  |  |  |
 | `heaps/` | [Heaps](heaps/README.md) | 19 |  |  |  |
 | `linked_list/` | [Linked lists](linked_list/README.md) | 10 |  |  |  |
 | `low_level/` | [Low-level / systems](low_level/README.md) | 6 |  |  | 1 |

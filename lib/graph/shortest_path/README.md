@@ -3,15 +3,15 @@
 | Folder | Problem | Weights | Time |
 |---|---|---|---|
 | [`dijkstra/`](dijkstra/README.md) | single source | non-negative | O(E log V) |
+| [`01bfs/`](01bfs/README.md) | single source | 0 or 1 | O(V + E) |
 | [`bellman_ford/`](bellman_ford/README.md) | single source, finds negative cycles | any | O(V · E) |
 | [`floyd_warshall/`](floyd_warshall/README.md) | all pairs, finds negative cycles | any | O(V³) |
 
-Related, elsewhere in `graph/`: `01bfs.cpp` (weights 0/1, O(V + E)) and `restore_path.cpp` (walk `parent[]` back
-from the target).
+Related, elsewhere in `graph/`: [`restore_path.cpp`](../restore_path.cpp) (walk `parent[]` back from the target).
 
-All three are statement-level snippets: they declare `dist` / `parent` (or use your `dist` matrix)
-and a lambda, and expect `n`, `adj` or `edges` to be in scope. `test_shortest_path.cpp` checks them against each
-other and against a brute force on random graphs.
+All of them are statement-level snippets: they declare `dist` / `parent` (or use your `dist` matrix)
+and a lambda, and expect `n`, `adj` or `edges` to be in scope. `test_shortest_path.cpp` checks Dijkstra, Bellman-Ford and
+Floyd-Warshall against each other and against a brute force on random graphs; `01bfs` is tested in `../test_flow_and_io.cpp`.
 
 ```mermaid
 flowchart TD

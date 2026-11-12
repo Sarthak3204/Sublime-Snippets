@@ -2,28 +2,28 @@
 
 namespace impl {
 #include "lib/data_structure/dsu/dsu.cpp"  // kruskal @needs dsu
-#include "lib/graph/check_bipartite.cpp"
-#include "lib/graph/functional_graph.cpp"
+#include "lib/graph/bipartite/check_bipartite.cpp"
+#include "lib/graph/functional_graph/functional_graph.cpp"
 }  // namespace impl
 using impl::dsu;
 
 namespace dg {  // dg_cycle uses globals `N` and `adj`
 const int N = 70;
 vector<int> adj[N];
-#include "lib/graph/dg_cycle.cpp"
+#include "lib/graph/cycle_detection/dg_cycle.cpp"
 }  // namespace dg
 
 using graph = vector<vector<int>>;
 
 // ---- statement-level snippets, each pasted into its own function ----
 set<pair<int, int>> bridges_of(int n, const graph &adj) {
-#include "lib/graph/find_bridges.cpp"
+#include "lib/graph/low_link/find_bridges.cpp"
     set<pair<int, int>> r;
     for (auto [u, v] : bridges) r.insert(minmax(u, v));
     return r;
 }
 vector<int> cutpoints_of(int n, const graph &adj) {
-#include "lib/graph/find_articulation_point.cpp"
+#include "lib/graph/low_link/find_articulation_point.cpp"
     return cutpoint;
 }
 struct scc_result {
@@ -32,20 +32,20 @@ struct scc_result {
     vector<vector<int>> adj_scc;
 };
 scc_result kosaraju_of(int n, const graph &adj) {
-#include "lib/graph/kosaraju.cpp"
+#include "lib/graph/scc/kosaraju.cpp"
     return {scc, root, root_nodes, vector<vector<int>>(adj_scc, adj_scc + n)};
 }
 vector<int> topo_bfs(int n, const graph &adj) {
-#include "lib/graph/topological_sort_bfs.cpp"
+#include "lib/graph/topological_sort/topological_sort_bfs.cpp"
     return Topological_Sort_Bfs();
 }
 vector<int> topo_dfs(int n, const graph &adj) {
-#include "lib/graph/topological_sort_dfs.cpp"
+#include "lib/graph/topological_sort/topological_sort_dfs.cpp"
     return Topological_Sort_Dfs();
 }
 bool dag_cycle(int n, const graph &adj) {
-#include "lib/graph/topological_sort_bfs.cpp"  // @needs
-#include "lib/graph/dag_cycle.cpp"
+#include "lib/graph/topological_sort/topological_sort_bfs.cpp"  // @needs
+#include "lib/graph/cycle_detection/dag_cycle.cpp"
     return DAG_Cycle();
 }
 int kruskal_of(int n, vector<array<int, 3>> edges) {
