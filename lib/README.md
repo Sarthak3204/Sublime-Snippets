@@ -54,7 +54,8 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | `stack_queues/` | [Stacks and queues](stack_queues/README.md) | 20 |  |  |  |
 | `string/` | [Strings](string/README.md) | 12 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`trie/` |  | 3 |  |  | 1 |
-| `trees/` | [Trees](trees/README.md) | 5 |  |  |  |
-| &nbsp;&nbsp;&nbsp;&nbsp;`centroid_tree/` |  | 1 |  |  | 1 |
+| `trees/` | [Trees](trees/README.md) | 4 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`centroid_tree/` | [Centroid tree (`CentroidTree`)](trees/centroid_tree/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`diameter/` | [Tree diameter and farthest vertex (`diameter_farthest`)](trees/diameter/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`hld/` | [Heavy-light decomposition](trees/hld/README.md) | 4 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`lca/` | [Lowest common ancestor (`lca`, `binary_lifting`)](trees/lca/README.md) | 2 |  |  | 1 |
