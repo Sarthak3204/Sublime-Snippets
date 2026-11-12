@@ -12,42 +12,77 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`post_order/` |  | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_order/` |  | 2 |  |  |  |
 | `bst/` | [Binary search trees](bst/README.md) | 15 |  |  |  |
-| `data_structure/` | [Data structures](data_structure/README.md) | 7 |  |  | 1 |
+| `data_structure/` | [Data structures](data_structure/README.md) |  |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`difference_array/` | [Difference array (`difference_array`)](data_structure/difference_array/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`dsu/` | [Disjoint set union (`dsu`, `dsu_rollback`)](data_structure/dsu/README.md) | 2 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`dynamic_connectivity/` |  | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`dynamic_connectivity/` | [Offline dynamic connectivity (`dynamic_connectivity`)](data_structure/dynamic_connectivity/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`fenwick/` | [Fenwick tree (binary indexed tree)](data_structure/fenwick/README.md) | 1 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`fraction/` |  | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`fraction/` | [Exact fractions (`fraction`)](data_structure/fraction/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`linear_basis/` | [XOR linear basis (`linear_basis`)](data_structure/linear_basis/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`mex_changing_set/` | [MEX under insert / delete (`mex`)](data_structure/mex_changing_set/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`mo/` | [Mo algorithm (`mo`, `hilbert_order`)](data_structure/mo/README.md) | 2 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`monotonic_stack/` | [Monotonic stack (`monotonic_stack`)](data_structure/monotonic_stack/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`segment_tree/` | [Segment trees](data_structure/segment_tree/README.md) | 9 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dynamic/` | [Dynamic (sparse) segment tree (`dynamic`)](data_structure/segment_tree/dynamic/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`lazy_sgt/` | [Lazy segment tree (`lazy_sgt`, `generic_lazy_sgt`)](data_structure/segment_tree/lazy_sgt/README.md) | 2 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`seg_tree/` | [Segment tree (`seg_tree`)](data_structure/segment_tree/seg_tree/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`sparse_table/` | [Sparse table](data_structure/sparse_table/README.md) | 5 |  |  | 2 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`treap/` |  | 1 |  |  | 1 |
-| `dp/` | [Dynamic programming](dp/README.md) | 6 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` |  | 1 |  |  | 1 |
-| `geometry/` | [Geometry](geometry/README.md) | 1 |  |  | 1 |
-| `graph/` | [Graphs](graph/README.md) | 18 |  |  | 2 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`treap/` | [Implicit treap (`treap`)](data_structure/treap/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`venice_set/` | [Venice set (`venice_set`)](data_structure/venice_set/README.md) | 1 |  |  |  |
+| `dp/` | [Dynamic programming](dp/README.md) |  |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`lcs/` | [Longest common subsequence (LCS)](dp/lcs/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` | [Line container (dynamic convex hull trick)](dp/line_container/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`lis/` | [Longest increasing subsequence (LIS)](dp/lis/README.md) | 4 |  |  |  |
+| `geometry/` | [Geometry](geometry/README.md) |  |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`point/` | [Point and 2D integer geometry](geometry/point/README.md) | 1 |  |  | 1 |
+| `graph/` | [Graphs](graph/README.md) | 3 |  |  | 2 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`bipartite/` | [Bipartite check (`check_bipartite`)](graph/bipartite/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`cycle_detection/` | [Cycle detection in a directed graph (`dag_cycle`, `dg_cycle`)](graph/cycle_detection/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`eulerian_path/` | [Eulerian path and circuit (`eulerian_path_directed_graph`, `eulerian_path_undirected_graph`)](graph/eulerian_path/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`functional_graph/` | [Functional graph (`functional_graph`)](graph/functional_graph/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`low_link/` | [Bridges and articulation points (`find_bridges`, `find_articulation_point`)](graph/low_link/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`max_flow/` | [Maximum flow (`max_flow`, `edmonds_karp`)](graph/max_flow/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`mst/` | [Minimum spanning tree (`kruskal`, `prims`)](graph/mst/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`scc/` | [Strongly connected components (`kosaraju`)](graph/scc/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`shortest_path/` | [Shortest Path Algo in Graphs](graph/shortest_path/README.md) |  |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`01bfs/` | [0-1 BFS (`01bfs`)](graph/shortest_path/01bfs/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bellman_ford/` | [Bellman-Ford](graph/shortest_path/bellman_ford/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dijkstra/` | [Dijkstra](graph/shortest_path/dijkstra/README.md) | 3 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`floyd_warshall/` | [Floyd-Warshall](graph/shortest_path/floyd_warshall/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`topological_sort/` | [Topological sort (`topological_sort_bfs`, `topological_sort_dfs`)](graph/topological_sort/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`two_sat/` | [2-SAT (`two_sat`)](graph/two_sat/README.md) | 1 |  |  |  |
 | `heaps/` | [Heaps](heaps/README.md) | 19 |  |  |  |
 | `linked_list/` | [Linked lists](linked_list/README.md) | 10 |  |  |  |
 | `low_level/` | [Low-level / systems](low_level/README.md) | 6 |  |  | 1 |
 | `math/` | [Math](math/README.md) |  |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`mint/` | [Modular arithmetic (`mint` and helpers)](math/mint/README.md) | 7 |  |  | 2 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`miscellaneous/` | [Math: miscellaneous](math/miscellaneous/README.md) | 18 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bigint/` |  | 1 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`number_theory/` | [Number theory](math/number_theory/README.md) | 13 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`miscellaneous/` | [Math: miscellaneous](math/miscellaneous/README.md) | 7 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bigint/` | [Big integers (`bigint`)](math/miscellaneous/bigint/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`divisors/` | [Divisors (`generate_divisors`, `count_divisors`, `div_sum`)](math/miscellaneous/divisors/README.md) | 4 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exponentiation/` | [Exponentiation (`binary_exp`, `pow`, `large_expo`, `matrix_exp`)](math/miscellaneous/exponentiation/README.md) | 4 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`floor_ceil/` | [Floor and ceiling (`floor_ceil`, `generate_all_floors`, `generate_all_ceils`)](math/miscellaneous/floor_ceil/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`number_theory/` | [Number theory](math/number_theory/README.md) | 3 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`extended_gcd/` | [Extended Euclid and the Chinese remainder theorem](math/number_theory/extended_gcd/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`factorization/` | [Factorization by trial division](math/number_theory/factorization/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mobius/` | [Möbius function μ(n)](math/number_theory/mobius/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`phi/` | [Euler's totient φ(n)](math/number_theory/phi/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sieve/` | [Sieves](math/number_theory/sieve/README.md) | 5 |  |  |  |
 | `merge_sort/` | [Merge-sort counting](merge_sort/README.md) | 6 |  |  |  |
-| `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 26 |  |  | 1 |
+| `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 21 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`coordinate_compression/` | [Coordinate compression](miscellaneous/coordinate_compression/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`monotone_deque/` | [Monotone deque (sliding window maximum / minimum)](miscellaneous/monotone_deque/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`sorting/` | [Sorting algorithms](miscellaneous/sorting/README.md) | 7 |  |  |  |
 | `sliding_window/` | [Sliding window](sliding_window/README.md) | 3 |  |  |  |
 | `stack_queues/` | [Stacks and queues](stack_queues/README.md) | 20 |  |  |  |
-| `string/` | [Strings](string/README.md) | 12 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`trie/` |  | 3 |  |  | 1 |
-| `trees/` | [Trees](trees/README.md) | 5 |  |  |  |
-| &nbsp;&nbsp;&nbsp;&nbsp;`centroid_tree/` |  | 1 |  |  | 1 |
+| `string/` | [Strings](string/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`hashing/` | [String hashing (`string_hashing`, `poly_hash`, `rabin_karp`)](string/hashing/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`lcp_table/` | [LCP table and lexicographic substring order (`lcp`, `lexo_substring`)](string/lcp_table/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`manacher/` | [Manacher and palindrome check](string/manacher/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`prefix_function/` | [Prefix function, KMP and shortest palindrome](string/prefix_function/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`suffix_array/` | [Suffix array (`suffix_automation.cpp`)](string/suffix_array/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`trie/` | [Trie (`trie_string`, `trie_max_xor`, `trie_vector`)](string/trie/README.md) | 3 |  |  | 1 |
+| `trees/` | [Trees](trees/README.md) | 4 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`centroid_tree/` | [Centroid tree (`CentroidTree`)](trees/centroid_tree/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`diameter/` | [Tree diameter and farthest vertex (`diameter_farthest`)](trees/diameter/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`hld/` | [Heavy-light decomposition](trees/hld/README.md) | 4 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`lca/` | [Lowest common ancestor (`lca`, `binary_lifting`)](trees/lca/README.md) | 2 |  |  | 1 |

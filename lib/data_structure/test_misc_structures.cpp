@@ -1,19 +1,19 @@
 #include "test_prelude.hpp"
 
 namespace basis {
-#include "lib/data_structure/linear_basis.cpp"
+#include "lib/data_structure/linear_basis/linear_basis.cpp"
 }
 namespace venice {
-#include "lib/data_structure/venice_set.cpp"
+#include "lib/data_structure/venice_set/venice_set.cpp"
 }
 namespace mx {
-#include "lib/data_structure/mex_changing_set.cpp"
+#include "lib/data_structure/mex_changing_set/mex_changing_set.cpp"
 }
 namespace diff {
-#include "lib/data_structure/difference_array.cpp"
+#include "lib/data_structure/difference_array/difference_array.cpp"
 }
 namespace dyn {
-#include "lib/data_structure/dynamic.cpp"
+#include "lib/data_structure/segment_tree/dynamic/dynamic.cpp"
 }
 
 TEST(LinearBasis, SpanMaxMinAndMergeMatchBruteForce) {

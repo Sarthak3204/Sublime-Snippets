@@ -1,5 +1,5 @@
 # Floyd-Warshall
-All pair shorted path with negative edges
+All pair shorted path with negative edges.
 
 **Files:** `floyd_warshall.cpp` (alias `shortest_path_floyd_warshall`) · **Needs:** none (statement-level snippet)
 · **Tests:** `../test_shortest_path.cpp`
@@ -17,13 +17,15 @@ In scope: `n` and `dist` as an n×n matrix, filled with `INF` and then the edge 
 floyd();                     // sets dist[i][i] = 0, then relaxes through every k
 ```
 
-## Time Complexity
+## Complexity
 - A dp algo where we brute force for every pair through which we can visit
 - if dist[i][i] < 0 negative cycle exists
 
 - TC : O(n ^ 3)
 
-Memory: O(n²), the matrix itself.
+| Operation | Time | Memory |
+|---|---|---|
+| `floyd()` | O(n³) | O(n²) (the matrix itself) |
 
 ## How it works
 After processing intermediate vertices `0..k`, `dist[i][j]` is the shortest path from i to j that uses only

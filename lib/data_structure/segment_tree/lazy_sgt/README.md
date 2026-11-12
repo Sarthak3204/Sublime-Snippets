@@ -41,6 +41,8 @@ needs, such as its segment length, so `lo` and `hi` are not passed.
 | `update(l, r, x)` | O(log n) | |
 | `query(l, r)` | O(log n) | |
 
+An operation visits O(log n) nodes and pushes at most one pending update per visited node.
+
 ## How it works
 An update stops at nodes fully inside `[l, r]` and leaves a pending update there. Every visit first pushes a
 node's pending update into its own value and onto its children (`pushdown`), so a node's value is correct

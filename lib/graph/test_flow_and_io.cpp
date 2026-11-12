@@ -1,10 +1,10 @@
 #include "test_prelude.hpp"
 
 namespace af {
-#include "lib/graph/max_flow.cpp"
+#include "lib/graph/max_flow/max_flow.cpp"
 }
 namespace ts {
-#include "lib/graph/two_sat.cpp"
+#include "lib/graph/two_sat/two_sat.cpp"
 }
 
 // Runs a whole-program snippet (reads cin, writes cout, may `return 0;`) on `in`, returns its output.
@@ -20,19 +20,19 @@ string run_io(const string &in, F body) {
 }
 
 int edmonds_karp_main() {
-#include "lib/graph/edmonds_karp.cpp"
+#include "lib/graph/max_flow/edmonds_karp.cpp"
     return 0;
 }
 int euler_directed_main() {
-#include "lib/graph/eulerian_path_directed_graph.cpp"
+#include "lib/graph/eulerian_path/eulerian_path_directed_graph.cpp"
     return 0;
 }
 int euler_undirected_main() {
-#include "lib/graph/eulerian_path_undirected_graph.cpp"
+#include "lib/graph/eulerian_path/eulerian_path_undirected_graph.cpp"
     return 0;
 }
 vector<ll> zero_one_bfs(int n, int m, int s) {  // reads the m edges from cin
-#include "lib/graph/01bfs.cpp"
+#include "lib/graph/shortest_path/01bfs/01bfs.cpp"
     return dist;
 }
 

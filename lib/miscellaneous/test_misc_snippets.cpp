@@ -4,10 +4,9 @@ namespace impl {
 #include "lib/miscellaneous/binary_to_decimal.cpp"
 #include "lib/miscellaneous/decimal_to_binary.cpp"
 #include "lib/miscellaneous/classcomp.cpp"
-#include "lib/miscellaneous/compress_array.cpp"
+#include "lib/miscellaneous/coordinate_compression/compress_array.cpp"
 #include "lib/miscellaneous/custom_hash.cpp"
 #include "lib/miscellaneous/find_sqrt.cpp"
-#include "lib/miscellaneous/hilbert_order.cpp"
 #include "lib/miscellaneous/int128.cpp"
 #include "lib/miscellaneous/kadane.cpp"
 #include "lib/miscellaneous/merge_map.cpp"
@@ -15,10 +14,10 @@ namespace impl {
 }  // namespace impl
 #include "lib/miscellaneous/gp_hash_table.cpp"  // pb_ds include + using namespace: global, like in a solution
 namespace dq_max {
-#include "lib/miscellaneous/monotone_deque_max.cpp"
+#include "lib/miscellaneous/monotone_deque/monotone_deque_max.cpp"
 }
 namespace dq_min {
-#include "lib/miscellaneous/monotone_deque_min.cpp"
+#include "lib/miscellaneous/monotone_deque/monotone_deque_min.cpp"
 }
 
 // namespace_io reads `stdin` and writes `stdout`: point both at temporary files while it is compiled.
@@ -47,7 +46,7 @@ pair<vector<ll>, vector<ll>> nge_nse(int n, const vector<ll> &v) {
 }
 vector<ll> compressed_coords(vector<ll> coord, const vector<ll> &queries) {
     using impl::custom_hash;
-#include "lib/miscellaneous/coordinate_compression.cpp"
+#include "lib/miscellaneous/coordinate_compression/coordinate_compression.cpp"
     vector<ll> r;
     for (ll q : queries) r.push_back(mp[q]);
     return r;
@@ -140,7 +139,7 @@ TEST(Misc, ArrayHelpersMatchBruteForce) {
     EXPECT_EQ(p, (vector<pair<ll, ll>>{{1, 5}, {1, 1}, {2, 7}, {2, 1}}));
 }
 
-TEST(Misc, HashesAndHilbertOrder) {
+TEST(Misc, Hashes) {
     gp_hash_table<ll, ll, impl::custom_hash> h;
     unordered_map<pair<ll, ll>, ll, impl::custom_hash> hp;
     map<ll, ll> ref;
@@ -153,10 +152,6 @@ TEST(Misc, HashesAndHilbertOrder) {
         ASSERT_EQ(h[k], v);
         ASSERT_EQ((hp[{k, -k}]), v);
     }
-
-    set<ll> seen;  // distinct keys on a 64 x 64 grid
-    for (int x = 0; x < 64; x++)
-        for (int y = 0; y < 64; y++) ASSERT_TRUE(seen.insert(impl::hilbertorder(x, y)).second) << x << " " << y;
 }
 
 TEST(Misc, NamespaceIoRoundTrip) {

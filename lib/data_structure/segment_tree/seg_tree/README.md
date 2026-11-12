@@ -29,6 +29,8 @@ st.query(l, r);         // merge over inclusive [l, r]
 | `update(i, i, v)` | O(log n) | |
 | `update(l, r, v)` | O(r − l + 1 + log n): every position is visited, not lazy | |
 
+A query or point update touches at most two nodes per level.
+
 ## How it works
 Leaves `s_ .. 2s_ − 1` hold the array (`s_` = power of two ≥ n). Node `i` has children `2i` and `2i + 1` and
 stores their merge. A query takes whole nodes inside `[l, r]`, the identity outside it, and splits at `mid`

@@ -30,6 +30,8 @@ sparse_table_2d_square<ll> q(grid);  q.query(i1, j1, x);     // min over the x-b
 | 2D rectangles | O(nm log n log m) | O(1) | nm log n log m |
 | 2D squares | O(nm log min(n, m)) | O(1) | nm log min(n, m) |
 
+The build fills log n levels of n entries; a query reads two precomputed blocks.
+
 ## How it works
 `table_[j][i]` = op over `a[i .. i + 2^j − 1]`, built from two halves of level `j − 1`. A query on `[l, r]`
 takes `j = ⌊log2(r − l + 1)⌋` and combines the two blocks of length `2^j` that start at `l` and end at `r`. They

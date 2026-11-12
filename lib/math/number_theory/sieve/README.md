@@ -2,21 +2,18 @@
 
 Precompute prime information for every number up to `N` once, then answer primality / factorization queries fast.
 
-**Files:**
-| File | Precomputes | Then |
-|---|---|---|
-| `sieve.cpp` | `bitset isPrime`, optional `primes` list (`initiate(true)`) | O(1) primality |
-| `linear_sieve.cpp` (alias `LinearSieve`) | `spf[x]`, the smallest prime factor | `factorize(x)` in O(log x) for x ≤ N |
-| `sieve_factorization.cpp` | uses `sieve`'s `primes` | `factorize(x)` for x ≤ N², O(π(√x)) |
-| `divsum_sieve.cpp` | uses `linear_sieve` + `binary_exp` | sum of divisors of x, mod `mod` |
-| `mobius_sieve.cpp` (alias `mobiusSieve`) | own `spf`, `mob[]` up to 1e6 | Möbius μ(x) in O(1) |
-
-**Needs:** see the table (pasted automatically) · **Tests:** `../test_number_theory.cpp`
+**Files:** `sieve.cpp` (`bitset isPrime`, optional `primes` list via `initiate(true)`: O(1) primality),
+`linear_sieve.cpp` (alias `LinearSieve`: `spf[x]`, the smallest prime factor, then `factorize(x)` in O(log x) for x ≤ N),
+`sieve_factorization.cpp` (uses `sieve`'s `primes`: `factorize(x)` for x ≤ N², O(π(√x))),
+`divsum_sieve.cpp` (sum of divisors of x, mod `mod`), `mobius_sieve.cpp` (alias `mobiusSieve`: own `spf`, `mob[]` up to 1e6,
+Möbius μ(x) in O(1)) · **Needs:** `sieve_factorization` needs `sieve`; `divsum_sieve` needs `linear_sieve` and
+`binary_exp` ([`../../miscellaneous/exponentiation/`](../../miscellaneous/exponentiation/README.md)); the others are
+standalone (pasted automatically) · **Tests:** `../test_number_theory.cpp`
 
 ## Problems it solves
 - Many primality or factorization queries on values ≤ 1e6 to 1e7: count divisors, distinct primes, gcd tricks.
-- Multiplicative functions over a range (φ, μ, σ): see also `../phi_1_to_n.cpp`, `../mobius_1_to_n.cpp`.
-- A single large number (≤ 1e12): sieve primes up to √x once (`sieve_factorization`), or trial division (`../factorize.cpp`).
+- Multiplicative functions over a range (φ, μ, σ): see also [`../phi/`](../phi/README.md), [`../mobius/`](../mobius/README.md).
+- A single large number (≤ 1e12): sieve primes up to √x once (`sieve_factorization`), or trial division ([`../factorization/`](../factorization/README.md)).
 - Counting coprime pairs and inclusion-exclusion over divisors: Möbius.
 
 ## API
@@ -45,6 +42,7 @@ initiate();  mob[x];
 | `sieve` | O(N log log N) | O(1) | N bits (+ primes) |
 | `linear_sieve` (spf) | O(N log log N) | factorize O(log x) | N + 1 ints |
 | `sieve_factorization` | sieve up to √X | O(√x / log x) | primes up to √X |
+| `divsum_sieve` | as `linear_sieve` | O(ω(x) · log mod): two modular powers per prime | |
 | `mobius_sieve` | O(N log N) | O(1) | 3 vectors of 1e6 + 1 |
 
 ## How it works
@@ -58,11 +56,17 @@ flowchart LR
 ```
 `factorize(360)` = {(2, 3), (3, 2), (5, 1)}.
 
+`divsum_sieve` uses `σ(x) = Π (p^(e+1) − 1) / (p − 1)` over the prime powers of `x`, with the division done by Fermat
+(`bexp(p − 1, mod − 2, mod)`). `mobius_sieve` fills `mob[i]` from the `spf` chain of `i`: 0 as soon as `spf²` divides the
+current value, otherwise `(−1)^(number of primes)`.
+
 ## Pitfalls and variants
 - Every file has its own `N` (2e5, or 1e6 for `mobius_sieve`). Raise it to the problem's bound; memory grows linearly.
 - Several files define `initiate()` and `N`. Paste only one sieve per solution, or rename. The `@needs` chain
   takes care of the dependencies: `divsum_sieve` reuses `linear_sieve`'s `factorize`.
 - `linear_sieve.cpp` keeps the user's name. It is an spf sieve (Eratosthenes order), not the O(N) linear sieve.
+- `sieve_factorization` needs every prime up to √x, so x ≤ N²; for larger x the leftover can be composite and the result is wrong.
+- `divsum_sieve(x)` needs x ≤ N and `initiate()` already called; the result is σ(x) mod `mod`.
 - Segmented sieve (primes in [L, R] with R up to 1e12) is not in the library yet.
 
 ## Practice
