@@ -1,7 +1,7 @@
 #include "test_prelude.hpp"
 
 namespace impl {
-#include "lib/geometry/point.cpp"
+#include "lib/geometry/point/point.cpp"
 }
 using impl::point;
 

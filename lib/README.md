@@ -33,7 +33,8 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;`lcs/` | [Longest common subsequence (LCS)](dp/lcs/README.md) | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` | [Line container (dynamic convex hull trick)](dp/line_container/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`lis/` | [Longest increasing subsequence (LIS)](dp/lis/README.md) | 4 |  |  |  |
-| `geometry/` | [Geometry](geometry/README.md) | 1 |  |  | 1 |
+| `geometry/` | [Geometry](geometry/README.md) |  |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`point/` | [Point and 2D integer geometry](geometry/point/README.md) | 1 |  |  | 1 |
 | `graph/` | [Graphs](graph/README.md) | 3 |  |  | 2 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`bipartite/` | [Bipartite check (`check_bipartite`)](graph/bipartite/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`cycle_detection/` | [Cycle detection in a directed graph (`dag_cycle`, `dg_cycle`)](graph/cycle_detection/README.md) | 2 |  |  |  |

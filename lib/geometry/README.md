@@ -2,8 +2,8 @@
 
 2D integer geometry.
 
-| File | |
+| Folder | What |
 |---|---|
-| `point.cpp` | `point` ops, orientation, segment intersection, point in polygon, area, convex hull, tangents, max triangle |
+| [`point/`](point/README.md) | `point` struct, orientation, segment intersection, point in polygon, area, convex hull, tangents, max triangle |
 
-Tests: test_point.cpp.
+Tests: `point/test_point.cpp`.
