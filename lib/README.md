@@ -12,16 +12,23 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`post_order/` |  | 2 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_order/` |  | 2 |  |  |  |
 | `bst/` | [Binary search trees](bst/README.md) | 15 |  |  |  |
-| `data_structure/` | [Data structures](data_structure/README.md) | 7 |  |  | 1 |
+| `data_structure/` | [Data structures](data_structure/README.md) |  |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`difference_array/` | [Difference array (`difference_array`)](data_structure/difference_array/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`dsu/` | [Disjoint set union (`dsu`, `dsu_rollback`)](data_structure/dsu/README.md) | 2 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`dynamic_connectivity/` |  | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`dynamic_connectivity/` | [Offline dynamic connectivity (`dynamic_connectivity`)](data_structure/dynamic_connectivity/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`fenwick/` | [Fenwick tree (binary indexed tree)](data_structure/fenwick/README.md) | 1 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`fraction/` |  | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`fraction/` | [Exact fractions (`fraction`)](data_structure/fraction/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`linear_basis/` | [XOR linear basis (`linear_basis`)](data_structure/linear_basis/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`mex_changing_set/` | [MEX under insert / delete (`mex`)](data_structure/mex_changing_set/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`mo/` | [Mo algorithm (`mo`, `hilbert_order`)](data_structure/mo/README.md) | 2 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`monotonic_stack/` | [Monotonic stack (`monotonic_stack`)](data_structure/monotonic_stack/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`segment_tree/` | [Segment trees](data_structure/segment_tree/README.md) | 9 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dynamic/` | [Dynamic (sparse) segment tree (`dynamic`)](data_structure/segment_tree/dynamic/README.md) | 1 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`lazy_sgt/` | [Lazy segment tree (`lazy_sgt`, `generic_lazy_sgt`)](data_structure/segment_tree/lazy_sgt/README.md) | 2 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`seg_tree/` | [Segment tree (`seg_tree`)](data_structure/segment_tree/seg_tree/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`sparse_table/` | [Sparse table](data_structure/sparse_table/README.md) | 5 |  |  | 2 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`treap/` |  | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`treap/` | [Implicit treap (`treap`)](data_structure/treap/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`venice_set/` | [Venice set (`venice_set`)](data_structure/venice_set/README.md) | 1 |  |  |  |
 | `dp/` | [Dynamic programming](dp/README.md) | 6 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`line_container/` |  | 1 |  |  | 1 |
 | `geometry/` | [Geometry](geometry/README.md) | 1 |  |  | 1 |
@@ -41,7 +48,7 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;`number_theory/` | [Number theory](math/number_theory/README.md) | 13 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sieve/` | [Sieves](math/number_theory/sieve/README.md) | 5 |  |  |  |
 | `merge_sort/` | [Merge-sort counting](merge_sort/README.md) | 6 |  |  |  |
-| `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 26 |  |  | 1 |
+| `miscellaneous/` | [Miscellaneous](miscellaneous/README.md) | 25 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`sorting/` | [Sorting algorithms](miscellaneous/sorting/README.md) | 7 |  |  |  |
 | `sliding_window/` | [Sliding window](sliding_window/README.md) | 3 |  |  |  |
 | `stack_queues/` | [Stacks and queues](stack_queues/README.md) | 20 |  |  |  |

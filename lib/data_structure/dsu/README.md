@@ -2,8 +2,7 @@
 
 Keeps a partition of `0..n-1` under "merge these two sets" and "are these in the same set?".
 
-**Files:** `dsu.cpp` (trigger `dsu`), `dsu_rollback.cpp` (trigger `dsu_rollback`) · **Needs:** none
-· **Tests:** `test_dsu.cpp` · **Used by:** `graph/mst/kruskal.cpp`, `data_structure/dynamic_connectivity/`
+**Files:** `dsu.cpp` (trigger `dsu`), `dsu_rollback.cpp` (trigger `dsu_rollback`) · **Needs:** none · **Tests:** `test_dsu.cpp`
 
 ## Problems it solves
 - Connectivity under edge additions, the number of components, the size of a vertex's component.
@@ -30,6 +29,8 @@ r.same(a, b);  r.size(a);  r.components;
 | `dsu` (union by size + path compression) | amortized O(α(n)), effectively O(1) | 2n ints |
 | `dsu_rollback` (union by rank, no compression) | O(log n); `rollback` O(1) | 3n ints + one record per unite |
 
+Union by size keeps trees shallow, path compression flattens them further; without compression only the O(log n) depth bound remains.
+
 ## How it works
 Each set is a tree, and `find` walks up to the root. Union by size (or rank) hangs the smaller tree under the
 larger one, so depth stays O(log n). Path compression also flattens the path on every `find`. Rollback can't
@@ -52,6 +53,7 @@ flowchart BT
 ## Pitfalls and variants
 - `find` in `dsu` is recursive. That is fine with judge stacks, and union by size keeps the depth at O(log n) anyway.
 - `rollback` undoes **successful** unites only, which is what divide and conquer over time needs.
+- Used by `graph/mst/kruskal.cpp` and by [`../dynamic_connectivity/`](../dynamic_connectivity/README.md) (`dsu_rollback`).
 - A weighted / parity DSU (bipartiteness under unions) is not in the library yet.
 
 ## Practice

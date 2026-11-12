@@ -7,7 +7,6 @@ namespace impl {
 #include "lib/miscellaneous/compress_array.cpp"
 #include "lib/miscellaneous/custom_hash.cpp"
 #include "lib/miscellaneous/find_sqrt.cpp"
-#include "lib/miscellaneous/hilbert_order.cpp"
 #include "lib/miscellaneous/int128.cpp"
 #include "lib/miscellaneous/kadane.cpp"
 #include "lib/miscellaneous/merge_map.cpp"
@@ -140,7 +139,7 @@ TEST(Misc, ArrayHelpersMatchBruteForce) {
     EXPECT_EQ(p, (vector<pair<ll, ll>>{{1, 5}, {1, 1}, {2, 7}, {2, 1}}));
 }
 
-TEST(Misc, HashesAndHilbertOrder) {
+TEST(Misc, Hashes) {
     gp_hash_table<ll, ll, impl::custom_hash> h;
     unordered_map<pair<ll, ll>, ll, impl::custom_hash> hp;
     map<ll, ll> ref;
@@ -153,10 +152,6 @@ TEST(Misc, HashesAndHilbertOrder) {
         ASSERT_EQ(h[k], v);
         ASSERT_EQ((hp[{k, -k}]), v);
     }
-
-    set<ll> seen;  // distinct keys on a 64 x 64 grid
-    for (int x = 0; x < 64; x++)
-        for (int y = 0; y < 64; y++) ASSERT_TRUE(seen.insert(impl::hilbertorder(x, y)).second) << x << " " << y;
 }
 
 TEST(Misc, NamespaceIoRoundTrip) {

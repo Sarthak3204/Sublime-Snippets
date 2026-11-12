@@ -25,6 +25,8 @@ f.sum(a, b);        // a[a] + ... + a[b - 1]   (half-open [a, b), unlike the inc
 | `add` | O(log n) | |
 | `sum` | O(log n) | |
 
+Each step of `add` / `sum` moves past one set bit of the index, so at most log n steps.
+
 ## How it works
 Internally 1-indexed: `seg_[i]` holds the sum of the `i & -i` elements that end at `i`. `add` climbs with
 `i += i & -i` and `sum` descends with `i -= i & -i`. Each step moves past one set bit, so both are O(log n).
