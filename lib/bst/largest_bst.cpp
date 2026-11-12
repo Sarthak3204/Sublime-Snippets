@@ -1,0 +1,29 @@
+// @aliases bst_largestBst
+int largestBst(Node *root) {
+    int ans = 1;
+    auto f = [&](auto && f, Node * temp) -> arr {
+        Node *l = temp->lhs, *r = temp->rhs;
+
+        arr now = {1, temp->data, temp->data, 1};
+
+        if (l) {
+            arr L = f(f, l);
+            now[0] &= (L[0] and (L[2] < temp->data));
+            now[1] = L[1];
+            now[3] += L[3];
+        }
+        if (r) {
+            arr R = f(f, r);
+            now[0] &= (R[0] and (R[1] > temp->data));
+            now[2] = R[2];
+            now[3] += R[3];
+        }
+        if (now[0]) ans = max(ans, now[3]);
+
+        return now;
+    };
+
+    f(f, root);
+
+    return ans;
+}

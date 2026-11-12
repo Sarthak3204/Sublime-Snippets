@@ -1,0 +1,16 @@
+// @aliases divSum
+ll divSum(ll num) {
+	ll result = num % mod;
+	if (num == 1)
+		return result;
+	for (ll i = 2; i * i <= num; i++) {
+		if (num % i == 0) {
+			if (i == (num / i))
+				result += (i % mod);
+			else
+				result += (i % mod + (num / i) % mod) % mod;
+		}
+		result %= mod;
+	}
+	return (result + 1) % mod;
+}

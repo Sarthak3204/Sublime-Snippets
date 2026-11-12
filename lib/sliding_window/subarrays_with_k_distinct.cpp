@@ -1,0 +1,21 @@
+// @aliases sliding_window_subarraysWithKDistinct
+int subarraysWithKDistinct(vector<int> &a, int k) {//https://leetcode.com/problems/subarrays-with-k-different-integers/
+    int n = a.size();
+    for (auto &x : a) x--;
+
+    auto calc = [&](int k) {
+        vector<int> cnt(n);
+        int i = 0, j = 0, distinct = 0, ans = 0;
+        while (j < n) {
+            if (!cnt[a[j]]++) distinct++;
+            while (distinct > k) {
+                if (!--cnt[a[i++]]) distinct--;
+            }
+            ans += j++ - i + 1;
+        }
+        return ans;
+    };
+
+    int ans = calc(k) - calc(k - 1);
+    return ans;
+}

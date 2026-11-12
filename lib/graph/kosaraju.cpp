@@ -1,0 +1,45 @@
+int scc = 0;
+vector<int> vis(n), order, root_nodes, root(n), adjT[n], adj_scc[n];
+
+function<void(int)> dfs1 = [&](int v) {
+    vis[v] = 1;
+    for (auto &u : adj[v]) 
+        if (!vis[u]) dfs1(u);
+    order.push_back(v);
+};
+
+for (int v = 0; v < n; v++)
+    if (!vis[v]) dfs1(v);
+
+reverse(all(order));//decreasing order of finishing time scc1 -> scc2 -> scc3
+vis.assign(n, 0);
+
+for (int v = 0; v < n; v++)
+    for (auto &u : adj[v])
+        adjT[u].push_back(v);
+
+vector<int> components;
+
+function<void(int)> dfs2 = [&](int v) {
+    vis[v] = 1;
+    components.push_back(v);
+    for (auto &u : adjT[v]) 
+        if (!vis[u]) dfs2(u);
+};
+
+for (auto &v : order) {
+    if (vis[v]) continue;
+    scc++, dfs2(v);
+    
+    root_nodes.push_back(components.front());
+    for (auto &u : components) 
+        root[u] = components.front();
+    components.clear();
+}
+
+for (int v = 0; v < n; v++) {
+    for (auto &u : adj[v]) {
+        if (root[v] == root[u]) continue;
+        adj_scc[root[v]].push_back(root[u]);
+    }
+}

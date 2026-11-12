@@ -1,0 +1,47 @@
+// @trigger linked_list_flatten
+Node *merge (Node *p1, Node *p2) {
+    p1->next = NULL;
+    Node *head = NULL, *temp = NULL;
+    
+    while (p1 and p2) {
+        if (p1->data <= p2->data) {
+            if (!head) head = p1;
+            else temp->bottom = p1;
+            temp = p1, p1 = p1->bottom;
+        }
+        else {
+            if (!head) head = p2;
+            else temp->bottom = p2;
+            temp = p2, p2 = p2->bottom;
+        }
+    }
+    
+    while (p1) {
+        temp->bottom = p1;
+        temp = p1, p1 = p1->bottom;
+    }
+    
+    while (p2) {
+        temp->bottom = p2;
+        temp = p2, p2 = p2->bottom;
+    }
+     
+    return head;
+}
+
+Node *flatten(Node *root) {
+    if (root == NULL) return NULL;
+    
+    stack<Node*> s;
+    while (root->next) {
+        s.push(root);
+        root = root->next;
+    }
+    
+    while (!s.empty()) {
+        root = merge(s.top(), root);
+        s.pop();
+    }
+    
+    return root;
+}

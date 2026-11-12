@@ -1,0 +1,31 @@
+// @aliases binary_trees_verticalOrder
+vector<int> verticalOrder(Node *root) {
+    map<int, vector<int>> mp;
+
+    queue<pair<Node*, int>> q;
+    q.push({root, 0});
+
+    while (!q.empty()) {
+        int n = q.size();
+
+        for (int i = 0; i < n; i++) {
+            Node *v = q.front().first;
+            int x = q.front().second;
+            q.pop();
+
+            mp[x].push_back(v->data);
+
+            Node *l = v->lhs, *r = v->rhs;
+
+            if (l) q.push({l, x - 1});
+            if (r) q.push({r, x + 1});
+        }
+    }
+
+    vector<int> ans;
+    for (auto &x : mp) {
+        ans.insert(ans.end(), x.second.begin(), x.second.end());
+    }
+
+    return ans;
+}

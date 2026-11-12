@@ -1,0 +1,16 @@
+// @aliases binary_trees_getMaxWidth
+int getMaxWidth(Node* root) {
+    map<int, int> mp;
+    auto f = [&](auto & f, Node * temp, int x) -> void {
+        mp[x]++;
+        Node *l = temp->lhs, *r = temp->rhs;
+
+        if (l) f(f, l, x + 1);
+        if (r) f(f, r, x + 1);
+    };
+
+    f(f, root, 0);
+    int ans = 1;
+    for (auto &x : mp) ans = max(ans, x.second);
+    return ans;
+}

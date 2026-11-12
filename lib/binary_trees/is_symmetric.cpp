@@ -1,0 +1,26 @@
+// @aliases binary_trees_isSymmetric
+bool isSymmetric(struct Node* root) {
+    if (root == NULL) return true;
+    auto f = [&](auto && f, Node * temp1, Node * temp2) -> bool {
+        Node *l1 = temp1->lhs, *r1 = temp1->rhs;
+        Node *l2 = temp2->lhs, *r2 = temp2->rhs;
+
+        if ((l1 and !r2) or (!l1 and r2)) return false;
+        if ((r1 and !l2) or (!r1 and l2)) return false;
+
+        if (l1 and r2) {
+            if (l1->data != r2->data) return false;
+            if (!f(f, l1, r2)) return false;
+        }
+
+        if (r1 and l2) {
+            if (r1->data != l2->data) return false;
+            if (!f(f, r1, l2)) return false;
+        }
+
+        return true;
+    };
+
+    Node *temp1 = root, *temp2 = root;
+    return f(f, temp1, temp2);
+}

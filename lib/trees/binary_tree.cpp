@@ -1,0 +1,83 @@
+// @aliases BinaryTree
+struct node {
+    int val;
+    node *lhs, *rhs;
+    node(int data) : val(data), lhs(NULL), rhs(NULL) {}//intializer list
+};
+
+class BinaryTree {
+    node *root;
+    BinaryTree() {}
+
+    vector<int> preorder() {
+        vector<int> ans;
+
+        auto f = [&](auto && f, node * ptr) -> void {
+            if (ptr == NULL) return;
+
+            ans.push_back((*ptr).val);
+            f(f, (*ptr).lhs);
+            f(f, (*ptr).rhs);
+        };
+
+        f(f, root);
+        return ans;
+    }
+
+    vector<int> inorder() {
+        vector<int> ans;
+
+        auto f = [&](auto && f, node * ptr) -> void {
+            if (ptr == NULL) return;
+
+            f(f, (*ptr).lhs);
+            ans.push_back((*ptr).val);
+            f(f, (*ptr).rhs);
+        };
+
+        f(f, root);
+        return ans;
+    }
+
+    vector<int> postorder() {
+        vector<int> ans;
+
+        auto f = [&](auto && f, node * ptr) -> void {
+            if (ptr == NULL) return;
+
+            f(f, (*ptr).lhs);
+            f(f, (*ptr).rhs);
+            ans.push_back((*ptr).val);
+        };
+
+        f(f, root);
+        return ans;
+    }
+
+    vector<vector<int>> levelOrder(node* root) {
+        vector<vector<int>> ans;
+
+        if (root == NULL) return ans;
+
+        queue<node*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+            int siz = q.size();
+            vector<int> level;
+
+            for (int i = 0; i < siz; i++) {
+                node *v = q.front();
+                q.pop();
+
+                level.push_back((*v).val);
+                if ((*v).lhs != NULL) q.push((*v).lhs);
+                if ((*v).rhs != NULL) q.push((*v).rhs);
+            }
+
+            ans.push_back(level);
+        }
+
+        return ans;
+    }
+};

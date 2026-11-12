@@ -1,0 +1,16 @@
+// @aliases bst_KthSmallestElement
+int KthSmallestElement(Node *root, int k) {
+    int ans = -1;
+    auto f = [&](auto && f, Node * temp, int pos) -> int {
+        if (!temp or pos < 0) return 0;
+
+        int eleL = f(f, temp->lhs, pos);
+        if (eleL == pos) ans = temp->data;
+        int eleR = f(f, temp->rhs, pos - eleL - 1);
+
+        return eleL + eleR + 1;
+    };
+
+    f(f, root, k - 1);
+    return ans;
+}

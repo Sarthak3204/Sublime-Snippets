@@ -1,0 +1,32 @@
+// @aliases stack_queues_stack_using_queue
+class QueueStack {
+private:
+    queue<int> q1;
+    queue<int> q2;
+public:
+    void push(int);
+    int pop();
+};
+//Function to push an element into stack using two queues.
+void QueueStack :: push(int x) {
+    q1.push(x);
+}
+
+//Function to pop an element from stack using two queues.
+int QueueStack :: pop() {
+    int n = q1.size();
+
+    assert(q2.empty());
+    for (int i = 1; i < n; i++) {
+        q2.push(q1.front());
+        q1.pop();
+    }
+
+    if (q1.empty()) return -1;
+
+    int ans = q1.front();
+    q1.pop();
+    q1.swap(q2);
+
+    return ans;
+}

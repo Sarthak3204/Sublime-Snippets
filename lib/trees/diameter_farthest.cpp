@@ -1,0 +1,27 @@
+vector<int> d(n);
+auto bfs = [&](int source) {
+    queue<int> q;
+    d.assign(n, -1);
+    q.push(source);
+    d[source] = 0;
+    while (!q.empty()) {
+        int v = q.front();
+        q.pop();
+        for (auto &u : adj[v]) {
+            if (d[u] != -1) continue;
+            d[u] = d[v] + 1;
+            q.push(u);
+        }
+    }
+
+    return max_element(all(d)) - d.begin();
+};
+
+int x = bfs(0);
+int y = bfs(x);
+auto dx = d;
+bfs(y);
+auto dy = d;
+
+for (int i = 0; i < n; i++)
+    d[i] = max(dx[i], dy[i]);

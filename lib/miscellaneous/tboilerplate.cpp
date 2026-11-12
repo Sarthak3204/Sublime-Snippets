@@ -1,0 +1,37 @@
+// @aliases Tboilerplate
+#include <bits/stdc++.h>
+
+using namespace std;
+using ll = long long;
+
+#ifndef ONLINE_JUDGE
+#include "debug.h"
+#else
+#define deb(x...)
+#endif
+
+#define int         long long
+#define ull         unsigned long long
+#define all(x)      x.begin(), x.end()
+#define rev(x)      x.rbegin(), x.rend()
+#define uid(a, b)   uniform_int_distribution<long long>(a, b)(rng)
+
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+constexpr ll INF = (ll)1e18;
+constexpr int mod = (int)1e9 + 7;
+
+void solve() {
+    // $0
+}
+
+int32_t main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int TESTS; cin >> TESTS;
+    while (TESTS--) solve();
+
+    return 0;
+}

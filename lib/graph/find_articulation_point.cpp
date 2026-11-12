@@ -1,0 +1,26 @@
+int timer = 0;
+vector<int> vis(n), tin(n), low(n), cutpoint(n);
+
+function<void(int, int)> dfs = [&](int v, int p) {//Tarjan's algo
+    vis[v] = 1;
+    tin[v] = low[v] = timer++;
+
+    int child = 0;
+    for (auto &u : adj[v]) {
+        if (u == p) continue;
+        if (vis[u]) low[v] = min(low[v], tin[u]);
+        else {
+            dfs(u, v);
+            low[v] = min(low[v], low[u]);
+            if (p != -1 and low[u] >= tin[v])
+                cutpoint[v] = 1;
+            child++;
+        }
+    }
+
+    if (p == -1 and child > 1)
+        cutpoint[v] = 1;
+};
+
+for (int i = 0; i < n; i++)
+    if (!vis[i]) dfs(i, -1);

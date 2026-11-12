@@ -1,0 +1,21 @@
+constexpr int N = (int)2e5;
+
+bitset < N + 1 > isPrime;
+vector<int> primes;
+
+void initiate(bool store = false) {
+    isPrime.set();
+
+    isPrime[0] = isPrime[1] = 0;
+    for (int i = 2; i * i <= N; ++i) {
+        if (!isPrime[i]) continue;
+        for (int j = i * i; j <= N; j += i)
+            isPrime[j] = 0;
+    }
+
+    if (!store) return;
+
+    primes.reserve(N / log(N));
+    for (int i = 2; i <= N; i++)
+        if (isPrime[i]) primes.push_back(i);
+}

@@ -1,0 +1,24 @@
+// @aliases bst_correctBST
+void correctBST(struct Node* root) {
+    Node *temp = root, *prev = NULL, *startP = NULL, *midP = NULL, *endP = NULL;
+
+    auto f = [&](auto && f, Node * temp) -> void {
+        Node *l = temp->lhs, *r = temp->rhs;
+
+        if (l) f(f, l);
+        if (prev and prev->data > temp->data) {
+            if (!startP) {
+                startP = prev;
+                midP = temp;
+            }
+            else endP = temp;
+        }
+        prev = temp;
+        if (r) f(f, r);
+    };
+
+    f(f, temp);
+
+    if (endP) swap(startP->data, endP->data);
+    else swap(startP->data, midP->data);
+}

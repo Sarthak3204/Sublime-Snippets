@@ -4,3 +4,16 @@ Package Control.user-ca-bundle
 Preferences.sublime-settings
 Mac Classic.sublime-color-scheme
 Monokai.sublime-color-scheme
+build*/
+__pycache__/
+
+# Machine-specific formatter config (absolute paths to clang-format / google-java-format) and the
+# Formatter package's generated default configs
+Formatter.sublime-settings
+Formatter.quick-options
+clang_format*.sublime-settings
+formatter.assets/
+
+# Java / Rust build output (planned ports)
+*.class
+target/

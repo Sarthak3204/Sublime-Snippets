@@ -1,0 +1,6 @@
+map<int, int> merge_map(map<int, int> &m1, map<int, int> &m2) {
+	map<int, int> m;
+	for (auto &[x1, y1] : m1) m[x1] += y1;
+	for (auto &[x2, y2] : m2) m[x2] += y2;
+	return m;
+}

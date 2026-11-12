@@ -1,0 +1,46 @@
+// @aliases merge_sort_countRangeSum
+//https://leetcode.com/problems/count-of-range-sum/
+int countRangeSum(vector<int>& nums, int lower, int upper) {
+    int n = nums.size(), ans = 0;
+
+    vector<long long> pfsum(n);
+    for (int i = 0; i < n; i++) {
+        pfsum[i] = nums[i];
+        if (i) pfsum[i] += pfsum[i - 1];
+        if (lower <= pfsum[i] and pfsum[i] <= upper) ans++;
+    }
+
+    auto merge = [&](int lo, int mid, int hi) {
+        for (int j = mid + 1; j <= hi; j++) {
+            int L = lower_bound(pfsum.begin() + lo, pfsum.begin() + mid + 1, pfsum[j] - upper) - pfsum.begin();
+            int R = upper_bound(pfsum.begin() + lo, pfsum.begin() + mid + 1, pfsum[j] - lower) - pfsum.begin();
+            ans += max<int>(0, R - L);
+        }
+
+        vector<long long> a;
+        int i = lo, j = mid + 1;
+        while (i <= mid and j <= hi) {
+            if (pfsum[i] <= pfsum[j]) a.push_back(pfsum[i++]);
+            else a.push_back(pfsum[j++]);
+        }
+
+        while (i <= mid) a.push_back(pfsum[i++]);
+        while (j <= hi) a.push_back(pfsum[j++]);
+
+        for (int i = lo; i <= hi; i++) {
+            pfsum[i] = a[i - lo];
+        }
+    };
+
+    auto f = [&](auto && f, int lo, int hi) {
+        if (lo >= hi) return;
+        int mid = (lo + hi) / 2;
+        f(f, lo, mid);
+        f(f, mid + 1, hi);
+        merge(lo, mid, hi);
+    };
+
+    f(f, 0, n - 1);
+
+    return ans;
+}

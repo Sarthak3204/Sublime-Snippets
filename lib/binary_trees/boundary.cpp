@@ -1,0 +1,43 @@
+// @aliases binary_trees_boundary
+vector<int> boundary(Node *root) {
+    vector<int> ans;
+    ans.push_back(root->data);
+
+    if (!root->lhs and !root->rhs) return ans;
+
+    Node *temp = root->lhs;
+    while (temp) {
+        Node *l = temp->lhs, *r = temp->rhs;
+        if (!l and !r) break;
+        ans.push_back(temp->data);
+        temp = (l ? l : r);
+    }
+
+    auto f = [&](auto && f, Node * temp) -> void {
+        Node *l = temp->lhs, *r = temp->rhs;
+        if (!l and !r) {
+            ans.push_back(temp->data);
+            return;
+        }
+        if (l) f(f, l);
+        if (r) f(f, r);
+    };
+
+    temp = root;
+    f(f, temp);
+
+    vector<int> b;
+    temp = root->rhs;
+
+    while (temp) {
+        Node *l = temp->lhs, *r = temp->rhs;
+        if (!l and !r) break;
+        b.push_back(temp->data);
+        temp = (r ? r : l);
+    }
+
+    reverse(b.begin(), b.end());
+    ans.insert(ans.end(), b.begin(), b.end());
+
+    return ans;
+}

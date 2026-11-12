@@ -1,0 +1,32 @@
+// @aliases heaps_mergeMinHeaps
+void convertMaxToMinHeap(vector<int> &a, int n) {
+    for (int k = n / 2; k >= 1; k--) {
+        int i = k;
+        while (2 * i <= n) {
+            int l = 2 * i, r = 2 * i + 1, j = l;
+            if (r <= n and a[r - 1] < a[l - 1]) j = r;
+            if (a[i - 1] > a[j - 1]) {
+                swap(a[i - 1], a[j - 1]);
+                i = j;
+            }
+            else break;
+        }
+    }
+}
+
+vector<int> mergeMinHeaps(vector<int> &a, vector<int> &b, int n, int m) {
+    convertMaxToMinHeap(a, n);
+    convertMaxToMinHeap(b, m);
+
+    vector<int> ans;
+    int i = 0, j = 0;
+    while (i < n and j < m) {
+        if (a[i] < b[j]) ans.push_back(a[i++]);
+        else ans.push_back(b[j++]);
+    }
+
+    while (i < n) ans.push_back(a[i++]);
+    while (j < m) ans.push_back(b[j++]);
+
+    return ans;
+}

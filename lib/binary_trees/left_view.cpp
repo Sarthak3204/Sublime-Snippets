@@ -1,0 +1,22 @@
+// @aliases binary_trees_lhsView
+vector<int> lhsView(Node *root) {
+    vector<int> ans;
+    if (root == NULL) return ans;
+
+    map<int, int> mp;
+    auto f = [&](auto && f, Node * temp, int d) -> void {
+        if (mp.find(d) == mp.end()) mp[d] = temp->data;
+        Node *l = temp->lhs, *r = temp->rhs;
+        if (l) f(f, l, d + 1);
+        if (r) f(f, r, d + 1);
+    };
+
+    Node *temp = root;
+    f(f, temp, 0);
+
+    for (auto &x : mp) {
+        ans.push_back(x.second);
+    }
+
+    return ans;
+}

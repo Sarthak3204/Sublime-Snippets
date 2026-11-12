@@ -1,0 +1,24 @@
+// @aliases mst_prims
+vector<pair<int, int>> mst;
+auto prims = [&]() -> int {
+    int ans = 0;
+    vector<int> vis(n);
+
+    set<array<int, 3>> s;
+    s.insert({0, 0, -1});
+
+    while (!s.empty() and (int)mst.size() < n - 1) {
+        auto [wt, v, p] = *s.begin();
+        s.erase(s.begin());
+
+        if (vis[v]) continue;
+        vis[v] = 1, ans += wt;
+        if (p != -1) mst.push_back({v, p});
+
+        for (auto &[u, w] : adj[v]) {
+            if (vis[u]) continue;
+            s.insert({w, u, v});
+        }
+    }
+    return ans;
+};

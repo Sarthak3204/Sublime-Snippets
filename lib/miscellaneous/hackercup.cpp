@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+using ll = long long;
+
+#ifndef ONLINE_JUDGE
+#include "debug.h"
+#else
+#define deb(x...)
+#endif
+
+#define int         long long
+#define ull         unsigned long long
+#define all(x)      x.begin(), x.end()
+#define rev(x)      x.rbegin(), x.rend()
+#define uid(a, b)   uniform_int_distribution<long long>(a, b)(rng)
+
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+constexpr ll INF = (ll)1e18;
+constexpr int mod = (int)1e9 + 7;
+
+void solve() {
+    // $0
+}
+
+static void run_with_stack_size(void (*func)(void), size_t stsize) {
+    char *stack, *send;
+    stack = (char *)malloc(stsize);
+    send = stack + stsize - 16;
+    send = (char *)((uintptr_t)send / 16 * 16);
+    asm volatile(
+        "mov %%rsp, (%0)\n"
+        "mov %0, %%rsp\n"
+        :
+        : "r"(send));
+    func();
+    asm volatile("mov (%0), %%rsp\n" : : "r"(send));
+    free(stack);
+}
+
+int32_t main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
+
+    int TESTS; cin >> TESTS;
+    for (int T = 1; T <= TESTS; T++) {
+        cout << "Case #" << T << ": ";
+        run_with_stack_size(solve, 1024 * 1024 * 1024);
+    }
+
+    return 0;
+}

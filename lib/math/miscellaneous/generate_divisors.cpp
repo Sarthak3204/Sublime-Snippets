@@ -1,0 +1,19 @@
+vector<int> generate_divisors(vector<pair<int, int>> &factor) {
+    vector<int> divisors;
+    int n = size(factor);
+
+    auto rec = [&](auto && rec, int i, int val) {
+        if (i == n) {
+            divisors.push_back(val);
+            return;
+        }
+        int base = 1; auto &[a, b] = factor[i];
+        for (int power = 0; power <= b; power++) {
+            if (power) base *= a;
+            rec(rec, i + 1, val * base);
+        }
+    };
+
+    rec(rec, 0, 1);
+    return divisors;
+}

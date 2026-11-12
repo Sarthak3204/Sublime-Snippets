@@ -1,0 +1,52 @@
+/*
+Let block size be B
+
+rhs pointer for all queries lying in each block can move upto O(N)
+overall rhs pointer moves O((N / B) * N)
+
+lhs pointer between two consecutive queries can move upto O(B)
+overall lhs pointer moves O(Q * B)
+
+if B = sqrt(N)
+TC: O((N + Q) * sqrt(N) * F) where F is time complexity of recalculate function
+*/
+int q;
+cin >> q;
+vector<array<int, 3>> query(q);
+
+for (int i = 0; i < q; i++) {
+    cin >> query[i][0] >> query[i][1];
+    query[i][0]--, query[i][1]--;
+    query[i][2] = i;
+}
+
+sort(all(query), [&](const auto & x, const auto & y) {
+    int L = x[0] / BLOCK;
+    int R = y[0] / BLOCK;
+
+    if (L != R) return L < R;
+    return (L & 1) ? (x[1] < y[1]) : (x[1] > y[1]);
+});
+
+vector<int> ans(q);
+int i = 0, j = -1, res = 0;
+
+auto add = [&](int i) -> void {
+
+};
+
+auto remove = [&](int i) -> void {
+
+};
+
+for (auto &[l, r, ind] : query) {
+    while (j < r) add(++j);
+    while (i > l) add(--i);
+    
+    while (i < l) remove(i++);
+    while (j > r) remove(j--);
+
+    ans[ind] = res;
+}
+
+for (auto &x : ans) cout << x << "\n";

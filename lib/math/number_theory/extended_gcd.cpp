@@ -1,0 +1,24 @@
+/*
+ax + by = gcd(a, b)
+gcd(a, b) = gcd(b % a, a)
+gcd(b % a, a) = (b % a)x1 + ay1
+ax + by = (b % a)x1 + ay1
+ax + by = (b – floor(b / a) * a)x1 + ay1
+ax + by = a(y1 – floor(b / a) * x1) + bx1
+
+Comparing LHS and RHS
+x = y1 – floor(b / a) * x1
+y = x1
+*/
+ll euclid(ll a, ll b, ll& x, ll& y) {
+    if (a == 0) {
+        x = 0;
+        y = 1;
+        return b;
+    }
+    ll x1, y1;
+    ll g = euclid(b % a, a, x1, y1);
+    x = y1 - (b / a) * x1;
+    y = x1;
+    return g;
+}

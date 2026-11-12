@@ -1,0 +1,11 @@
+vector<int> calc(int n) {//count of pairs of gcd g in [1,n] O(nlogn)
+    vector<int> g(n + 1, 0);
+    for (int i = n; i >= 1; i--) {
+        int cnt = n / i;
+        g[i] = (cnt * (cnt - 1)) / 2;//nc2
+        for (int j = 2 * i; j <= n; j += i) {
+            g[i] -= g[j];
+        }
+    }
+    return g;
+}

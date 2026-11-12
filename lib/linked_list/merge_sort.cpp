@@ -1,0 +1,48 @@
+// @trigger linked_list_merge_sort
+ListNode* sortList(ListNode* head) {
+    if (head == NULL) return head;
+
+    auto merge = [&](ListNode * i, ListNode * j) {
+        ListNode *head = NULL, *temp = head;
+
+        while (i and j) {
+            if (i->val <= j->val) {
+                if (!head) head = i;
+                else temp->next = i;
+                temp = i, i = i->next;
+            }
+            else {
+                if (!head) head = j;
+                else temp->next = j;
+                temp = j, j = j->next;
+            }
+        }
+
+        if (i) temp->next = i;
+        if (j) temp->next = j;
+
+        return head;
+    };
+
+    function<ListNode*(ListNode*)> mergeSort = [&](ListNode * head) {
+        if (head->next == NULL) return head;
+
+        ListNode *slow = head, *fast = head;
+        while (fast->next and fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        ListNode *nxt = slow->next, *temp;
+        slow->next = NULL;
+
+        ListNode *h1 = mergeSort(head);
+        ListNode *h2 = mergeSort(nxt);
+
+        ListNode *got = merge(h1, h2);
+
+        return got;
+    };
+
+    return mergeSort(head);
+}

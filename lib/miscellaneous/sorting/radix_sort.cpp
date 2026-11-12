@@ -1,0 +1,24 @@
+// @aliases radixSort
+auto radixSort = [&]() -> void {//O(d * n) d is the length of maxi
+    int n = a.size();
+    int maxi = *max_element(a.begin(), a.end());
+
+    auto countingSort = [&](int base) -> void {
+        vector<int> cnt(10), ans(n);
+        for (auto &x : a) cnt[(x / base) % 10]++;
+        
+        for (int i = 1; i < 10; i++) {
+            cnt[i] += cnt[i - 1];
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            ans[cnt[(a[i] / base) % 10] - 1] = a[i];
+            cnt[(a[i] / base) % 10]--;
+        }
+        a = ans;
+    };
+
+    for (int base = 1; maxi / base > 0; base *= 10) {
+        countingSort(base);
+    }
+};

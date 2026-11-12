@@ -1,0 +1,20 @@
+vector<int> monotonic_stack(const vector<int> &a, function<bool(int, int)> f, int one = 0, int fwd = 1) {
+    int N = (int)a.size() - one;
+
+    vector<int> ind(N + one, (fwd > 0 ? N + one : -1 + one));
+    stack<int> s;
+
+    for (int i = (fwd > 0 ? 0 : N - 1) + one; (fwd > 0 ? i < N + one : i >= one); (fwd > 0 ? i++ : i--)) {
+        while (!s.empty() and f(a[i], a[s.top()]))
+            ind[s.top()] = i, s.pop();
+        s.push(i);
+    }
+
+    return ind;
+}
+/*
+auto NGE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x > y; }, 0);
+auto PGE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x > y; }, 0, -1);
+auto NSE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x < y; }, 0);
+auto PSE = monotonic_stack(a, [&](const int x, const int y) -> bool { return x < y; }, 0, -1);
+*/

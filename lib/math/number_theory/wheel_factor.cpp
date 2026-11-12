@@ -1,0 +1,26 @@
+vector<pair<ll, ll>> wheel_factor(ll n) {
+	vector<pair<ll, ll>> factor;
+	for (int d : {2, 3, 5}) {
+		int cnt = 0;
+		while (n % d == 0) {
+			cnt++;
+			n /= d;
+		}
+		if (cnt) factor.push_back({d, cnt});
+	}
+
+	static array<int, 8> increments = {4, 2, 4, 2, 4, 6, 2, 6};
+	int i = 0;
+	for (ll d = 7; d * d <= n; d += increments[i++]) {
+		int cnt = 0;
+		while (n % d == 0) {
+			cnt++;
+			n /= d;
+		}
+		if (cnt) factor.push_back({d, cnt});
+		if (i == 8) i = 0;
+	}
+
+	if (n > 1) factor.push_back({n, 1});
+	return factor;
+}

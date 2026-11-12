@@ -1,0 +1,13 @@
+ll mobius(ll n) {//O(sqrt(n))
+    if (n == 1) return 1;
+    ll cnt = 0;
+    for (ll i = 2; i * i <= n; i++) {
+        ll j = i * i;
+        if (n % j == 0) return 0;
+        else if (n % i == 0) {
+            n /= i; cnt++;
+        }
+    }
+    if (n > 1) cnt++;
+    return (cnt & 1 ? -1 : 1);
+}

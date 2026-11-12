@@ -1,0 +1,37 @@
+// @aliases binary_trees_findSpiral
+vector<int> findSpiral(Node *root) {
+    vector<int> ans;
+    if (root == NULL) return ans;
+
+    queue<Node*> q;
+    q.push(root);
+    ans.push_back(root->data);
+
+    int lev = 1;
+    while (!q.empty()) {
+        int n = q.size();
+        vector<Node*> v;
+        for (int i = 0; i < n; i++) {
+            Node *node = q.front();
+            Node *l = node->lhs, *r = node->rhs;
+            q.pop();
+
+            if (lev) {
+                if (l) v.push_back(l);
+                if (r) v.push_back(r);
+            }
+            else {
+                if (r) v.push_back(r);
+                if (l) v.push_back(l);
+            }
+        }
+
+        for (auto &x : v) ans.push_back(x->data);
+        reverse(v.begin(), v.end());
+        for (auto &x : v) q.push(x);
+
+        lev ^= 1;
+    }
+
+    return ans;
+}
