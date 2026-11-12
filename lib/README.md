@@ -62,8 +62,13 @@ folder (not in subfolders); a technique folder normally has one README and its t
 | &nbsp;&nbsp;&nbsp;&nbsp;`sorting/` | [Sorting algorithms](miscellaneous/sorting/README.md) | 7 |  |  |  |
 | `sliding_window/` | [Sliding window](sliding_window/README.md) | 3 |  |  |  |
 | `stack_queues/` | [Stacks and queues](stack_queues/README.md) | 20 |  |  |  |
-| `string/` | [Strings](string/README.md) | 12 |  |  | 1 |
-| &nbsp;&nbsp;&nbsp;&nbsp;`trie/` |  | 3 |  |  | 1 |
+| `string/` | [Strings](string/README.md) | 1 |  |  | 1 |
+| &nbsp;&nbsp;&nbsp;&nbsp;`hashing/` | [String hashing (`string_hashing`, `poly_hash`, `rabin_karp`)](string/hashing/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`lcp_table/` | [LCP table and lexicographic substring order (`lcp`, `lexo_substring`)](string/lcp_table/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`manacher/` | [Manacher and palindrome check](string/manacher/README.md) | 2 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`prefix_function/` | [Prefix function, KMP and shortest palindrome](string/prefix_function/README.md) | 3 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`suffix_array/` | [Suffix array (`suffix_automation.cpp`)](string/suffix_array/README.md) | 1 |  |  |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;`trie/` | [Trie (`trie_string`, `trie_max_xor`, `trie_vector`)](string/trie/README.md) | 3 |  |  | 1 |
 | `trees/` | [Trees](trees/README.md) | 4 |  |  |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;`centroid_tree/` | [Centroid tree (`CentroidTree`)](trees/centroid_tree/README.md) | 1 |  |  | 1 |
 | &nbsp;&nbsp;&nbsp;&nbsp;`diameter/` | [Tree diameter and farthest vertex (`diameter_farthest`)](trees/diameter/README.md) | 1 |  |  |  |

@@ -1,27 +1,27 @@
 #include "test_prelude.hpp"
 
 namespace pf {
-#include "lib/string/prefix_function.cpp"
-#include "lib/string/kmp.cpp"  // @needs prefix_function
+#include "lib/string/prefix_function/prefix_function.cpp"
+#include "lib/string/prefix_function/kmp.cpp"  // @needs prefix_function
 }
 namespace man {
-#include "lib/string/manacher.cpp"
+#include "lib/string/manacher/manacher.cpp"
 }
 namespace lcp_ns {
-#include "lib/string/lcp.cpp"
+#include "lib/string/lcp_table/lcp.cpp"
 }
 namespace pal {
-#include "lib/string/is_palindrome.cpp"
+#include "lib/string/manacher/is_palindrome.cpp"
 }
 namespace spal {
-#include "lib/string/prefix_function.cpp"  // @needs
-#include "lib/string/shortest_palindrome.cpp"
+#include "lib/string/prefix_function/prefix_function.cpp"  // @needs
+#include "lib/string/prefix_function/shortest_palindrome.cpp"
 }
 namespace lexo {
-#include "lib/string/lexo_substring.cpp"
+#include "lib/string/lcp_table/lexo_substring.cpp"
 }
 namespace sa {
-#include "lib/string/suffix_automation.cpp"
+#include "lib/string/suffix_array/suffix_automation.cpp"
 }
 namespace ts {
 #include "lib/string/trie/trie_string.cpp"
@@ -30,16 +30,16 @@ namespace tx {
 #include "lib/string/trie/trie_max_xor.cpp"
 }
 namespace sh {
-#include "lib/string/string_hashing.cpp"
+#include "lib/string/hashing/string_hashing.cpp"
 vector<int> rabin_karp(string s, string t) {  // statement-level snippet: needs s, t, n, m
     int n = s.size(), m = t.size();
-#include "lib/string/rabin_karp.cpp"
+#include "lib/string/hashing/rabin_karp.cpp"
     RabinKarp();
     return occurences;
 }
 }  // namespace sh
 namespace ph {
-#include "lib/string/poly_hash.cpp"
+#include "lib/string/hashing/poly_hash.cpp"
 }
 
 string random_str(tu::Gen &g, int n, char hi = 'c') {
